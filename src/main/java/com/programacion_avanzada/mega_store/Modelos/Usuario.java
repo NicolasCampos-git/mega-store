@@ -9,12 +9,14 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "usuarios")
 public class Usuario {
@@ -33,8 +35,8 @@ public class Usuario {
     private String telefono;
 
     //Datos para validar al usuario.
-    @Column(name ="mail")
-    private String mail;
+    @Column(name ="email")
+    private String email;
     @Column(name ="contrasena")
     private String contrasena;
 
