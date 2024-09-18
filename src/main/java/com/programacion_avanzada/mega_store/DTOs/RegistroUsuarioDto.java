@@ -1,7 +1,7 @@
 package com.programacion_avanzada.mega_store.DTOs;
 
 import lombok.Data;
-
+//Este DTO tiene estos atributos para poder hacer el registro del usuario.
 @Data
 public class RegistroUsuarioDto {
     private String nombre;

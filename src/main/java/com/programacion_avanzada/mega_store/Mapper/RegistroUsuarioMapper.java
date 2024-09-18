@@ -10,7 +10,6 @@ public class RegistroUsuarioMapper {
         dto.setApellido(usuario.getApellido());
         dto.setEmail(usuario.getEmail());
         dto.setContrasena(usuario.getContrasena());
-        dto.setTelefono(usuario.getTelefono());
         return dto;
     }
 
@@ -20,7 +19,6 @@ public class RegistroUsuarioMapper {
         usuario.setApellido(dto.getApellido());
         usuario.setEmail(dto.getEmail());
         usuario.setContrasena(dto.getContrasena());
-        usuario.setTelefono(dto.getTelefono());
         return usuario;
     }
 }
