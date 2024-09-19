@@ -6,9 +6,9 @@ import org.springframework.stereotype.Service;
 
 
 import com.programacion_avanzada.mega_store.DTOs.RegistroUsuarioDto;
-
+import com.programacion_avanzada.mega_store.DTOs.UsuarioDto;
 import com.programacion_avanzada.mega_store.Mapper.RegistroUsuarioMapper;
-
+import com.programacion_avanzada.mega_store.Mapper.UsuarioMapper;
 import com.programacion_avanzada.mega_store.Modelos.Usuario;
 import com.programacion_avanzada.mega_store.Repository.DireccionEnvioRepository;
 import com.programacion_avanzada.mega_store.Repository.UsuarioRepository;
@@ -40,7 +40,22 @@ public class UsuarioService implements IUsuarioService {
         //Convertimos la entidad con la que trabajamos en un dto para devilverlo(el metodo devuelve DTOs).
         return RegistroUsuarioMapper.toDto(usuarioRepository.save(usuario));
     }
-    
+
+    @Override
+    public UsuarioDto actualizarInformacionPersonal(UsuarioDto dto){
+        Usuario usuario = usuarioRepository.findById(dto.getId())
+                                            .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        usuario.setNombre(dto.getNombre());
+        usuario.setApellido(dto.getApellido());
+        usuario.setEmail(dto.getEmail());
+        
+
+
+        return UsuarioMapper.toDto(usuarioRepository.save(usuario));
+    }
+
+
+    //Metodo para verificar si el mail ya esta registrado. 
     public boolean verificarEmail(String email){
 
         Usuario usuario = usuarioRepository.findByEmail(email);
