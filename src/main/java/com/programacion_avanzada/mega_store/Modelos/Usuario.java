@@ -49,11 +49,6 @@ public class Usuario {
     @Column(name ="rol")
     private String rol; //Rol que va a tener el usuario. lo dejamos como string para simplificar.
 
-    //Creo un nuevo metodo para settear 1 direccion.
-    public void setDireccion(DireccionEnvio direccion) {
-        direcciones.add(direccion);
-        direccion.setUsuario(this);
-    }
 
     
 
