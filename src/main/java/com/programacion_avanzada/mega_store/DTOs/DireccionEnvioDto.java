@@ -3,7 +3,7 @@ package com.programacion_avanzada.mega_store.DTOs;
 import lombok.Data;
 
 @Data
-public class DireccionEnvioDto {
+public class DireccionEnvioDto { 
     //Atributos necesarios para agregar una direccion.
     private String provincia;
     private String ciudad;
