@@ -2,6 +2,7 @@ package com.programacion_avanzada.mega_store.Service;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 
@@ -12,6 +13,9 @@ import com.programacion_avanzada.mega_store.Mapper.UsuarioMapper;
 import com.programacion_avanzada.mega_store.Modelos.Usuario;
 import com.programacion_avanzada.mega_store.Repository.DireccionEnvioRepository;
 import com.programacion_avanzada.mega_store.Repository.UsuarioRepository;
+
+import ch.qos.logback.core.util.StringUtil;
+
 
 @Service
 public class UsuarioService implements IUsuarioService {
@@ -29,10 +33,15 @@ public class UsuarioService implements IUsuarioService {
         //Convierte el DTO a una tiendad con sus datos.
         Usuario usuario = RegistroUsuarioMapper.toEntity(dto);
         
-        //Verifica que el correo no este registrado.
-        if(verificarEmail(usuario.getEmail()) == true){
-            return null;
+        //Verifica que el mail no este registrado
+        if(usuarioRepository.existsByEmail(usuario.getEmail())){
+            throw new IllegalArgumentException("El email ya está registrado.");
         }
+
+        //Nrmalizacion de datos
+        usuario.setNombre(StringUtil.capitalizeFirstLetter(dto.getNombre().toLowerCase()));
+        usuario.setApellido(StringUtil.capitalizeFirstLetter(dto.getApellido().toLowerCase()));
+        usuario.setEmail(dto.getEmail().trim().toLowerCase());
 
         //Por temas de practicidad agrega por defecto el rol "Cliente".
         usuario.setRol("cliente");
@@ -43,31 +52,19 @@ public class UsuarioService implements IUsuarioService {
 
     @Override
     public UsuarioDto actualizarInformacionPersonal(UsuarioDto dto){
+
         Usuario usuario = usuarioRepository.findById(dto.getId())
                                             .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-        usuario.setNombre(dto.getNombre());
-        usuario.setApellido(dto.getApellido());
-        usuario.setEmail(dto.getEmail());
-        
+                                            
+        //Nrmalizacion de datos
+        usuario.setNombre(StringUtil.capitalizeFirstLetter(dto.getNombre().toLowerCase()));
+        usuario.setApellido(StringUtil.capitalizeFirstLetter(dto.getApellido().toLowerCase()));
+        usuario.setEmail(dto.getEmail().trim().toLowerCase());
 
 
         return UsuarioMapper.toDto(usuarioRepository.save(usuario));
     }
 
 
-    //Metodo para verificar si el mail ya esta registrado. 
-    public boolean verificarEmail(String email){
-
-        Usuario usuario = usuarioRepository.findByEmail(email);
-        if(usuario !=null){
-            return true;
-        }else{
-            return false;
-        }
-    }
-
-
-
-   
     
 }
