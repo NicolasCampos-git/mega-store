@@ -2,6 +2,7 @@ package com.programacion_avanzada.mega_store.Modelos;
 
 import java.util.List;
 
+import io.micrometer.common.lang.NonNull;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -40,4 +41,8 @@ public class Marca {
 
     @OneToMany(mappedBy = "marca", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Producto> productos;
+
+    @NonNull
+    @Column(name = "esta_activo")
+    private boolean estaActivo;
 }

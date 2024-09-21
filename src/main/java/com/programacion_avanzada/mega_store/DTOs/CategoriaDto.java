@@ -4,8 +4,8 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
-public class SubCategoriaDto {
-
+public class CategoriaDto {
+    
     @NotBlank
     private String nombre;
 

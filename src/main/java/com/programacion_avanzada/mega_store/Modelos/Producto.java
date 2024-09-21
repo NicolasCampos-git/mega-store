@@ -1,5 +1,6 @@
 package com.programacion_avanzada.mega_store.Modelos;
 
+import io.micrometer.common.lang.NonNull;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -63,5 +64,9 @@ public class Producto {
     @ManyToOne
     @JoinColumn(name = "categoria_id", nullable = false)
     private Categoria categoria;
+
+    @NonNull
+    @Column(name = "esta_activo")
+    private boolean estaActivo;
 
 }
