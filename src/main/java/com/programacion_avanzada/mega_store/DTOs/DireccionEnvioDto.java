@@ -33,6 +33,6 @@ public class DireccionEnvioDto {
     private String descripcionDireccionEnvio;
 
     @NotNull
-    private boolean estaActivo;
+    private boolean esPrincipal;
     
 }

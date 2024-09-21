@@ -50,4 +50,7 @@ public class DireccionEnvio {
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
+    @Column(name = "es_principal")
+    private boolean esPrincipal;
+
 }
