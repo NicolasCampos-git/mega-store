@@ -21,10 +21,10 @@ public class RegistroUsuarioDto {
     @Pattern(regexp = "^[a-zA-ZÁÉÍÓÚáéíóúñÑ]{1,20}$", message = "El apellido solo puede contener letras, sin espacios, con un máximo de 20 caracteres")
     private String apellido;
 
-    // @NotNull
-    // @NotBlank
-    // @Pattern(regexp = "^[0-9]{9,15}$", message = "El teléfono solo puede contener números, con una longitud de entre 9 y 15 dígitos")
-    // private String telefono;
+    @NotNull
+    @NotBlank
+    @Pattern(regexp = "^[0-9]{9,15}$", message = "El teléfono solo puede contener números, con una longitud de entre 9 y 15 dígitos")
+    private String telefono;
 
     @NotNull
     @NotBlank

@@ -11,6 +11,6 @@ public interface IUsuarioService {
     
     public RegistroUsuarioDto registrarUsuario(RegistroUsuarioDto dto);
 
-    public UsuarioDto actualizarInformacionPersonal(UsuarioDto dto);
+    public UsuarioDto actualizarInformacionPersonal(long id, UsuarioDto dto);
     
 }

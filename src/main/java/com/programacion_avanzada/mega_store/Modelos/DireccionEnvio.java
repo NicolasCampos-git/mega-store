@@ -41,6 +41,8 @@ public class DireccionEnvio {
     @Column(name = "codigo_postal")
     private String codigoPostal;
 
+    
+
     @Column(name = "descripcion_direccion_envio")
     private String descripcionDireccionEnvio; 
 

@@ -1,8 +1,8 @@
 package com.programacion_avanzada.mega_store.Service;
 
 
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 
@@ -51,18 +51,19 @@ public class UsuarioService implements IUsuarioService {
     }
 
     @Override
-    public UsuarioDto actualizarInformacionPersonal(UsuarioDto dto){
-
-        Usuario usuario = usuarioRepository.findById(dto.getId())
-                                            .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-                                            
-        //Nrmalizacion de datos
+    public UsuarioDto actualizarInformacionPersonal(long id, UsuarioDto dto) {
+        Usuario usuario = usuarioRepository.findById(id)
+                .orElseThrow();
+    
+        
         usuario.setNombre(StringUtil.capitalizeFirstLetter(dto.getNombre().toLowerCase()));
         usuario.setApellido(StringUtil.capitalizeFirstLetter(dto.getApellido().toLowerCase()));
         usuario.setEmail(dto.getEmail().trim().toLowerCase());
-
-
-        return UsuarioMapper.toDto(usuarioRepository.save(usuario));
+        usuario.setTelefono(dto.getTelefono());
+    
+        
+        Usuario usuarioActualizado = usuarioRepository.save(usuario);
+        return UsuarioMapper.toDto(usuarioActualizado);
     }
 
 
