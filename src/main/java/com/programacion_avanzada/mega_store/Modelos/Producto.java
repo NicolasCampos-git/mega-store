@@ -39,7 +39,7 @@ public class Producto {
 
     @NotBlank
     @Column(name = "Tamano")
-    private String Tamano;
+    private String tamano;
 
     @NotBlank
     @Column(name = "color")
