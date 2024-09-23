@@ -1,6 +1,8 @@
 package com.programacion_avanzada.mega_store.Modelos;
 
 
+import java.util.Optional;
+
 import io.micrometer.common.lang.NonNull;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

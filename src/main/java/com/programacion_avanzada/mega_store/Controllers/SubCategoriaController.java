@@ -23,7 +23,7 @@ import com.programacion_avanzada.mega_store.Service.ISubCategoriaService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping
+@RequestMapping("subcategoria")
 public class SubCategoriaController {
 
     @Autowired
@@ -32,13 +32,13 @@ public class SubCategoriaController {
     private SubCategoriaMapper subCategoriaMapper;
 
     // Crear una subcategoría
-    @PostMapping
-    public SubCategoriaDto registrar(@RequestBody @Valid SubCategoriaDto dto) {
-        return subCategoriaService.registrarCategoria(dto);
+    @PostMapping("/registrar/{id}")
+    public SubCategoriaDto registrar(@PathVariable long id ,@RequestBody @Valid SubCategoriaDto dto) {
+        return subCategoriaService.registrarCategoria(id, dto);
     }
 
     // Listar todas las subcategorías
-    @GetMapping
+    @GetMapping("/listar")
     public List<SubCategoriaDto> listar() {
         return subCategoriaService.listar();
     }

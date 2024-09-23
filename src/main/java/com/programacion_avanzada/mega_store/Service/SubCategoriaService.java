@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 
 import com.programacion_avanzada.mega_store.DTOs.SubCategoriaDto;
 import com.programacion_avanzada.mega_store.Mapper.SubCategoriaMapper;
+import com.programacion_avanzada.mega_store.Modelos.Categoria;
 import com.programacion_avanzada.mega_store.Modelos.SubCategoria;
+import com.programacion_avanzada.mega_store.Repository.CategoriaRepository;
 import com.programacion_avanzada.mega_store.Repository.SubCategoriaRepository;
 
 import ch.qos.logback.core.util.StringUtil;
@@ -25,15 +27,20 @@ public class SubCategoriaService implements ISubCategoriaService {
     @Autowired
     private SubCategoriaMapper subCategoriaMapper;
 
+    @Autowired
+    private CategoriaRepository categoriaRepository;
+
     @Override
-    public SubCategoriaDto registrarCategoria(SubCategoriaDto dto) {
+    public SubCategoriaDto registrarCategoria(long categoriaId,SubCategoriaDto dto) {
         
         SubCategoria subCategoria = subCategoriaMapper.toEntity(dto);
         
-        if(subCategoriaRepository.existsByNombre(subCategoria.getNombre()) == true){
-
+        
+        if(subCategoriaRepository.existsByNombre(subCategoria.getNombre()) != true || categoriaRepository.existsById(categoriaId) == true){
+            Categoria categoria = categoriaRepository.findById(categoriaId).orElse(null);
             subCategoria.setNombre(StringUtil.capitalizeFirstLetter(dto.getNombre().toLowerCase()));
             subCategoria.setDescripcion(dto.getDescripcion().toLowerCase());
+            subCategoria.setCategoria(categoria);
             return subCategoriaMapper.toDto(subCategoriaRepository.save(subCategoria));
 
         }else{
