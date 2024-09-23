@@ -1,34 +1,20 @@
-package com.programacion_avanzada.mega_store.Config;
-
+package com.programacion_avanzada.mega_store.Service;
 
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 
-
-@Component
-public class MailManager {
+@Service
+public class SenderService implements ISenderService {
     
+    @Autowired
     JavaMailSender javaMailSender;
-
-    
-
-    public MailManager(JavaMailSender javaMailSender) {
-        this.javaMailSender = javaMailSender;
-    }
-
-    // Método para generar un token único
-    private String generarToken() {
-        String tokenSimulado = UUID.randomUUID().toString();
-        String link = "https://mega-store.com/confirmar-cuenta?token=" + tokenSimulado; 
-
-        return link;
-    }
 
     public void enviarCorreo(String email){
 
@@ -51,4 +37,13 @@ public class MailManager {
             throw new RuntimeException(e);
         }
     }
+
+    // Método para generar un token único
+    private String generarToken() {
+        String tokenSimulado = UUID.randomUUID().toString();
+        String link = "https://mega-store.com/confirmar-cuenta?token=" + tokenSimulado; 
+
+        return link;
+    }
+
 }

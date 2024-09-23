@@ -12,6 +12,9 @@ import com.programacion_avanzada.mega_store.Modelos.SubCategoria;
 import com.programacion_avanzada.mega_store.Repository.SubCategoriaRepository;
 
 import ch.qos.logback.core.util.StringUtil;
+import jakarta.persistence.EntityExistsException;
+
+
 
 @Service
 public class SubCategoriaService implements ISubCategoriaService {
@@ -25,11 +28,17 @@ public class SubCategoriaService implements ISubCategoriaService {
     @Override
     public SubCategoriaDto registrarCategoria(SubCategoriaDto dto) {
         
-        //Falta buscar un nombre igual para verificar.
         SubCategoria subCategoria = subCategoriaMapper.toEntity(dto);
-        subCategoria.setNombre(StringUtil.capitalizeFirstLetter(dto.getNombre().toLowerCase()));
-        subCategoria.setDescripcion(dto.getDescripcion().toLowerCase());
-        return subCategoriaMapper.toDto(subCategoriaRepository.save(subCategoria));
+        
+        if(subCategoriaRepository.existsByNombre(subCategoria.getNombre()) == true){
+
+            subCategoria.setNombre(StringUtil.capitalizeFirstLetter(dto.getNombre().toLowerCase()));
+            subCategoria.setDescripcion(dto.getDescripcion().toLowerCase());
+            return subCategoriaMapper.toDto(subCategoriaRepository.save(subCategoria));
+
+        }else{
+            throw new EntityExistsException("La subcategoria ya existe");
+        }
     }
 
     

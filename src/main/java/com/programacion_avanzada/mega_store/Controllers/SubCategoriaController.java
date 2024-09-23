@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.programacion_avanzada.mega_store.DTOs.SubCategoriaDto;
 import com.programacion_avanzada.mega_store.Mapper.SubCategoriaMapper;
 import com.programacion_avanzada.mega_store.Modelos.SubCategoria;
+import com.programacion_avanzada.mega_store.Service.ISubCategoriaService;
 
-import com.programacion_avanzada.mega_store.Service.SubCategoriaService;
 
 import jakarta.validation.Valid;
 
@@ -27,7 +27,7 @@ import jakarta.validation.Valid;
 public class SubCategoriaController {
 
     @Autowired
-    private SubCategoriaService subCategoriaService;
+    private ISubCategoriaService subCategoriaService;
     @Autowired
     private SubCategoriaMapper subCategoriaMapper;
 
@@ -56,7 +56,7 @@ public class SubCategoriaController {
     public void desactivar(@PathVariable long id) {
         SubCategoria subCategoria = subCategoriaService.buscarPorId(id)
                                                       .orElseThrow(() -> new RuntimeException("Subcategoría no encontrada"));
-        subCategoriaService.eliminar(subCategoria);  // eliminar` desactiva la subcategoría.
+        subCategoriaService.eliminar(subCategoria); 
     }
 }
 

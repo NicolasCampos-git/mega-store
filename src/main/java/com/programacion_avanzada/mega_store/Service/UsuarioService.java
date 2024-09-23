@@ -5,7 +5,7 @@ package com.programacion_avanzada.mega_store.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.programacion_avanzada.mega_store.Config.MailManager;
+
 import com.programacion_avanzada.mega_store.DTOs.RegistroUsuarioDto;
 import com.programacion_avanzada.mega_store.DTOs.UsuarioDto;
 import com.programacion_avanzada.mega_store.Mapper.RegistroUsuarioMapper;
@@ -24,7 +24,7 @@ public class UsuarioService implements IUsuarioService {
     UsuarioRepository usuarioRepository;
 
     @Autowired
-    MailManager mailManager;
+    ISenderService senderService;
 
     //Meotodo que registra al usuario en la web
     @Override
@@ -47,7 +47,7 @@ public class UsuarioService implements IUsuarioService {
 
             //Por temas de practicidad agrega por defecto el rol "Cliente".
             usuario.setRol("cliente");
-            mailManager.enviarCorreo(usuario.getEmail());
+            senderService.enviarCorreo(usuario.getEmail());
             //Convertimos la entidad con la que trabajamos en un dto para devilverlo(el metodo devuelve DTOs).
             return RegistroUsuarioMapper.toDto(usuarioRepository.save(usuario));
         }else{
