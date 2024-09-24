@@ -1,13 +1,11 @@
 package com.programacion_avanzada.mega_store.DTOs;
 
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-public class ProductoDto {
-
+public class RegistrarProductoDto {
     @NotBlank
     private String nombre;
 
@@ -31,10 +29,8 @@ public class ProductoDto {
     private int umbralBajoStock;
 
     @NotNull
-    private MarcaDto marca;
+    private Long marcaId;
 
     @NotNull
-    private CategoriaDto categoria;
-
-
+    private Long CategoriaId;
 }

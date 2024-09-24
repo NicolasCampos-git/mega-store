@@ -1,13 +1,14 @@
 package com.programacion_avanzada.mega_store.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+import com.programacion_avanzada.mega_store.DTOs.ProductoDto;
+import com.programacion_avanzada.mega_store.Mapper.RegistrarProductoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.programacion_avanzada.mega_store.DTOs.ProductoDto;
-import com.programacion_avanzada.mega_store.Mapper.CategoriaMapper;
-import com.programacion_avanzada.mega_store.Mapper.MarcaMapper;
+import com.programacion_avanzada.mega_store.DTOs.RegistrarProductoDto;
 import com.programacion_avanzada.mega_store.Mapper.ProductoMapper;
 import com.programacion_avanzada.mega_store.Modelos.Categoria;
 import com.programacion_avanzada.mega_store.Modelos.Marca;
@@ -28,10 +29,7 @@ public class ProductoService implements IProductoService {
     ProductoMapper productoMapper;
 
     @Autowired
-    CategoriaMapper categoriaMapper;
-
-    @Autowired
-    MarcaMapper marcaMapper;
+    RegistrarProductoMapper registrarProductoMapper;
 
     @Autowired
     CategoriaRepository categoriaRepository;
@@ -40,7 +38,7 @@ public class ProductoService implements IProductoService {
     MarcaRepository marcaRepository;
 
     @Override
-    public ProductoDto registrarProducto(ProductoDto dto) {
+    public RegistrarProductoDto registrarProducto(RegistrarProductoDto dto) {
     
         // Verificar si el producto ya existe por nombre
         if (!productoRepository.existsByNombre(dto.getNombre())) {
@@ -55,45 +53,36 @@ public class ProductoService implements IProductoService {
             producto.setPrecioUnitario(dto.getPrecioUnitario());
             producto.setEstaActivo(true);
             
-            // Mapear Marca y Categoria
-            //Marca marca = marcaMapper.toEntity(dto.getMarca());
-            Categoria categoria = categoriaMapper.toEntity(dto.getCategoria());
-    
-            // // Validar si la marca y la categoría existen
-            // if (!marcaRepository.existsByNombre(marca.getNombre())) {
-            //     throw new IllegalArgumentException("La marca no existe.");
-            // }
-            // if (!categoriaRepository.existsByNombre(categoria.getNombre())) {
-            //     throw new IllegalArgumentException("La categoría no existe.");
-            // }
-    
-            // Asignar Marca y Categoria al producto
-            //producto.setMarca(marca);
+            Marca marca = marcaRepository.findById(dto.getMarcaId()).orElseThrow();
+            producto.setMarca(marca);
+
+            Categoria categoria = categoriaRepository.findById(dto.getCategoriaId()).orElseThrow();
             producto.setCategoria(categoria);
     
-            // Guardar el producto y devolver el DTO
-            return productoMapper.toDto(productoRepository.save(producto));
+
+            return registrarProductoMapper.toDto(productoRepository.save(producto));
         }
         
-        return null; // o lanzar una excepción si el producto ya existe
+        return null; //deberia salir una excepcion.
     }
 
     @Override
     public List<ProductoDto> listar() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'listar'");
+        return  null;
     }
 
-    @Override
-    public ProductoDto editarProducto(long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'editarProducto'");
-    }
+   
 
     @Override
     public void eliminar(Producto producto) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'eliminar'");
+    }
+
+    @Override
+    public RegistrarProductoDto editarProducto(long id) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'editarProducto'");
     }
 
     

@@ -38,7 +38,7 @@ public class Producto {
     private String descripcion;
 
     @NotBlank
-    @Column(name = "Tamano")
+    @Column(name = "tamano")
     private String tamano;
 
     @NotBlank
@@ -46,7 +46,7 @@ public class Producto {
     private String color;
 
     @NotNull
-    @Column(name = "precioUnitario")
+    @Column(name = "precio_unitario")
     private double precioUnitario;
 
     @NotNull

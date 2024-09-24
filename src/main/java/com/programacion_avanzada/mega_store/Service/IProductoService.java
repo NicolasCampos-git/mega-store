@@ -3,15 +3,16 @@ package com.programacion_avanzada.mega_store.Service;
 import java.util.List;
 
 import com.programacion_avanzada.mega_store.DTOs.ProductoDto;
+import com.programacion_avanzada.mega_store.DTOs.RegistrarProductoDto;
 import com.programacion_avanzada.mega_store.Modelos.Producto;
 
 public interface IProductoService {
 
-    ProductoDto registrarProducto(ProductoDto dto);
+    RegistrarProductoDto registrarProducto(RegistrarProductoDto dto);
 
     List<ProductoDto> listar();
 
-    ProductoDto editarProducto(long id);
+    RegistrarProductoDto editarProducto(long id);
 
     void eliminar(Producto producto);
     
