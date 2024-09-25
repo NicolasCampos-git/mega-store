@@ -68,7 +68,8 @@ public class ProductoService implements IProductoService {
 
     @Override
     public List<ProductoDto> listar() {
-        return  null;
+        List<Producto> productos = productoRepository.findAll();
+        return  productos.stream().map(productoMapper::toDto).toList();
     }
 
    

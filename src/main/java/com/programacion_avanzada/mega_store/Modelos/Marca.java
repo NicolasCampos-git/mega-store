@@ -25,7 +25,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "marca")
+@Table(name = "marcas")
 public class Marca {
     @Id 
     @GeneratedValue(strategy = GenerationType.IDENTITY)

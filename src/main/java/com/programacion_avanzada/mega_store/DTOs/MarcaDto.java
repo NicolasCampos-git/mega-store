@@ -2,7 +2,8 @@ package com.programacion_avanzada.mega_store.DTOs;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
-
+import lombok.Data;
+@Data
 public class MarcaDto {
     @NotBlank
     @Pattern(regexp = "^[^\\d]*$")
@@ -11,4 +12,6 @@ public class MarcaDto {
     @NotBlank
     @Pattern(regexp = "^[^\\d]*$")
     private String descripcion;
+
+
 }

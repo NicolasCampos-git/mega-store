@@ -12,13 +12,21 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public interface ProductoMapper {
 
+    // Convierte Producto entity a ProductoDto
     ProductoDto toDto(Producto producto);
-    Producto toEntity(RegistrarProductoDto productoDto);
+    
+    // Convierte RegistrarProductoDto a Producto entity
+    Producto toEntity(RegistrarProductoDto registrarProductoDto);
 
+    // Convierte Categoria entity a CategoriaDto
     CategoriaDto toDto(Categoria categoria);
-    Categoria toEntity(CategoriaDto categoriaDTO);
+    
+    // Convierte CategoriaDto a Categoria entity
+    Categoria toEntity(CategoriaDto categoriaDto);
 
+    // Convierte Marca entity a MarcaDto
     MarcaDto toDto(Marca marca);
+    
+    // Convierte MarcaDto a Marca entity
     Marca toEntity(MarcaDto marcaDto);
-
 }
