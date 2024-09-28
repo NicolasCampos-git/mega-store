@@ -41,16 +41,19 @@ public class CategoriaController {
     // Buscar subcategoría por ID
     @GetMapping("/{id}")
     public CategoriaDto buscarPorId(@PathVariable long id) {
-        return categoriaService.buscarPorId(id)
-                                   .map(categoriaMapper::toDto)
-                                   .orElseThrow(() -> new RuntimeException("Subcategoría no encontrada"));
+        
+        Categoria categoria = categoriaService.buscarPorId(id);
+
+        return categoriaMapper.toDto(categoria);
+
+
+        
     }
 
     // Desactivar una subcategoría
     @PutMapping("/desactivar/{id}")
     public void eliminar(@PathVariable long id) {
-        Categoria categoria = categoriaService.buscarPorId(id)
-                                                      .orElseThrow(() -> new RuntimeException("Subcategoría no encontrada"));
-        categoriaService.eliminar(categoria); 
+        
+        categoriaService.eliminar(id); 
     }
 }

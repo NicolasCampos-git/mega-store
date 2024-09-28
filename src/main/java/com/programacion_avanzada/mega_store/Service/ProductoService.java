@@ -68,22 +68,58 @@ public class ProductoService implements IProductoService {
 
     @Override
     public List<ProductoDto> listar() {
-        List<Producto> productos = productoRepository.findAll();
+        List<Producto> productos = productoRepository.findAllByEstaActivoIsTrue();
         return  productos.stream().map(productoMapper::toDto).toList();
     }
 
    
 
     @Override
-    public void eliminar(Producto producto) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'eliminar'");
+    public void eliminar(long id) {
+        Producto producto = productoRepository.findById(id).orElse(null);
+        if(producto != null){
+            producto.setEstaActivo(false);
+            productoRepository.save(producto);
+        }
+        
     }
 
     @Override
-    public RegistrarProductoDto editarProducto(long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'editarProducto'");
+    public RegistrarProductoDto editarProducto(long id,RegistrarProductoDto dto) {
+
+        Producto producto = productoRepository.findById(id).orElse(null);
+        
+        if(dto.getNombre() != null){
+            producto.setNombre(dto.getNombre());
+        }
+
+        if(dto.getDescripcion() != null){
+            producto.setDescripcion(dto.getDescripcion());
+        }
+
+        if(dto.getTamano() != null){
+            producto.setTamano(dto.getTamano());
+        }
+
+        if(dto.getColor() != null ){
+            producto.setColor(dto.getColor());
+        }
+
+        //Deuda tecnica
+        if(dto.getStock() != 0){
+            producto.setStock(dto.getStock());
+        }
+
+        if(dto.getUmbralBajoStock() != 0){
+            producto.setUmbralBajoStock(dto.getUmbralBajoStock());
+        }
+
+        if(dto.getMarcaId() != 0){
+           Marca marca = marcaRepository.findById(dto.getMarcaId()).orElse(null);
+           producto.setMarca(marca);
+        }
+
+        return registrarProductoMapper.toDto(productoRepository.save(producto));
     }
 
     

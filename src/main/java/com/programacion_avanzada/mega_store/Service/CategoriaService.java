@@ -1,7 +1,7 @@
 package com.programacion_avanzada.mega_store.Service;
 
 import java.util.List;
-import java.util.Optional;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,17 +40,18 @@ public class CategoriaService  implements ICategoriaService{
 
     
     public List<CategoriaDto> listar() {
-        List<Categoria> subCategorias = categoriaRepository.findAll();
-        return subCategorias.stream().map(categoriaMapper::toDto).toList();
+        List<Categoria> categorias = categoriaRepository.findAll();
+        return categorias.stream().map(categoriaMapper::toDto).toList();
     }
 
     @Override
-    public Optional<Categoria> buscarPorId(long id) {
-        return categoriaRepository.findById(id);
+    public Categoria buscarPorId(long id) {
+        return categoriaRepository.findById(id).orElse(null);
     }
 
     @Override
-    public void eliminar(Categoria categoria) {
+    public void eliminar(long id) {
+        Categoria categoria = categoriaRepository.findById(id).orElse(null);
         categoria.setEstaActivo(false);
         categoriaRepository.save(categoria);
     }

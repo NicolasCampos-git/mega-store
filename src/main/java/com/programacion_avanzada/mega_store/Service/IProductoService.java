@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.programacion_avanzada.mega_store.DTOs.ProductoDto;
 import com.programacion_avanzada.mega_store.DTOs.RegistrarProductoDto;
-import com.programacion_avanzada.mega_store.Modelos.Producto;
+
 
 public interface IProductoService {
 
@@ -12,8 +12,8 @@ public interface IProductoService {
 
     List<ProductoDto> listar();
 
-    RegistrarProductoDto editarProducto(long id);
+    RegistrarProductoDto editarProducto(long id, RegistrarProductoDto dto);
 
-    void eliminar(Producto producto);
+    void eliminar(long id);
     
 }

@@ -9,6 +9,6 @@ import com.programacion_avanzada.mega_store.Modelos.Categoria;
 public interface ICategoriaService {
     CategoriaDto registrarCategoria(CategoriaDto dto);
     List<CategoriaDto> listar();
-    Optional<Categoria> buscarPorId(long id);
-    void eliminar(Categoria categoria);
+    Categoria buscarPorId(long id);
+    void eliminar(long id);
 }
