@@ -37,25 +37,33 @@ public class ProductoService implements IProductoService {
     @Autowired
     MarcaRepository marcaRepository;
 
+    /*
+     * Metodo encargado de registrar el producto, verificando que el nombre no exista,
+     * luego se encarga de nombalizar los datos y asignar que se encuentra activo.
+     */
     @Override
     public RegistrarProductoDto registrarProducto(RegistrarProductoDto dto) {
     
-        // Verificar si el producto ya existe por nombre
+        // verificamos que el producto no no exista.
         if (!productoRepository.existsByNombre(dto.getNombre())) {
             Producto producto = productoMapper.toEntity(dto);
             
-            // Establecer atributos del producto
+            // Normarlizamos los atributos del producto.
             producto.setNombre(StringUtil.capitalizeFirstLetter(dto.getNombre().toLowerCase()));
             producto.setDescripcion(StringUtil.capitalizeFirstLetter(dto.getDescripcion().toLowerCase()));
             producto.setColor(StringUtil.capitalizeFirstLetter(dto.getColor().toLowerCase()));
             producto.setTamano(StringUtil.capitalizeFirstLetter(dto.getTamano().toLowerCase()));
             producto.setStock(dto.getStock());
             producto.setPrecioUnitario(dto.getPrecioUnitario());
+
+            //Asignamos el estado como activo.
             producto.setEstaActivo(true);
             
+            //Buscamos la marca y se la asignamos.
             Marca marca = marcaRepository.findById(dto.getMarcaId()).orElseThrow();
             producto.setMarca(marca);
 
+            //Buscamos la categoria y se la asignamos.(Hay que cambiarlo)
             Categoria categoria = categoriaRepository.findById(dto.getCategoriaId()).orElseThrow();
             producto.setCategoria(categoria);
     
@@ -66,6 +74,9 @@ public class ProductoService implements IProductoService {
         return null; //deberia salir una excepcion.
     }
 
+    /*
+     * Metodo que para listar todos los productos que se encuentren activos.
+     */
     @Override
     public List<ProductoDto> listar() {
         List<Producto> productos = productoRepository.findAllByEstaActivoIsTrue();
@@ -73,10 +84,12 @@ public class ProductoService implements IProductoService {
     }
 
    
-
+    /*
+     * Metodo que elimina el producto, asignandole un estado false.
+     */
     @Override
     public void eliminar(long id) {
-        Producto producto = productoRepository.findById(id).orElse(null);
+        Producto producto = productoRepository.findById(id).filter(Producto::isEstaActivo).orElse(null);
         if(producto != null){
             producto.setEstaActivo(false);
             productoRepository.save(producto);
@@ -84,10 +97,14 @@ public class ProductoService implements IProductoService {
         
     }
 
+    /*
+     * Meotodo encargado de editar los productos, verificando si se encuentra activo.
+     * Comparte los mismos atributos que el DTO para registrar el producto.
+     */
     @Override
     public RegistrarProductoDto editarProducto(long id,RegistrarProductoDto dto) {
 
-        Producto producto = productoRepository.findById(id).orElse(null);
+        Producto producto = productoRepository.findById(id).filter(Producto::isEstaActivo).orElse(null);
         
         if(dto.getNombre() != null){
             producto.setNombre(dto.getNombre());
@@ -106,18 +123,20 @@ public class ProductoService implements IProductoService {
         }
 
         //Deuda tecnica
-        if(dto.getStock() != 0){
+        if(dto.getStock() > 0){
             producto.setStock(dto.getStock());
         }
 
-        if(dto.getUmbralBajoStock() != 0){
+        if(dto.getUmbralBajoStock() > 0){
             producto.setUmbralBajoStock(dto.getUmbralBajoStock());
         }
 
-        if(dto.getMarcaId() != 0){
+        if(dto.getMarcaId() > 0){
            Marca marca = marcaRepository.findById(dto.getMarcaId()).orElse(null);
            producto.setMarca(marca);
         }
+
+        //Falta sub categoria.
 
         return registrarProductoMapper.toDto(productoRepository.save(producto));
     }

@@ -21,6 +21,8 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("categoria")
 public class CategoriaController {
+
+
     @Autowired
     private ICategoriaService categoriaService;
     @Autowired
@@ -32,26 +34,24 @@ public class CategoriaController {
         return categoriaService.registrarCategoria(dto);
     }
 
-    // Listar todas las subcategorías
+    
     @GetMapping("/listar")
     public List<CategoriaDto> listar() {
         return categoriaService.listar();
     }
 
-    // Buscar subcategoría por ID
+    
     @GetMapping("/{id}")
     public CategoriaDto buscarPorId(@PathVariable long id) {
         
         Categoria categoria = categoriaService.buscarPorId(id);
 
         return categoriaMapper.toDto(categoria);
-
-
-        
+   
     }
 
-    // Desactivar una subcategoría
-    @PutMapping("/desactivar/{id}")
+    
+    @PutMapping("/eliminar/{id}")
     public void eliminar(@PathVariable long id) {
         
         categoriaService.eliminar(id); 

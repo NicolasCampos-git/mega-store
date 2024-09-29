@@ -16,12 +16,17 @@ import jakarta.persistence.EntityExistsException;
 
 @Service
 public class CategoriaService  implements ICategoriaService{
+
     @Autowired
     private CategoriaRepository categoriaRepository;
 
     @Autowired
     private CategoriaMapper categoriaMapper;
 
+    /*
+     * Metodo para registrar una nueva categoria, verifica que si nombre ya existe.
+     * Al momento de guardarse las categorias, sus nombres y descripcion quedan normalizados.
+     */
     @Override
     public CategoriaDto registrarCategoria(CategoriaDto dto) {
         
@@ -38,20 +43,31 @@ public class CategoriaService  implements ICategoriaService{
         }
     }
 
+    /*
+     * Metodo que lista todas las categorias existentes que esten activas
+     */
     
     public List<CategoriaDto> listar() {
-        List<Categoria> categorias = categoriaRepository.findAll();
+        List<Categoria> categorias = categoriaRepository.findAllByEstaActivoIsTrue();
         return categorias.stream().map(categoriaMapper::toDto).toList();
     }
 
+    /*
+     * Metodo encargado de la busqueda de categorias por id,
+     * verificando que se encuentran activas.
+     */
     @Override
     public Categoria buscarPorId(long id) {
-        return categoriaRepository.findById(id).orElse(null);
+        return categoriaRepository.findById(id).filter(Categoria::isEstaActivo).orElse(null);
     }
 
+
+    /*
+     * Elimina las categorias por id, filtrando las que no estan activas.
+     */
     @Override
     public void eliminar(long id) {
-        Categoria categoria = categoriaRepository.findById(id).orElse(null);
+        Categoria categoria = categoriaRepository.findById(id).filter(Categoria::isEstaActivo).orElse(null);
         categoria.setEstaActivo(false);
         categoriaRepository.save(categoria);
     }

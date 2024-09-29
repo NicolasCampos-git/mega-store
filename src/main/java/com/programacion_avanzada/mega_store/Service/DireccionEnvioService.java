@@ -19,6 +19,11 @@ public class DireccionEnvioService implements IDireccionEnvioService {
     @Autowired
     UsuarioRepository usuarioRepository;
 
+
+    /*
+     * Metodo encargado de agregar direcciones a un usuario,
+     * comprobando si el usuario existe.
+     */
     @Override
     public DireccionEnvioDto agregaDireccionEnvio(long usuarioId, DireccionEnvioDto dto){
         DireccionEnvio direccionEnvio = DireccionEnvioMapper.toEntity(dto);

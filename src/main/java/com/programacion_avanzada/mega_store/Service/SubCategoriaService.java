@@ -30,17 +30,23 @@ public class SubCategoriaService implements ISubCategoriaService {
     @Autowired
     private CategoriaRepository categoriaRepository;
 
+    /*
+     * Metodo encargado de registrar la
+     */
     @Override
-    public SubCategoriaDto registrarCategoria(long categoriaId,SubCategoriaDto dto) {
+    public SubCategoriaDto registrarSubCategoria(long categoriaId,SubCategoriaDto dto) {
         
         SubCategoria subCategoria = subCategoriaMapper.toEntity(dto);
         
         
         if(subCategoriaRepository.existsByNombre(subCategoria.getNombre()) != true || categoriaRepository.existsById(categoriaId) == true){
+
             Categoria categoria = categoriaRepository.findById(categoriaId).orElse(null);
+
             subCategoria.setNombre(StringUtil.capitalizeFirstLetter(dto.getNombre().toLowerCase()));
             subCategoria.setDescripcion(dto.getDescripcion().toLowerCase());
             subCategoria.setCategoria(categoria);
+
             return subCategoriaMapper.toDto(subCategoriaRepository.save(subCategoria));
 
         }else{
@@ -55,8 +61,8 @@ public class SubCategoriaService implements ISubCategoriaService {
     }
 
     @Override
-    public Optional<SubCategoria> buscarPorId(long id) {
-        return subCategoriaRepository.findById(id);
+    public SubCategoria buscarPorId(long id) {
+        return subCategoriaRepository.findById(id).orElse(null);
     }
 
     @Override

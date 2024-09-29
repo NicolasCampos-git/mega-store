@@ -31,28 +31,28 @@ public class SubCategoriaController {
     @Autowired
     private SubCategoriaMapper subCategoriaMapper;
 
-    // Crear una subcategoría
+    
     @PostMapping("/registrar/{id}")
     public SubCategoriaDto registrar(@PathVariable long id ,@RequestBody @Valid SubCategoriaDto dto) {
         return subCategoriaService.registrarCategoria(id, dto);
     }
 
-    // Listar todas las subcategorías
+    
     @GetMapping("/listar")
     public List<SubCategoriaDto> listar() {
         return subCategoriaService.listar();
     }
 
-    // Buscar subcategoría por ID
-    @GetMapping("/{id}")
+    
+    @GetMapping("buscar/{id}")
     public SubCategoriaDto buscarPorId(@PathVariable long id) {
         return subCategoriaService.buscarPorId(id)
                                    .map(subCategoriaMapper::toDto)
                                    .orElseThrow(() -> new RuntimeException("Subcategoría no encontrada"));
     }
 
-    // Desactivar una subcategoría
-    @PutMapping("/desactivar/{id}")
+    
+    @PutMapping("/eliminar/{id}")
     public void desactivar(@PathVariable long id) {
         SubCategoria subCategoria = subCategoriaService.buscarPorId(id)
                                                       .orElseThrow(() -> new RuntimeException("Subcategoría no encontrada"));

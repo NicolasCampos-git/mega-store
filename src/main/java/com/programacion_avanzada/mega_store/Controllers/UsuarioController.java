@@ -22,10 +22,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 @RestController
 @RequestMapping
 public class UsuarioController {
+    
     @Autowired
     IUsuarioService usuarioService;
 
-    //Metodo HTTP para registrar usuario.
+    
     @PostMapping("registrar_usuario")
     public ResponseEntity<RegistroUsuarioDto> registrarUsuarioDto(@Valid  @RequestBody RegistroUsuarioDto dto){
         

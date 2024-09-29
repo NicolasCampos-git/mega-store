@@ -12,7 +12,7 @@ import com.programacion_avanzada.mega_store.Modelos.Usuario;
 
 public interface UsuarioRepository extends JpaRepository<Usuario, Long>{
     
-
+    //Metodo para comprobar que el mail no este registrado previamente.
     boolean existsByEmail(String email);
 
     
