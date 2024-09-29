@@ -27,7 +27,7 @@ public class DireccionEnvioDto {
     @Digits(integer = 6, fraction = 1, message = "El teléfono debe ser un número de hasta 6 dígitos.")
     private String altura;
 
-    @Pattern(regexp = "^[A-Z]\\d{4}[A-Z]{3}$", message = "El código postal debe seguir el formato CPA válido.")
+    @Pattern(regexp = "^[A-Z]\\d{4}[A-Z]{3}$", message = "El código postal debe seguir el formato válido.")
     private String codigoPostal;
 
     private String descripcionDireccionEnvio;

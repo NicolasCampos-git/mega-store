@@ -16,4 +16,6 @@ public class SubCategoriaDto {
     private String descripcion;
 
     
+
+    
 }

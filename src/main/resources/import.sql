@@ -1,3 +1,4 @@
+USE megastoredb;
 -- Insertar marcas
 INSERT INTO marcas (nombre, descripcion, esta_activo) VALUES 
 ('Nike', 'Marca deportiva internacional', TRUE),

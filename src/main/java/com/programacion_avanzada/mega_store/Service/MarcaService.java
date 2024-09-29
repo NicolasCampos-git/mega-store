@@ -4,6 +4,7 @@ import java.util.List;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.programacion_avanzada.mega_store.DTOs.MarcaDto;
 import com.programacion_avanzada.mega_store.Mapper.MarcaMapper;
@@ -13,6 +14,7 @@ import com.programacion_avanzada.mega_store.Repository.MarcaRepository;
 import ch.qos.logback.core.util.StringUtil;
 import jakarta.persistence.EntityExistsException;
 
+@Service
 public class MarcaService implements IMarcaService{
 
     @Autowired
@@ -35,6 +37,7 @@ public class MarcaService implements IMarcaService{
             
             marca.setNombre(StringUtil.capitalizeFirstLetter(dto.getNombre().toLowerCase()));
             marca.setDescripcion(dto.getDescripcion().toLowerCase());
+            marca.setEstaActivo(true);
             return marcaMapper.toDto(marcaRepository.save(marca));
 
         }else{

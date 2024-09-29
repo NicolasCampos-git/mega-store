@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.programacion_avanzada.mega_store.DTOs.SubCategoriaDto;
 import com.programacion_avanzada.mega_store.Mapper.SubCategoriaMapper;
 
-import com.programacion_avanzada.mega_store.Repository.SubCategoriaRepository;
+
 import com.programacion_avanzada.mega_store.Service.ISubCategoriaService;
 
 
@@ -51,7 +51,7 @@ public class SubCategoriaController {
     }
 
     
-    @PutMapping("/eliminar/{id}")
+    @DeleteMapping("/eliminar/{id}")
     public void desactivar(@PathVariable long id) {
          
         subCategoriaService.eliminar(id); 
