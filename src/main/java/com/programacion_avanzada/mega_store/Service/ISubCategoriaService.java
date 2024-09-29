@@ -10,5 +10,5 @@ public interface ISubCategoriaService {
     SubCategoriaDto registrarSubCategoria(long categoriaId,SubCategoriaDto dto);
     List<SubCategoriaDto> listar();
     SubCategoria buscarPorId(long id);
-    void eliminar(SubCategoria subCategoria);
+    void eliminar(long id);
 }

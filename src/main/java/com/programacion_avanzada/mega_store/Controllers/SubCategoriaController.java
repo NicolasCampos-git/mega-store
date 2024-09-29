@@ -16,7 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.programacion_avanzada.mega_store.DTOs.SubCategoriaDto;
 import com.programacion_avanzada.mega_store.Mapper.SubCategoriaMapper;
-import com.programacion_avanzada.mega_store.Modelos.SubCategoria;
+
+import com.programacion_avanzada.mega_store.Repository.SubCategoriaRepository;
 import com.programacion_avanzada.mega_store.Service.ISubCategoriaService;
 
 
@@ -34,7 +35,7 @@ public class SubCategoriaController {
     
     @PostMapping("/registrar/{id}")
     public SubCategoriaDto registrar(@PathVariable long id ,@RequestBody @Valid SubCategoriaDto dto) {
-        return subCategoriaService.registrarCategoria(id, dto);
+        return subCategoriaService.registrarSubCategoria(id, dto);
     }
 
     
@@ -46,17 +47,14 @@ public class SubCategoriaController {
     
     @GetMapping("buscar/{id}")
     public SubCategoriaDto buscarPorId(@PathVariable long id) {
-        return subCategoriaService.buscarPorId(id)
-                                   .map(subCategoriaMapper::toDto)
-                                   .orElseThrow(() -> new RuntimeException("Subcategoría no encontrada"));
+        return subCategoriaMapper.toDto(subCategoriaService.buscarPorId(id));
     }
 
     
     @PutMapping("/eliminar/{id}")
     public void desactivar(@PathVariable long id) {
-        SubCategoria subCategoria = subCategoriaService.buscarPorId(id)
-                                                      .orElseThrow(() -> new RuntimeException("Subcategoría no encontrada"));
-        subCategoriaService.eliminar(subCategoria); 
+         
+        subCategoriaService.eliminar(id); 
     }
 }
 

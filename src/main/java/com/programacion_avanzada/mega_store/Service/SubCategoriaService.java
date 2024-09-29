@@ -67,7 +67,8 @@ public class SubCategoriaService implements ISubCategoriaService {
     }
 
     @Override
-    public void eliminar(SubCategoria subCategoria) {
+    public void eliminar(long id) {
+        SubCategoria subCategoria = subCategoriaRepository.findById(id).filter(SubCategoria::isEstaActivo).orElse(null);
         subCategoria.setEstaActivo(false);
         subCategoriaRepository.save(subCategoria);
     }
