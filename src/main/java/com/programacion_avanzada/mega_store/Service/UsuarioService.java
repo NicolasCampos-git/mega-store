@@ -26,15 +26,19 @@ public class UsuarioService implements IUsuarioService {
     @Autowired
     ISenderService senderService;
 
-    //Meotodo que registra al usuario en la web
+    /*
+     * Metodo encargado de registrar un cliente en la web,
+     * verificando que el correo no este previamente registrado
+     * ademas, normaliza los datos.
+     */
     @Override
     public RegistroUsuarioDto registrarUsuario(RegistroUsuarioDto dto) {
 
         if(dto.getContrasena().equals(dto.getContrasenaRepetida())){
-            //Convierte el DTO a una tiendad con sus datos.
+            
             Usuario usuario = RegistroUsuarioMapper.toEntity(dto);
             
-            //Verifica que el mail no este registrado
+            
             if(usuarioRepository.existsByEmail(usuario.getEmail())){
                 throw new IllegalArgumentException("El email ya está registrado.");
             }
@@ -48,13 +52,17 @@ public class UsuarioService implements IUsuarioService {
             //Por temas de practicidad agrega por defecto el rol "Cliente".
             usuario.setRol("cliente");
             senderService.enviarCorreo(usuario.getEmail());
-            //Convertimos la entidad con la que trabajamos en un dto para devilverlo(el metodo devuelve DTOs).
+
+            
             return RegistroUsuarioMapper.toDto(usuarioRepository.save(usuario));
         }else{
             throw new IllegalArgumentException("Las contrasenas no coinciden");
         }
     }
 
+    /*
+     * Metodo encargado de actualizar los datos del cliente.
+     */
     @Override
     public UsuarioDto actualizarInformacionPersonal(long id, UsuarioDto dto) {
         Usuario usuario = usuarioRepository.findById(id)

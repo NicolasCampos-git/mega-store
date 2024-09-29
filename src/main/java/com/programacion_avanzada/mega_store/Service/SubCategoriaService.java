@@ -31,7 +31,8 @@ public class SubCategoriaService implements ISubCategoriaService {
     private CategoriaRepository categoriaRepository;
 
     /*
-     * Metodo encargado de registrar la
+     * Metodo encargado de registrar las subcategorias, 
+     * verificando que no haya 2 con el mismo nombre y normalizando los datos.
      */
     @Override
     public SubCategoriaDto registrarSubCategoria(long categoriaId,SubCategoriaDto dto) {

@@ -122,7 +122,9 @@ public class ProductoService implements IProductoService {
             producto.setColor(dto.getColor());
         }
 
-        //Deuda tecnica
+        /*
+         * Los 3 condicionales verifican que no se ingresen numeros negativos.
+         */
         if(dto.getStock() > 0){
             producto.setStock(dto.getStock());
         }

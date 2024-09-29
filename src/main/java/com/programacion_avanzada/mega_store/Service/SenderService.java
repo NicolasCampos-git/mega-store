@@ -16,6 +16,10 @@ public class SenderService implements ISenderService {
     @Autowired
     JavaMailSender javaMailSender;
 
+    /*
+     * Metodo encargado de enviar el correo electronci al nuevo usuario.
+     * Usamos un hack para generar el token, ya que no implementamos JWT.
+     */
     public void enviarCorreo(String email){
 
         String linkConfirmacion = generarToken();
@@ -38,7 +42,7 @@ public class SenderService implements ISenderService {
         }
     }
 
-    // Método para generar un token único
+    // Metodo encargado de simular el token.
     private String generarToken() {
         String tokenSimulado = UUID.randomUUID().toString();
         String link = "https://mega-store.com/confirmar-cuenta?token=" + tokenSimulado; 
