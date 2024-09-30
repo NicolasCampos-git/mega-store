@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,22 +23,28 @@ import lombok.Setter;
 @Entity //Especifica que va a ser una entidad de la db.
 @Table(name = "direcciones_envio") //Le da el nombre a la tabla de la db
 public class DireccionEnvio {
+    
     @Id //Espefica que es el id.
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id; //En java se una long en el id.
 
+    @NotBlank
     @Column(name = "provincia") //Le da el nombre a la columna
     private String provincia;
 
+    @NotBlank
     @Column(name = "ciudad")
     private String ciudad;
 
+    @NotBlank
     @Column(name = "calle")
     private String calle;
 
+    @NotBlank
     @Column(name = "altura")
     private String altura;
 
+    @NotBlank
     @Column(name = "codigo_postal")
     private String codigoPostal;
 
@@ -47,5 +54,8 @@ public class DireccionEnvio {
     @ManyToOne //Relacion N:1
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
+
+    @Column(name = "es_principal")
+    private boolean esPrincipal;
 
 }

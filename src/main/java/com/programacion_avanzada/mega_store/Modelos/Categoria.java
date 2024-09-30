@@ -2,9 +2,11 @@ package com.programacion_avanzada.mega_store.Modelos;
 
 import java.util.List;
 
+import io.micrometer.common.lang.NonNull;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -23,43 +25,25 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "usuarios")
-public class Usuario {
+@Table(name = "categorias")
+public class Categoria {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @NotBlank
-    @Column(name ="nombre")
+    @Column(name = "nombre")
     private String nombre;
 
     @NotBlank
-    @Column(name ="apellido")
-    private String apellido;
-
-    @NotBlank
-    //Datos para validar al usuario.
-    @Column(name ="email")
-    private String email;
-
-    @NotBlank
-    @Column(name ="contrasena")
-    private String contrasena;
-
-    @NotBlank
-    @Column(name = "telefono")
-    private String telefono;
-
-    //Relacion 1:N
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true) //De esta forma salteamos tener que tener la clase de la tabla intermedia y se puede trabajar en el PUT.
-    private List<DireccionEnvio> direcciones;
-
+    @Column(name = "descripcion")
+    private String descripcion;
     
-    @Column(name ="rol")
-    private String rol; //Rol que va a tener el usuario. lo dejamos como string para simplificar.
+    @OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<SubCategoria> subcategorias;
 
-
-    
-
+    @NonNull
+    @Column(name = "esta_activo")
+    private boolean estaActivo;
 }
