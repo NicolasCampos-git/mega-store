@@ -5,43 +5,48 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
 public class ProductoDto {
 
     @NotBlank
-    @Pattern(regexp = "^[A-Za-z ]+$", message = "El nombre solo puede contener letras.")
+    @Size(min = 2)
+    @Pattern(regexp = "^[A-Za-z ]+$")
     private String nombre;
 
     @NotBlank
+    @Size(min = 2)
     private String descripcion;
 
     @NotBlank
-    @Pattern(regexp = "^[A-Za-z ]+$", message = "El tamaño solo puede contener letras.")
+    @Size(min = 1)
+    @Pattern(regexp = "^[A-Za-z ]+$")
     private String tamano;
 
     @NotBlank
-    @Pattern(regexp = "^[A-Za-z ]+$", message = "El color solo puede contener letras.")
+    @Size(min = 2)
+    @Pattern(regexp = "^[A-Za-z ]+$")
     private String color;
 
     @NotNull
-    @Positive(message = "El precio unitario debe ser mayor que cero.")
+    @Positive
     private double precioUnitario;
 
     @NotNull
-    @Positive(message = "El stock debe ser mayor que cero.")
+    @Positive
     private int stock;
 
     @NotNull
-    @Positive(message = "El umbral bajo de stock debe ser mayor o igual que cero.")
+    @Positive
     private int umbralBajoStock;
 
     @NotNull
     private MarcaDto marca;
 
     @NotNull
-    private CategoriaDto categoria;
+    private SubCategoriaDto subCategoriaDto;
 
 
 }

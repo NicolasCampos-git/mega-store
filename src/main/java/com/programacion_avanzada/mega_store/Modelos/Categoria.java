@@ -43,9 +43,6 @@ public class Categoria {
     @OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SubCategoria> subcategorias;
 
-    @OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Producto> productos;
-
     @NonNull
     @Column(name = "esta_activo")
     private boolean estaActivo;

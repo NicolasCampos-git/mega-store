@@ -1,12 +1,13 @@
 package com.programacion_avanzada.mega_store.Mapper;
 
-import com.programacion_avanzada.mega_store.DTOs.CategoriaDto;
 import com.programacion_avanzada.mega_store.DTOs.MarcaDto;
 import com.programacion_avanzada.mega_store.DTOs.ProductoDto;
 import com.programacion_avanzada.mega_store.DTOs.RegistrarProductoDto;
-import com.programacion_avanzada.mega_store.Modelos.Categoria;
+import com.programacion_avanzada.mega_store.DTOs.SubCategoriaDto;
 import com.programacion_avanzada.mega_store.Modelos.Marca;
 import com.programacion_avanzada.mega_store.Modelos.Producto;
+import com.programacion_avanzada.mega_store.Modelos.SubCategoria;
+
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
@@ -19,10 +20,10 @@ public interface ProductoMapper {
     Producto toEntity(RegistrarProductoDto registrarProductoDto);
 
     // Convierte Categoria entity a CategoriaDto
-    CategoriaDto toDto(Categoria categoria);
+    SubCategoriaDto toDto(SubCategoria categoria);
     
     // Convierte CategoriaDto a Categoria entity
-    Categoria toEntity(CategoriaDto categoriaDto);
+    SubCategoria toEntity(SubCategoriaDto categoriaDto);
 
     // Convierte Marca entity a MarcaDto
     MarcaDto toDto(Marca marca);

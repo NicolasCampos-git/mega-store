@@ -55,7 +55,7 @@ public class SubCategoriaService implements ISubCategoriaService {
         }
     }
 
-    
+    @Override
     public List<SubCategoriaDto> listar() {
         List<SubCategoria> subCategorias = subCategoriaRepository.findAll();
         return subCategorias.stream().map(subCategoriaMapper::toDto).toList();
@@ -71,5 +71,17 @@ public class SubCategoriaService implements ISubCategoriaService {
         SubCategoria subCategoria = subCategoriaRepository.findById(id).filter(SubCategoria::isEstaActivo).orElse(null);
         subCategoria.setEstaActivo(false);
         subCategoriaRepository.save(subCategoria);
+    }
+
+    @Override
+    public SubCategoriaDto actualizar(long id, SubCategoriaDto dto) {
+        SubCategoria subcategoria = subCategoriaRepository.findById(id).orElse(null);
+        
+        // Aquí actualizamos los campos de la subcategoría
+        subcategoria.setNombre(dto.getNombre());
+        //subcategoria.setCategoria(dto.getCategoria());
+
+        subCategoriaRepository.save(subcategoria);
+        return subCategoriaMapper.toDto(subcategoria);
     }
 }

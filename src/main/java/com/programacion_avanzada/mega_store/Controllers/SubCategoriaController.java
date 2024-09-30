@@ -4,7 +4,7 @@ import java.util.List;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -50,6 +50,10 @@ public class SubCategoriaController {
         return subCategoriaMapper.toDto(subCategoriaService.buscarPorId(id));
     }
 
+    @PutMapping("/actualizar/{id}")
+    public SubCategoriaDto actualizar(@PathVariable long id, @RequestBody @Valid SubCategoriaDto dto) {
+        return subCategoriaService.actualizar(id, dto);
+    }
     
     @DeleteMapping("/eliminar/{id}")
     public void desactivar(@PathVariable long id) {

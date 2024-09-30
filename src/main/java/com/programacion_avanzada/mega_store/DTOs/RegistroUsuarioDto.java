@@ -13,17 +13,17 @@ public class RegistroUsuarioDto {
     
     @NotNull //Valida que no sea nulo
     @NotBlank //Valida que no este en blanco.
-    @Pattern(regexp = "^[a-zA-ZÁÉÍÓÚáéíóúñÑ]{1,20}$", message = "El nombre solo puede contener letras, sin espacios, con un máximo de 20 caracteres")
+    @Pattern(regexp = "^[a-zA-ZÁÉÍÓÚáéíóúñÑ]{2,20}$", message = "El nombre solo puede contener letras, sin espacios, con un máximo de 20 caracteres")
     private String nombre;
 
     @NotNull
     @NotBlank
-    @Pattern(regexp = "^[a-zA-ZÁÉÍÓÚáéíóúñÑ]{1,20}$", message = "El apellido solo puede contener letras, sin espacios, con un máximo de 20 caracteres")
+    @Pattern(regexp = "^[a-zA-ZÁÉÍÓÚáéíóúñÑ]{2,20}$", message = "El apellido solo puede contener letras, sin espacios, con un máximo de 20 caracteres")
     private String apellido;
 
     @NotNull
     @NotBlank
-    // @Pattern(regexp = "^[0-9]{9,15}$", message = "El teléfono solo puede contener números, con una longitud de entre 9 y 15 dígitos")
+    @Pattern(regexp = "^[0-9]{9,15}$", message = "El teléfono solo puede contener números, con una longitud de entre 9 y 15 dígitos")
     private String telefono;
 
     @NotNull
@@ -33,11 +33,11 @@ public class RegistroUsuarioDto {
 
     @NotBlank
     @NotNull
-    // @Pattern(regexp = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$", message = "La contraseña debe tener al menos 8 caracteres, incluir una mayúscula, una minúscula, un número y un carácter especial")
+    @Pattern(regexp = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$", message = "La contraseña debe tener al menos 8 caracteres, incluir una mayúscula, una minúscula, un número y un carácter especial")
     private String contrasena;
 
     @NotBlank
     @NotNull
-    // @Pattern(regexp = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$", message = "La contraseña debe tener al menos 8 caracteres, incluir una mayúscula, una minúscula, un número y un carácter especial")
+    @Pattern(regexp = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$")
     private String contrasenaRepetida;
 }

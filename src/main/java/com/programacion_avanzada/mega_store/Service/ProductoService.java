@@ -13,9 +13,11 @@ import com.programacion_avanzada.mega_store.Mapper.ProductoMapper;
 import com.programacion_avanzada.mega_store.Modelos.Categoria;
 import com.programacion_avanzada.mega_store.Modelos.Marca;
 import com.programacion_avanzada.mega_store.Modelos.Producto;
+import com.programacion_avanzada.mega_store.Modelos.SubCategoria;
 import com.programacion_avanzada.mega_store.Repository.CategoriaRepository;
 import com.programacion_avanzada.mega_store.Repository.MarcaRepository;
 import com.programacion_avanzada.mega_store.Repository.ProductoRepository;
+import com.programacion_avanzada.mega_store.Repository.SubCategoriaRepository;
 
 import ch.qos.logback.core.util.StringUtil;
 
@@ -32,7 +34,7 @@ public class ProductoService implements IProductoService {
     RegistrarProductoMapper registrarProductoMapper;
 
     @Autowired
-    CategoriaRepository categoriaRepository;
+    SubCategoriaRepository subCategoriaRepository;
 
     @Autowired
     MarcaRepository marcaRepository;
@@ -64,8 +66,8 @@ public class ProductoService implements IProductoService {
             producto.setMarca(marca);
 
             //Buscamos la categoria y se la asignamos.(Hay que cambiarlo)
-            Categoria categoria = categoriaRepository.findById(dto.getCategoriaId()).orElseThrow();
-            producto.setCategoria(categoria);
+            SubCategoria subCategoria = subCategoriaRepository.findById(dto.getSubCategoriaId()).orElseThrow();
+            producto.setSubcategoria(subCategoria);
     
 
             return registrarProductoMapper.toDto(productoRepository.save(producto));

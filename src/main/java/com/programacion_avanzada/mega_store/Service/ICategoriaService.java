@@ -11,4 +11,5 @@ public interface ICategoriaService {
     List<CategoriaDto> listar();
     Categoria buscarPorId(long id);
     void eliminar(long id);
+    CategoriaDto actualizar(long id, CategoriaDto dto);
 }

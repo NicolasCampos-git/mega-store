@@ -13,4 +13,5 @@ public interface IMarcaService {
     List<MarcaDto> listar();
     Marca buscarPorId(long id);
     void eliminar(long id);
+    MarcaDto actualizar(long id, MarcaDto dto);
 }

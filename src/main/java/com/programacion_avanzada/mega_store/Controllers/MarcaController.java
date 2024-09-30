@@ -5,6 +5,9 @@ package com.programacion_avanzada.mega_store.Controllers;
 import com.programacion_avanzada.mega_store.DTOs.MarcaDto;
 import com.programacion_avanzada.mega_store.Modelos.Marca;
 import com.programacion_avanzada.mega_store.Service.IMarcaService;
+
+import jakarta.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,5 +42,10 @@ public class MarcaController {
     @DeleteMapping("/eliminar/{id}")
     public void eliminarMarca(@PathVariable long id) {
         marcaService.eliminar(id);
+    }
+
+    @PutMapping("/actualizar/{id}")
+    public MarcaDto actualizar(@PathVariable long id, @RequestBody @Valid MarcaDto dto) {
+        return marcaService.actualizar(id, dto);
     }
 }

@@ -62,8 +62,8 @@ public class Producto {
     private Marca marca;
 
     @ManyToOne
-    @JoinColumn(name = "categoria_id", nullable = false)
-    private Categoria categoria;
+    @JoinColumn(name = "sucategoria_id", nullable = false)
+    private SubCategoria Subcategoria;
 
     @NonNull
     @Column(name = "esta_activo")

@@ -5,29 +5,37 @@ import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
 public class DireccionEnvioDto { 
-    //Atributos necesarios para agregar una direccion.
-    @NotNull
+        //Atributos necesarios para agregar una direccion.
+
     @NotBlank
+    @Size(min = 2)
+    @Pattern(regexp = "^[a-zA-Z\\s]+$")
     private String provincia;
 
-    @NotNull
+
     @NotBlank
+    @Size(min = 2)
+    @Pattern(regexp = "^[a-zA-Z\\s]+$")
     private String ciudad;
 
-    @NotNull
+
     @NotBlank
+    @Size(min = 2)
+    @Pattern(regexp = "^[a-zA-Z\\s]+$")
     private String calle;
 
-    @NotNull
+
     @NotBlank
-    @Digits(integer = 6, fraction = 1, message = "El teléfono debe ser un número de hasta 6 dígitos.")
+    @Digits(integer = 6, fraction = 1)
     private String altura;
 
-    @Pattern(regexp = "^[A-Z]\\d{4}[A-Z]{3}$", message = "El código postal debe seguir el formato válido.")
+    @Size(min = 2)
+    @Pattern(regexp = "^[0-9]{2,4}$")
     private String codigoPostal;
 
     private String descripcionDireccionEnvio;

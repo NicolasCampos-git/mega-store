@@ -79,5 +79,17 @@ public class MarcaService implements IMarcaService{
             marcaRepository.save(marca);
         }
     }
+
+    @Override
+    public MarcaDto actualizar(long id, MarcaDto dto) {
+        Marca marca = marcaRepository.findById(id).orElse(null);
+        
+        // Aquí actualizamos los campos de la marca
+        marca.setNombre(dto.getNombre());
+        marca.setDescripcion(dto.getDescripcion());
+
+        marcaRepository.save(marca);
+        return marcaMapper.toDto(marca);
+    }
     
 }

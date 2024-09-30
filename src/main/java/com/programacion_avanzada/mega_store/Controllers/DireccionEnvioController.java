@@ -9,6 +9,8 @@ import com.programacion_avanzada.mega_store.DTOs.DireccionEnvioDto;
 
 import com.programacion_avanzada.mega_store.Service.IDireccionEnvioService;
 
+import jakarta.validation.Valid;
+
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -23,7 +25,7 @@ public class DireccionEnvioController {
     IDireccionEnvioService direccionEnvioService;
 
     @PostMapping("/agregar_direccion/{id}")
-    public ResponseEntity<DireccionEnvioDto> agregaDireccionEnvio(@PathVariable("id") Long usuarioId, @RequestBody DireccionEnvioDto dto) {
+    public ResponseEntity<DireccionEnvioDto> agregaDireccionEnvio(@PathVariable("id") Long usuarioId, @RequestBody @Valid DireccionEnvioDto dto) {
         return ResponseEntity.ok(direccionEnvioService.agregaDireccionEnvio(usuarioId, dto));
     }
     

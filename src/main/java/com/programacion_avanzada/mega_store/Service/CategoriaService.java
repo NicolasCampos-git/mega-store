@@ -36,6 +36,7 @@ public class CategoriaService  implements ICategoriaService{
 
             categoria.setNombre(StringUtil.capitalizeFirstLetter(dto.getNombre().toLowerCase()));
             categoria.setDescripcion(dto.getDescripcion().toLowerCase());
+            categoria.setEstaActivo(true);
             return categoriaMapper.toDto(categoriaRepository.save(categoria));
 
         }else{
@@ -46,7 +47,7 @@ public class CategoriaService  implements ICategoriaService{
     /*
      * Metodo que lista todas las categorias existentes que esten activas
      */
-    
+    @Override
     public List<CategoriaDto> listar() {
         List<Categoria> categorias = categoriaRepository.findAllByEstaActivoIsTrue();
         return categorias.stream().map(categoriaMapper::toDto).toList();
@@ -70,5 +71,17 @@ public class CategoriaService  implements ICategoriaService{
         Categoria categoria = categoriaRepository.findById(id).filter(Categoria::isEstaActivo).orElse(null);
         categoria.setEstaActivo(false);
         categoriaRepository.save(categoria);
+    }
+
+    @Override
+    public CategoriaDto actualizar(long id, CategoriaDto dto) {
+        Categoria categoria = categoriaRepository.findById(id).orElse(null);
+        
+        
+        categoria.setNombre(dto.getNombre());
+        categoria.setDescripcion(dto.getDescripcion());
+
+        categoriaRepository.save(categoria);
+        return categoriaMapper.toDto(categoria);
     }
 }

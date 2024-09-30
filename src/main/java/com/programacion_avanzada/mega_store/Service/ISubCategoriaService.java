@@ -11,4 +11,5 @@ public interface ISubCategoriaService {
     List<SubCategoriaDto> listar();
     SubCategoria buscarPorId(long id);
     void eliminar(long id);
+    SubCategoriaDto actualizar(long id, SubCategoriaDto dto);
 }

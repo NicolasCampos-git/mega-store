@@ -11,12 +11,12 @@ public class UsuarioDto {
 
     @NotNull 
     @NotBlank 
-    @Pattern(regexp = "^[a-zA-ZÁÉÍÓÚáéíóúñÑ]{1,20}$", message = "El nombre solo puede contener letras, sin espacios, con un máximo de 20 caracteres")
+    @Pattern(regexp = "^[a-zA-ZÁÉÍÓÚáéíóúñÑ]{2,20}$", message = "El nombre solo puede contener letras, sin espacios, con un máximo de 20 caracteres")
     private String nombre;
 
     @NotNull
     @NotBlank
-    @Pattern(regexp = "^[a-zA-ZÁÉÍÓÚáéíóúñÑ]{1,20}$", message = "El apellido solo puede contener letras, sin espacios, con un máximo de 20 caracteres")
+    @Pattern(regexp = "^[a-zA-ZÁÉÍÓÚáéíóúñÑ]{2,20}$", message = "El apellido solo puede contener letras, sin espacios, con un máximo de 20 caracteres")
     private String apellido;
 
     @NotNull
