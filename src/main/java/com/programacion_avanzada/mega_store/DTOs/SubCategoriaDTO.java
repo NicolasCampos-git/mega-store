@@ -18,7 +18,4 @@ public class SubCategoriaDto {
     @Pattern(regexp = "^[^\\d]*$")
     private String descripcion;
 
-    
-
-    
 }

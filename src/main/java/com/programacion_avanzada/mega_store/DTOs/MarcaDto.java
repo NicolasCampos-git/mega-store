@@ -6,6 +6,9 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 @Data
 public class MarcaDto {
+
+    private Long id;
+    
     @NotBlank
     @Size(min = 2)
     @Pattern(regexp = "^[^\\d]*$")
@@ -16,5 +19,6 @@ public class MarcaDto {
     @Pattern(regexp = "^[^\\d]*$")
     private String descripcion;
 
+    private boolean estaActivo;
 
 }

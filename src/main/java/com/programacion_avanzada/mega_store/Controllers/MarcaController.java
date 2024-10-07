@@ -1,5 +1,5 @@
 package com.programacion_avanzada.mega_store.Controllers;
-
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 
 import com.programacion_avanzada.mega_store.DTOs.MarcaDto;
@@ -15,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/marcas")
+@CrossOrigin(origins = "http://localhost:3000")
 public class MarcaController {
 
     @Autowired

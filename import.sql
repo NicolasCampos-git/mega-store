@@ -1,9 +1,4 @@
 USE mydatabase;
--- Insertar marcas
-INSERT INTO marcas (nombre, descripcion, esta_activo) VALUES 
-('Nike', 'Marca deportiva internacional', TRUE),
-('Adidas', 'Marca global de ropa deportiva', TRUE),
-('Puma', 'Marca de calzado y ropa deportiva', TRUE);
 
 -- Insertar categorías
 INSERT INTO categorias (nombre, descripcion, esta_activo) VALUES

@@ -1,7 +1,7 @@
 package com.programacion_avanzada.mega_store.Service;
 
 import java.util.List;
-
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -51,9 +51,14 @@ public class MarcaService implements IMarcaService{
      */
     public List<MarcaDto> listar() {
 
-        List<Marca> marcas = marcaRepository.findAllByEstaActivoIsTrue();
-
-        return marcas.stream().map(marcaMapper::toDto).toList();
+        return marcaRepository.findAll().stream().filter(Marca::isEstaActivo).map(marca -> {
+            MarcaDto dto = new MarcaDto();
+            dto.setId(marca.getId());
+            dto.setNombre(marca.getNombre());
+            dto.setDescripcion(marca.getDescripcion());
+            dto.setEstaActivo(true);
+            return dto;
+        }).collect(Collectors.toList());
     }
 
 
