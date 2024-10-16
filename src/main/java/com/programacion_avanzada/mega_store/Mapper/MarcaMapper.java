@@ -7,10 +7,7 @@ import com.programacion_avanzada.mega_store.Modelos.Marca;
 
 @Mapper(componentModel = "spring")
 public interface MarcaMapper {
-
-    
-    
-    MarcaDto toDto(Marca marca);
     Marca toEntity(MarcaDto marcaDto);
-    
+
+    MarcaDto toDto(Marca marca);
 }

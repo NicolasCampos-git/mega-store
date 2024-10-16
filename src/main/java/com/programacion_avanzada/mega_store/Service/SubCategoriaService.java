@@ -44,8 +44,8 @@ public class SubCategoriaService implements ISubCategoriaService {
 
             Categoria categoria = categoriaRepository.findById(categoriaId).orElse(null);
 
-            subCategoria.setNombre(StringUtil.capitalizeFirstLetter(dto.getNombre().toLowerCase()));
-            subCategoria.setDescripcion(dto.getDescripcion().toLowerCase());
+            subCategoria.setNombre(StringUtil.capitalizeFirstLetter(dto.getNombre().toLowerCase().trim()));
+            subCategoria.setDescripcion(dto.getDescripcion().toLowerCase().trim());
             subCategoria.setCategoria(categoria);
 
             return subCategoriaMapper.toDto(subCategoriaRepository.save(subCategoria));

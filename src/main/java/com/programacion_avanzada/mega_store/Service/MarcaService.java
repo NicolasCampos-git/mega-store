@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.programacion_avanzada.mega_store.DTOs.MarcaDto;
+import com.programacion_avanzada.mega_store.DTOs.RegistrarMarcaDto;
 import com.programacion_avanzada.mega_store.Mapper.MarcaMapper;
+import com.programacion_avanzada.mega_store.Mapper.RegistrarMarcaMapper;
 import com.programacion_avanzada.mega_store.Modelos.Marca;
 import com.programacion_avanzada.mega_store.Repository.MarcaRepository;
 
@@ -21,24 +23,28 @@ public class MarcaService implements IMarcaService{
     private MarcaRepository marcaRepository;
 
     @Autowired
+    private RegistrarMarcaMapper registrarMarcaMapper;
+
+    @Autowired
     private MarcaMapper marcaMapper;
+    
 
     /*
      * Metodo encargad de cargar una nueva marca,
      * verificando que la marca no este registrada previamente.
      */
     @Override
-    public MarcaDto registrarMarca(MarcaDto dto) {
+    public RegistrarMarcaDto registrarMarca(RegistrarMarcaDto dto) {
         
-        Marca marca = marcaMapper.toEntity(dto);
+        Marca marca = registrarMarcaMapper.toEntity(dto);
         
         if(marcaRepository.existsByNombre(marca.getNombre()) == false){
 
             
-            marca.setNombre(StringUtil.capitalizeFirstLetter(dto.getNombre().toLowerCase()));
-            marca.setDescripcion(dto.getDescripcion().toLowerCase());
+            marca.setNombre(StringUtil.capitalizeFirstLetter(dto.getNombre().toLowerCase().trim()));
+            marca.setDescripcion(dto.getDescripcion().toLowerCase().trim());
             marca.setEstaActivo(true);
-            return marcaMapper.toDto(marcaRepository.save(marca));
+            return registrarMarcaMapper.toDto(marcaRepository.save(marca));
 
         }else{
             throw new EntityExistsException("La marca ya existe");
@@ -90,6 +96,17 @@ public class MarcaService implements IMarcaService{
 
         marcaRepository.save(marca);
         return marcaMapper.toDto(marca);
+    }
+
+    @Override
+    public MarcaDto reactivar(long id){
+        Marca marca = marcaRepository.findById(id).orElse(null);
+        if(marca.isEstaActivo() == false){
+            marca.setEstaActivo(true);
+        }
+        //Aca deberia haber una excepcion si la marca esta activa.
+
+        return marcaMapper.toDto(marcaRepository.save(marca));
     }
     
 }

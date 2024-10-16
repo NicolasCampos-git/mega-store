@@ -34,8 +34,8 @@ public class CategoriaService  implements ICategoriaService{
         
         if(categoriaRepository.existsByNombre(categoria.getNombre()) == false){
 
-            categoria.setNombre(StringUtil.capitalizeFirstLetter(dto.getNombre().toLowerCase()));
-            categoria.setDescripcion(dto.getDescripcion().toLowerCase());
+            categoria.setNombre(StringUtil.capitalizeFirstLetter(dto.getNombre().toLowerCase().trim()));
+            categoria.setDescripcion(dto.getDescripcion().toLowerCase().trim());
             categoria.setEstaActivo(true);
             return categoriaMapper.toDto(categoriaRepository.save(categoria));
 

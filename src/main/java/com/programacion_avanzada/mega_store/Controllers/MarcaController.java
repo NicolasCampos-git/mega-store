@@ -1,8 +1,9 @@
 package com.programacion_avanzada.mega_store.Controllers;
-
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 
 import com.programacion_avanzada.mega_store.DTOs.MarcaDto;
+import com.programacion_avanzada.mega_store.DTOs.RegistrarMarcaDto;
 import com.programacion_avanzada.mega_store.Modelos.Marca;
 import com.programacion_avanzada.mega_store.Service.IMarcaService;
 
@@ -15,6 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/marcas")
+@CrossOrigin(origins = "http://localhost:3000")
 public class MarcaController {
 
     @Autowired
@@ -22,7 +24,7 @@ public class MarcaController {
 
     
     @PostMapping("/registrar")
-    public MarcaDto registrarMarca(@RequestBody MarcaDto dto) {
+    public RegistrarMarcaDto registrarMarca(@RequestBody RegistrarMarcaDto dto) {
         return marcaService.registrarMarca(dto);
     }
 
@@ -47,5 +49,10 @@ public class MarcaController {
     @PutMapping("/actualizar/{id}")
     public MarcaDto actualizar(@PathVariable long id, @RequestBody @Valid MarcaDto dto) {
         return marcaService.actualizar(id, dto);
+    }
+
+    @PutMapping("/reactivar/{id}")
+    public MarcaDto reactivar(@PathVariable long id){
+        return marcaService.reactivar(id);
     }
 }
