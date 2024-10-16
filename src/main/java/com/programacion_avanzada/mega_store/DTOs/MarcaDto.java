@@ -19,5 +19,7 @@ public class MarcaDto {
     @Pattern(regexp = "^[^\\d]*$")
     private String descripcion;
 
+    private boolean estaActivo;
+
 
 }
