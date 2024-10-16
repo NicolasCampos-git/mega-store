@@ -24,7 +24,7 @@ public class MarcaController {
 
     
     @PostMapping("/registrar")
-    public RegistrarMarcaDto registrarMarca(@RequestBody RegistrarMarcaDto dto) {
+    public RegistrarMarcaDto registrarMarca(@RequestBody @Valid RegistrarMarcaDto dto) {
         return marcaService.registrarMarca(dto);
     }
 

@@ -10,12 +10,12 @@ public class MarcaDto {
     private long id;
 
     @NotBlank
-    @Size(min = 2)
+    @Size(min = 2, max = 64)
     @Pattern(regexp = "^[^\\d]*$")
     private String nombre;
 
     @NotBlank
-    @Size(min = 2)
+    @Size(min = 2, max = 64)
     @Pattern(regexp = "^[^\\d]*$")
     private String descripcion;
 

@@ -38,7 +38,7 @@ public class MarcaService implements IMarcaService{
         
         Marca marca = registrarMarcaMapper.toEntity(dto);
         
-        if(marcaRepository.existsByNombre(marca.getNombre()) == false){
+        if(marcaRepository.existsByNombre(marca.getNombre().trim()) == false){
 
             
             marca.setNombre(StringUtil.capitalizeFirstLetter(dto.getNombre().toLowerCase().trim()));
