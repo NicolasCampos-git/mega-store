@@ -1,6 +1,10 @@
+
 package com.programacion_avanzada.mega_store.Service;
 
 
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -77,6 +81,35 @@ public class UsuarioService implements IUsuarioService {
         
         Usuario usuarioActualizado = usuarioRepository.save(usuario);
         return UsuarioMapper.toDto(usuarioActualizado);
+    }
+
+    public UsuarioDto buscarPorId(long id) {
+        Usuario usuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado con el ID: " + id));
+        return UsuarioMapper.toDto(usuario);
+    }
+
+    // Método para listar todos los usuarios
+    public List<UsuarioDto> listarUsuarios() {
+        return usuarioRepository.findAll().stream()
+                .map(UsuarioMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+    // Método para "eliminar" un usuario (desactivar)
+    public void eliminarUsuario(long id) {
+        Usuario usuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado con el ID: " + id));
+        usuario.setEstaActivo(false);  // Marcar el usuario como inactivo
+        usuarioRepository.save(usuario);
+    }
+
+    // Método para "reactivar" un usuario (activar)
+    public void reactivarUsuario(long id) {
+        Usuario usuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado con el ID: " + id));
+        usuario.setEstaActivo(true);  // Marcar el usuario como activo
+        usuarioRepository.save(usuario);
     }
 
 
