@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.programacion_avanzada.mega_store.DTOs.CategoriaDto;
+import com.programacion_avanzada.mega_store.DTOs.RegistrarCategoriaDto;
 import com.programacion_avanzada.mega_store.Mapper.CategoriaMapper;
 import com.programacion_avanzada.mega_store.Modelos.Categoria;
 import com.programacion_avanzada.mega_store.Service.ICategoriaService;
@@ -31,7 +32,7 @@ public class CategoriaController {
 
     
     @PostMapping("/registrar")
-    public CategoriaDto registrar(@RequestBody @Valid CategoriaDto dto) {
+    public RegistrarCategoriaDto registrar(@RequestBody @Valid RegistrarCategoriaDto dto) {
         return categoriaService.registrarCategoria(dto);
     }
 
@@ -53,7 +54,7 @@ public class CategoriaController {
 
     
     @DeleteMapping("/eliminar/{id}")
-    public void eliminar(@PathVariable long id) {
+    public void eliminar(@PathVariable("id") long id) {
         
         categoriaService.eliminar(id); 
     }
@@ -61,5 +62,10 @@ public class CategoriaController {
     @PutMapping("/actualizar/{id}")
     public CategoriaDto actualizar(@PathVariable long id, @RequestBody @Valid CategoriaDto dto) {
         return categoriaService.actualizar(id, dto);
+    }
+
+    @PutMapping("/reactivar/{id}")
+    public void reactivar(@PathVariable("id") long id){
+        categoriaService.reactivar(id);
     }
 }

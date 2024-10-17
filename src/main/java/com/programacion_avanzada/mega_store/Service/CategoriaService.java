@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.programacion_avanzada.mega_store.DTOs.CategoriaDto;
+import com.programacion_avanzada.mega_store.DTOs.RegistrarCategoriaDto;
 import com.programacion_avanzada.mega_store.Mapper.CategoriaMapper;
+import com.programacion_avanzada.mega_store.Mapper.RegistrarCategoriaMapper;
 import com.programacion_avanzada.mega_store.Modelos.Categoria;
 import com.programacion_avanzada.mega_store.Repository.CategoriaRepository;
 
@@ -23,21 +25,24 @@ public class CategoriaService  implements ICategoriaService{
     @Autowired
     private CategoriaMapper categoriaMapper;
 
+    @Autowired
+    private RegistrarCategoriaMapper registrarCategoriaMapper;
+
     /*
      * Metodo para registrar una nueva categoria, verifica que si nombre ya existe.
      * Al momento de guardarse las categorias, sus nombres y descripcion quedan normalizados.
      */
     @Override
-    public CategoriaDto registrarCategoria(CategoriaDto dto) {
+    public RegistrarCategoriaDto registrarCategoria( RegistrarCategoriaDto dto) {
         
-        Categoria categoria = categoriaMapper.toEntity(dto);
+        Categoria categoria = registrarCategoriaMapper.toEntity(dto);
         
         if(categoriaRepository.existsByNombre(categoria.getNombre()) == false){
 
-            categoria.setNombre(StringUtil.capitalizeFirstLetter(dto.getNombre().toLowerCase()));
-            categoria.setDescripcion(dto.getDescripcion().toLowerCase());
+            categoria.setNombre(StringUtil.capitalizeFirstLetter(dto.getNombre().toLowerCase().trim()));
+            categoria.setDescripcion(dto.getDescripcion().toLowerCase().trim());
             categoria.setEstaActivo(true);
-            return categoriaMapper.toDto(categoriaRepository.save(categoria));
+            return registrarCategoriaMapper.toDto(categoriaRepository.save(categoria));
 
         }else{
             throw new EntityExistsException("La categoria ya existe");
@@ -69,8 +74,10 @@ public class CategoriaService  implements ICategoriaService{
     @Override
     public void eliminar(long id) {
         Categoria categoria = categoriaRepository.findById(id).filter(Categoria::isEstaActivo).orElse(null);
-        categoria.setEstaActivo(false);
-        categoriaRepository.save(categoria);
+        if(categoria != null){
+            categoria.setEstaActivo(false);
+            categoriaRepository.save(categoria);
+        }
     }
 
     @Override
@@ -83,5 +90,16 @@ public class CategoriaService  implements ICategoriaService{
 
         categoriaRepository.save(categoria);
         return categoriaMapper.toDto(categoria);
+    }
+
+    @Override
+    public void reactivar(long id){
+        Categoria categoria = categoriaRepository.findById(id).orElse(null);
+
+        if(categoria != null && categoria.isEstaActivo() == false){
+            categoria.setEstaActivo(true);
+            categoriaRepository.save(categoria);
+        }
+
     }
 }

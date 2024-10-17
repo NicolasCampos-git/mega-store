@@ -6,6 +6,7 @@ import com.programacion_avanzada.mega_store.DTOs.ProductoDto;
 import com.programacion_avanzada.mega_store.DTOs.RegistrarProductoDto;
 
 
+
 public interface IProductoService {
 
     RegistrarProductoDto registrarProducto(RegistrarProductoDto dto);
@@ -15,5 +16,7 @@ public interface IProductoService {
     RegistrarProductoDto editarProducto(long id, RegistrarProductoDto dto);
 
     void eliminar(long id);
+
+    void reactivar(long id);
     
 }

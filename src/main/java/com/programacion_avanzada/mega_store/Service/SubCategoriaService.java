@@ -6,7 +6,9 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.programacion_avanzada.mega_store.DTOs.RegistrarSubCategoriaDto;
 import com.programacion_avanzada.mega_store.DTOs.SubCategoriaDto;
+import com.programacion_avanzada.mega_store.Mapper.RegistrarSubCategoriaMapper;
 import com.programacion_avanzada.mega_store.Mapper.SubCategoriaMapper;
 import com.programacion_avanzada.mega_store.Modelos.Categoria;
 import com.programacion_avanzada.mega_store.Modelos.SubCategoria;
@@ -28,6 +30,9 @@ public class SubCategoriaService implements ISubCategoriaService {
     private SubCategoriaMapper subCategoriaMapper;
 
     @Autowired
+    private RegistrarSubCategoriaMapper registrarSubCategoriaMapper;
+
+    @Autowired
     private CategoriaRepository categoriaRepository;
 
     /*
@@ -35,20 +40,21 @@ public class SubCategoriaService implements ISubCategoriaService {
      * verificando que no haya 2 con el mismo nombre y normalizando los datos.
      */
     @Override
-    public SubCategoriaDto registrarSubCategoria(long categoriaId,SubCategoriaDto dto) {
+    public RegistrarSubCategoriaDto registrarSubCategoria(RegistrarSubCategoriaDto dto) {
         
-        SubCategoria subCategoria = subCategoriaMapper.toEntity(dto);
+        SubCategoria subCategoria = registrarSubCategoriaMapper.toEntity(dto);
         
         
-        if(subCategoriaRepository.existsByNombre(subCategoria.getNombre()) != true || categoriaRepository.existsById(categoriaId) == true){
+        if(subCategoriaRepository.existsByNombre(subCategoria.getNombre()) != true && categoriaRepository.existsById(dto.getCategoriaId())){
 
-            Categoria categoria = categoriaRepository.findById(categoriaId).orElse(null);
+            Categoria categoria = categoriaRepository.findById(dto.getCategoriaId()).orElse(null);
 
-            subCategoria.setNombre(StringUtil.capitalizeFirstLetter(dto.getNombre().toLowerCase()));
-            subCategoria.setDescripcion(dto.getDescripcion().toLowerCase());
+            subCategoria.setNombre(StringUtil.capitalizeFirstLetter(dto.getNombre().toLowerCase().trim()));
+            subCategoria.setDescripcion(dto.getDescripcion().toLowerCase().trim());
             subCategoria.setCategoria(categoria);
+            subCategoria.setEstaActivo(true);
 
-            return subCategoriaMapper.toDto(subCategoriaRepository.save(subCategoria));
+            return registrarSubCategoriaMapper.toDto(subCategoriaRepository.save(subCategoria));
 
         }else{
             throw new EntityExistsException("La subcategoria ya existe");
@@ -71,6 +77,15 @@ public class SubCategoriaService implements ISubCategoriaService {
         SubCategoria subCategoria = subCategoriaRepository.findById(id).filter(SubCategoria::isEstaActivo).orElse(null);
         subCategoria.setEstaActivo(false);
         subCategoriaRepository.save(subCategoria);
+    }
+
+    @Override
+    public void reactivar(long id){
+        SubCategoria subCategoria = subCategoriaRepository.findById(id).orElse(null);
+        if(subCategoria != null && subCategoria.isEstaActivo() == false){
+            subCategoria.setEstaActivo(true);
+            subCategoriaRepository.save(subCategoria);
+        }
     }
 
     @Override

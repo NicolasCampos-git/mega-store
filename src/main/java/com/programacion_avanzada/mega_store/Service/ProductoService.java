@@ -51,10 +51,10 @@ public class ProductoService implements IProductoService {
             Producto producto = productoMapper.toEntity(dto);
             
             // Normarlizamos los atributos del producto.
-            producto.setNombre(StringUtil.capitalizeFirstLetter(dto.getNombre().toLowerCase()));
-            producto.setDescripcion(StringUtil.capitalizeFirstLetter(dto.getDescripcion().toLowerCase()));
-            producto.setColor(StringUtil.capitalizeFirstLetter(dto.getColor().toLowerCase()));
-            producto.setTamano(StringUtil.capitalizeFirstLetter(dto.getTamano().toLowerCase()));
+            producto.setNombre(StringUtil.capitalizeFirstLetter(dto.getNombre().toLowerCase().trim()));
+            producto.setDescripcion(StringUtil.capitalizeFirstLetter(dto.getDescripcion().toLowerCase().trim()));
+            producto.setColor(StringUtil.capitalizeFirstLetter(dto.getColor().toLowerCase()).trim());
+            producto.setTamano(StringUtil.capitalizeFirstLetter(dto.getTamano().toLowerCase().trim()));
             producto.setStock(dto.getStock());
             producto.setPrecioUnitario(dto.getPrecioUnitario());
 
@@ -145,7 +145,15 @@ public class ProductoService implements IProductoService {
         return registrarProductoMapper.toDto(productoRepository.save(producto));
     }
 
-    
+
+    @Override
+    public void reactivar(long id){
+        Producto producto = productoRepository.findById(id).orElse(null);
+        if(producto != null && producto.isEstaActivo() == false){
+            producto.setEstaActivo(true);
+            productoRepository.save(producto);
+        }
+    }
 
 
     
