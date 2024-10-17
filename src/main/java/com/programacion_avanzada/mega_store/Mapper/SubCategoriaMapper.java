@@ -9,10 +9,7 @@ import com.programacion_avanzada.mega_store.Modelos.SubCategoria;
 
 @Mapper(componentModel = "spring")
 public interface SubCategoriaMapper {
-    SubCategoriaDto toDto(SubCategoria subCategoria);
+    
     SubCategoria toEntity(SubCategoriaDto subCategoriaDto);
-
-    CategoriaDto toDto(Categoria categoria);
-    Categoria toEntity(CategoriaDto categoriaDTO);
+    SubCategoriaDto toDto(SubCategoria subCategoria);
 }
-

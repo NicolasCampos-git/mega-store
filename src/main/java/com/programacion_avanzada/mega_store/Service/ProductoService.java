@@ -145,7 +145,15 @@ public class ProductoService implements IProductoService {
         return registrarProductoMapper.toDto(productoRepository.save(producto));
     }
 
-    
+
+    @Override
+    public void reactivar(long id){
+        Producto producto = productoRepository.findById(id).orElse(null);
+        if(producto != null && producto.isEstaActivo() == false){
+            producto.setEstaActivo(true);
+            productoRepository.save(producto);
+        }
+    }
 
 
     

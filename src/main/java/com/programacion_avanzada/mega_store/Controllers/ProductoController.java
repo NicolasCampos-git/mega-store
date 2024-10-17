@@ -49,4 +49,9 @@ public class ProductoController {
          productoService.eliminar(id);
     }
 
+    @PutMapping("/reactivar/{id}")
+    public void reactivarProducto(@PathVariable("id") long id){
+        productoService.reactivar(id);
+    }
+
 }

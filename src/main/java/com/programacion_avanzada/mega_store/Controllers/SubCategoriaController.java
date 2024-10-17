@@ -1,3 +1,4 @@
+
 package com.programacion_avanzada.mega_store.Controllers;
 
 import java.util.List;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
+import com.programacion_avanzada.mega_store.DTOs.RegistrarSubCategoriaDto;
 import com.programacion_avanzada.mega_store.DTOs.SubCategoriaDto;
 import com.programacion_avanzada.mega_store.Mapper.SubCategoriaMapper;
 
@@ -33,9 +34,9 @@ public class SubCategoriaController {
     private SubCategoriaMapper subCategoriaMapper;
 
     
-    @PostMapping("/registrar/{id}")
-    public SubCategoriaDto registrar(@PathVariable long id ,@RequestBody @Valid SubCategoriaDto dto) {
-        return subCategoriaService.registrarSubCategoria(id, dto);
+    @PostMapping("/registrar")
+    public RegistrarSubCategoriaDto registrar(@RequestBody @Valid RegistrarSubCategoriaDto dto) {
+        return subCategoriaService.registrarSubCategoria( dto);
     }
 
     
@@ -59,6 +60,11 @@ public class SubCategoriaController {
     public void desactivar(@PathVariable long id) {
          
         subCategoriaService.eliminar(id); 
+    }
+
+    @PutMapping("/reactivar/{id}")
+    public void reactivar(@PathVariable long id){
+        subCategoriaService.reactivar(id);
     }
 }
 

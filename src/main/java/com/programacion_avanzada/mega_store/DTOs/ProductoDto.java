@@ -11,6 +11,9 @@ import lombok.Data;
 @Data
 public class ProductoDto {
 
+
+    private long id;
+
     @NotBlank
     @Size(min = 2)
     @Pattern(regexp = "^[A-Za-z ]+$")
@@ -46,7 +49,10 @@ public class ProductoDto {
     private MarcaDto marca;
 
     @NotNull
-    private SubCategoriaDto subCategoriaDto;
+    private SubCategoriaDto subCategoria;
+
+    @NotNull
+    private boolean estaActivo;
 
 
 }
