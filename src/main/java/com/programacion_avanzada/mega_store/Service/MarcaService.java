@@ -35,21 +35,52 @@ public class MarcaService implements IMarcaService{
      */
     @Override
     public RegistrarMarcaDto registrarMarca(RegistrarMarcaDto dto) {
-        
+        // Validar el nombre de la marca
+        if (dto.getNombre() == null || dto.getNombre().trim().length() < 2) {
+            throw new EntityExistsException("El nombre de la marca debe tener al menos dos caracteres");
+        }
+
+        // Validar que el nombre de la marca no exceda los 64 caracteres
+        if (dto.getNombre().length() > 64) {
+            throw new IllegalArgumentException("El nombre de la marca no puede tener más de 64 caracteres");
+        }
+
+        if (dto.getNombre().contains(" ")) {
+            throw new IllegalArgumentException("El nombre no puede contener espacios en blanco");
+        }
+
+        if (dto.getNombre().matches(".*\\d.*")) {
+            throw new IllegalArgumentException("El nombre no puede contener caracteres numéricos");
+        }
+
+        if (dto.getDescripcion() != null) {
+            if (dto.getDescripcion().length() > 100) {
+                throw new IllegalArgumentException("La descripción no puede superar los 100 caracteres");
+            }
+            if (dto.getDescripcion().matches(".*\\d.*")) {
+                throw new IllegalArgumentException("La descripción no puede contener caracteres numéricos");
+            }
+        }
+
+        // Convertir el DTO a entidad
         Marca marca = registrarMarcaMapper.toEntity(dto);
-        
-        if(marcaRepository.existsByNombre(marca.getNombre().trim()) == false){
 
-            
+        // Verificar si la marca ya existe
+        if (!marcaRepository.existsByNombre(marca.getNombre().trim())) {
+            // Configurar la marca
             marca.setNombre(StringUtil.capitalizeFirstLetter(dto.getNombre().toLowerCase().trim()));
-            marca.setDescripcion(dto.getDescripcion().toLowerCase().trim());
+            // Establecer descripción solo si está presente; de lo contrario, asignar null
+            marca.setDescripcion(dto.getDescripcion() != null ? dto.getDescripcion().toLowerCase().trim() : null);
             marca.setEstaActivo(true);
-            return registrarMarcaMapper.toDto(marcaRepository.save(marca));
 
-        }else{
+            // Guardar la marca y devolver el DTO
+            return registrarMarcaMapper.toDto(marcaRepository.save(marca));
+        } else {
             throw new EntityExistsException("La marca ya existe");
         }
+
     }
+
 
     /*
      * Metodo encargado de listar las marcas,
