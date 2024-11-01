@@ -39,10 +39,10 @@ public class UsuarioService implements IUsuarioService {
     public RegistroUsuarioDto registrarUsuario(RegistroUsuarioDto dto) {
 
         if(dto.getContrasena().equals(dto.getContrasenaRepetida())){
-            
+
             Usuario usuario = RegistroUsuarioMapper.toEntity(dto);
-            
-            
+
+
             if(usuarioRepository.existsByEmail(usuario.getEmail())){
                 throw new IllegalArgumentException("El email ya está registrado.");
             }
@@ -57,7 +57,7 @@ public class UsuarioService implements IUsuarioService {
             usuario.setRol("cliente");
             senderService.enviarCorreo(usuario.getEmail());
 
-            
+
             return RegistroUsuarioMapper.toDto(usuarioRepository.save(usuario));
         }else{
             throw new IllegalArgumentException("Las contrasenas no coinciden");
@@ -71,14 +71,14 @@ public class UsuarioService implements IUsuarioService {
     public UsuarioDto actualizarInformacionPersonal(long id, UsuarioDto dto) {
         Usuario usuario = usuarioRepository.findById(id)
                 .orElseThrow();
-    
-        
+
+
         usuario.setNombre(StringUtil.capitalizeFirstLetter(dto.getNombre().toLowerCase()));
         usuario.setApellido(StringUtil.capitalizeFirstLetter(dto.getApellido().toLowerCase()));
         usuario.setEmail(dto.getEmail().trim().toLowerCase());
         usuario.setTelefono(dto.getTelefono());
-    
-        
+
+
         Usuario usuarioActualizado = usuarioRepository.save(usuario);
         return UsuarioMapper.toDto(usuarioActualizado);
     }
@@ -113,5 +113,5 @@ public class UsuarioService implements IUsuarioService {
     }
 
 
-    
+
 }

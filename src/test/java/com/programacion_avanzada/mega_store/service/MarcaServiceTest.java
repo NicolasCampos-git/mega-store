@@ -9,16 +9,15 @@ import com.programacion_avanzada.mega_store.Modelos.Marca;
 import com.programacion_avanzada.mega_store.Repository.MarcaRepository;
 import com.programacion_avanzada.mega_store.Service.MarcaService;
 import jakarta.persistence.EntityExistsException;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.Optional;
+import org.springframework.boot.test.context.SpringBootTest;
 
 @ExtendWith(MockitoExtension.class)
+@SpringBootTest
 public class MarcaServiceTest {
 
     @Mock
@@ -30,34 +29,6 @@ public class MarcaServiceTest {
     @InjectMocks
     private MarcaService marcaService;
 
-    @BeforeEach
-    public void setUp() {
-        // Aquí puedes realizar configuraciones previas si es necesario
-    }
-
-    @Test
-    public void testNombreValido() {
-        // Arrange
-        RegistrarMarcaDto dto = new RegistrarMarcaDto();
-        dto.setNombre("MarcaValida");
-        dto.setDescripcion("Descripción válida");
-
-        Marca marca = new Marca();
-        marca.setNombre(dto.getNombre());
-        marca.setDescripcion(dto.getDescripcion());
-
-        when(marcaRepository.existsByNombre(dto.getNombre().trim())).thenReturn(false);
-        when(registrarMarcaMapper.toEntity(dto)).thenReturn(marca);
-        when(marcaRepository.save(any(Marca.class))).thenReturn(marca);
-        when(registrarMarcaMapper.toDto(marca)).thenReturn(dto);
-
-        // Act
-        RegistrarMarcaDto resultado = marcaService.registrarMarca(dto);
-
-        // Assert
-        assertNotNull(resultado);
-        assertEquals("MarcaValida", resultado.getNombre());
-    }
 
     @Test
     void testRegistrarMarca() {
@@ -72,7 +43,7 @@ public class MarcaServiceTest {
         marcaEsperada.setDescripcion("Descripción válida");
         when(registrarMarcaMapper.toEntity(dto)).thenReturn(marcaEsperada);
 
-        // Ahora llama al método después de haber configurado el mock
+        // Ahora llama al metodo después de haber configurado el mock
         Marca marca = registrarMarcaMapper.toEntity(dto);
 
         // Simular el comportamiento del repositorio
@@ -80,7 +51,7 @@ public class MarcaServiceTest {
         when(marcaRepository.save(any(Marca.class))).thenReturn(marca);
         when(registrarMarcaMapper.toDto(marca)).thenReturn(dto); // Supongamos que también quieres devolver el DTO.
 
-        // Ejecutar el método a probar
+        // Ejecutar el metodo a probar
         RegistrarMarcaDto result = marcaService.registrarMarca(dto);
 
         // Verificar los resultados

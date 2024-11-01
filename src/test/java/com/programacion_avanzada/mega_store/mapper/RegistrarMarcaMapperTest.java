@@ -7,7 +7,9 @@ import com.programacion_avanzada.mega_store.Mapper.RegistrarMarcaMapper;
 import com.programacion_avanzada.mega_store.Modelos.Marca;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
+import org.springframework.boot.test.context.SpringBootTest;
 
+@SpringBootTest
 public class RegistrarMarcaMapperTest {
 
     private final RegistrarMarcaMapper registrarMarcaMapper = Mappers.getMapper(RegistrarMarcaMapper.class);

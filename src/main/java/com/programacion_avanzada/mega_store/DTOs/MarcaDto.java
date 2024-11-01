@@ -16,20 +16,20 @@ public class MarcaDto {
 
     private long id;
 
-    @NotBlank(message = "El nombre no debe estar vacío.")
-    @Size(min = 2, max = 64)
-    @Pattern(regexp = "^[^\\d]*$", message = "El nombre no debe contener dígitos.")
-    @Pattern(regexp = "^[^\\s]*$", message = "El nombre no debe contener espacios en blanco.")
+    @NotBlank(message = "El nombre no puede estar vacío.")
+    @Size(min = 2, max = 64, message = "El nombre debe tener entre 2 y 64 caracteres.")
+    @Pattern(regexp = "^[^\\d\\s]+$", message = "El nombre no debe contener espacios ni números.")
     private String nombre;
 
     // Permitir nulo o vacío en la descripción
-    @Size(max = 100, message = "La descripción no debe exceder los 100 caracteres.")
-    @Pattern(regexp = "^[^\\d]*$", message = "La descripción no debe contener dígitos.")
+
+    @Size(min = 2, max = 64, message = "La descripción debe tener entre 2 y 64 caracteres.")
+    @Pattern(regexp = "^[^\\d]*$", message = "La descripción no debe contener números.")
     private String descripcion;
 
     private boolean estaActivo;
 
-    // Método que valida los campos de acuerdo con las anotaciones
+    //Metodo que valida los campos de acuerdo con las anotaciones
     public boolean esValido() {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();

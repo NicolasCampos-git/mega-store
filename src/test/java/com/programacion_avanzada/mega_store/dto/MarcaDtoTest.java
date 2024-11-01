@@ -5,8 +5,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import com.programacion_avanzada.mega_store.DTOs.MarcaDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 
-
+@SpringBootTest
 public class MarcaDtoTest {
 
     private MarcaDto marcaDto;
@@ -26,7 +27,7 @@ public class MarcaDtoTest {
 
     @Test
     public void testNombreConMasDeSesentaYCuatroCaracteres() {
-        marcaDto.setNombre("EsteNombreEsDemasiadoLargoComoParaSerValidoYAExcedeLosSesentaYCuatroCaracteres");
+        marcaDto.setNombre("EsteNombreEsDemasiadoLargoComoParaSerValidoYAExcedeLosSesentaYCuatroCaracteres");// Nombre de mas de 64 carácteres, debería ser inválido
         marcaDto.setDescripcion("Descripcion valida");
 
         assertFalse(marcaDto.esValido(), "El nombre no debe tener más de 64 caracteres.");
@@ -43,7 +44,7 @@ public class MarcaDtoTest {
     @Test
     public void testDescripcionConMasDeCienCaracteres() {
         marcaDto.setNombre("NombreValido");
-        marcaDto.setDescripcion("EstaDescripcionEsDemasiadoLargaComoParaSerValidaYAExcedeLosCienCaracteresPorqueEstaCadenaEsExcesivaYNoDeberiaSerAceptada");
+        marcaDto.setDescripcion("EstaDescripcionEsDemasiadoLargaComoParaSerValidaYAExcedeLosCienCaracteresPorqueEstaCadenaEsExcesivaYNoDeberiaSerAceptada");// Descripcion de mas de 100 carácteres, debería ser inválido
 
         assertFalse(marcaDto.esValido(), "La descripción no debe tener más de 100 caracteres.");
     }
@@ -58,8 +59,8 @@ public class MarcaDtoTest {
 
     @Test
     public void testNombreYDescripcionValidos() {
-        marcaDto.setNombre("NombreValido");
-        marcaDto.setDescripcion("Descripcion valida");
+        marcaDto.setNombre("NombreValido");// Nombre valido
+        marcaDto.setDescripcion("Descripcion valida"); // Descripcion valida
 
         assertTrue(marcaDto.esValido(), "El nombre y la descripción deberían ser válidos.");
     }
@@ -69,7 +70,6 @@ public class MarcaDtoTest {
         marcaDto.setNombre("NombreVálido");
         marcaDto.setDescripcion(null); // Descripción nula
 
-        // Verifica que el DTO es válido, ya que hemos eliminado la restricción de NotBlank
         assertTrue(marcaDto.esValido(), "El DTO debe ser válido con descripción nula.");
     }
 
