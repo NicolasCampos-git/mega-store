@@ -110,8 +110,4 @@ public class RegistrarSubCategoriaDtoTest {
 
         assertTrue(subCategoriaDto.esValido(), "La descripción debería ser válida.");
     }
-
-
-
-
 }

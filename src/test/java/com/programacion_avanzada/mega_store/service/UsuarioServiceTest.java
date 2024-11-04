@@ -6,12 +6,10 @@ import com.programacion_avanzada.mega_store.Modelos.Usuario;
 import com.programacion_avanzada.mega_store.Repository.UsuarioRepository;
 import com.programacion_avanzada.mega_store.Service.ISenderService;
 import com.programacion_avanzada.mega_store.Service.UsuarioService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 
