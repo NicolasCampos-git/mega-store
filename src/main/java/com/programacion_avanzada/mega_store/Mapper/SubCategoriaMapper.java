@@ -4,6 +4,8 @@ import org.mapstruct.Mapper;
 
 
 import com.programacion_avanzada.mega_store.DTOs.SubCategoriaDto;
+import com.programacion_avanzada.mega_store.DTOs.CategoriaDto;
+import com.programacion_avanzada.mega_store.Modelos.Categoria;
 
 import com.programacion_avanzada.mega_store.Modelos.SubCategoria;
 
@@ -12,4 +14,7 @@ public interface SubCategoriaMapper {
     
     SubCategoria toEntity(SubCategoriaDto subCategoriaDto);
     SubCategoriaDto toDto(SubCategoria subCategoria);
+
+    Categoria toEntity(CategoriaDto categoriaDto);
+    CategoriaDto toDto(Categoria categoria);
 }

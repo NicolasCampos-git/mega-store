@@ -35,12 +35,12 @@ public class MarcaService implements IMarcaService{
      */
     @Override
     public RegistrarMarcaDto registrarMarca(RegistrarMarcaDto dto) {
-        
+
         Marca marca = registrarMarcaMapper.toEntity(dto);
-        
+
         if(marcaRepository.existsByNombre(marca.getNombre().trim()) == false){
 
-            
+
             marca.setNombre(StringUtil.capitalizeFirstLetter(dto.getNombre().toLowerCase().trim()));
             marca.setDescripcion(dto.getDescripcion().toLowerCase().trim());
             marca.setEstaActivo(true);
@@ -50,6 +50,7 @@ public class MarcaService implements IMarcaService{
             throw new EntityExistsException("La marca ya existe");
         }
     }
+
 
     /*
      * Metodo encargado de listar las marcas,
