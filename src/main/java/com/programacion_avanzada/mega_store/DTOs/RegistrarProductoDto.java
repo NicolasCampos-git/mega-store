@@ -16,6 +16,7 @@ import java.util.Set;
 @Data
 public class RegistrarProductoDto {
 
+
     @NotBlank(message = "El nombre no puede estar vacío.")
     @Size(min = 2, max = 64, message = "El nombre debe tener entre 2 y 64 caracteres.")
     @Pattern(regexp = "^[^\\d\\s]+$", message = "El nombre no debe contener espacios ni números.")

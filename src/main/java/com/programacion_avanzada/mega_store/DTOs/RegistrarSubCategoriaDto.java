@@ -36,4 +36,5 @@ public class RegistrarSubCategoriaDto {
         Set<ConstraintViolation<RegistrarSubCategoriaDto>> violations = validator.validate(this);
         return violations.isEmpty();
     }
+
 }

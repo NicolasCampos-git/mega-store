@@ -17,7 +17,6 @@ import java.util.Set;
 @Data
 public class RegistroUsuarioDto {
 
-
     @NotBlank(message = "El nombre es obligatorio.")
     @Pattern(regexp = "^[a-zA-ZÁÉÍÓÚáéíóúñÑ]{2,64}$", message = "El nombre solo puede contener letras, sin espacios, con un máximo de 64 caracteres.")
     private String nombre;
@@ -36,8 +35,9 @@ public class RegistroUsuarioDto {
 
     @NotBlank(message = "La contraseña es obligatoria.")
     @Pattern(
-            regexp = "^(?=.*[A-Z])(?=.*\\d)(?=.*[a-zA-Z]).{8,}$",
-            message = "La contraseña debe tener al menos 8 caracteres, incluyendo al menos una mayúscula, un número y letras."
+        regexp = "^(?=.*[A-Z])(?=.*\\d)[A-Za-z\\d]{8,}$", 
+        message = "La contraseña debe tener al menos 8 caracteres, incluyendo una mayúscula y un número."
+
     )
     private String contrasena;
 
