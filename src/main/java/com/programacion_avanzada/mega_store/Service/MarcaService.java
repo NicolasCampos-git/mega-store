@@ -37,21 +37,10 @@ public class MarcaService implements IMarcaService{
     public RegistrarMarcaDto registrarMarca(RegistrarMarcaDto dto) {
 
         Marca marca = registrarMarcaMapper.toEntity(dto);
-<<<<<<< HEAD
+
         
         if(marcaRepository.existsByNombre(marca.getNombre().trim()) == true){
-=======
 
-        if(marcaRepository.existsByNombre(marca.getNombre().trim()) == false){
-
-
-            marca.setNombre(StringUtil.capitalizeFirstLetter(dto.getNombre().toLowerCase().trim()));
-            marca.setDescripcion(dto.getDescripcion().toLowerCase().trim());
-            marca.setEstaActivo(true);
-            return registrarMarcaMapper.toDto(marcaRepository.save(marca));
-
-        }else{
->>>>>>> 13a626063ab06f9a004621228eb9e15ae11771c5
             throw new EntityExistsException("La marca ya existe");
         }
         validarNombre(marca.getNombre());

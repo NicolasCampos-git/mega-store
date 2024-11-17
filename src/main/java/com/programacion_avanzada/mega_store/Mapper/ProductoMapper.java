@@ -3,7 +3,7 @@ package com.programacion_avanzada.mega_store.Mapper;
 import com.programacion_avanzada.mega_store.DTOs.MarcaDto;
 import com.programacion_avanzada.mega_store.DTOs.ProductoDto;
 import com.programacion_avanzada.mega_store.DTOs.RegistrarProductoDto;
-import com.programacion_avanzada.mega_store.DTOs.SubCategoriaDto;
+import com.programacion_avanzada.mega_store.DTOs.SubCategoriaDTO;
 import com.programacion_avanzada.mega_store.Modelos.Marca;
 import com.programacion_avanzada.mega_store.Modelos.Producto;
 import com.programacion_avanzada.mega_store.Modelos.SubCategoria;
@@ -20,10 +20,10 @@ public interface ProductoMapper {
     Producto toEntity(RegistrarProductoDto registrarProductoDto);
 
     // Convierte Categoria entity a CategoriaDto
-    SubCategoriaDto toDto(SubCategoria subCategoria);
+    SubCategoriaDTO toDto(SubCategoria subCategoria);
     
     // Convierte CategoriaDto a Categoria entity
-    SubCategoria toEntity(SubCategoriaDto subCategoriaDto);
+    SubCategoria toEntity(SubCategoriaDTO subCategoriaDto);
 
     // Convierte Marca entity a MarcaDto
     MarcaDto toDto(Marca marca);
