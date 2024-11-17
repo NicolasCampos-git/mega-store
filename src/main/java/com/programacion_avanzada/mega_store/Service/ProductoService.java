@@ -20,6 +20,7 @@ import com.programacion_avanzada.mega_store.Repository.ProductoRepository;
 import com.programacion_avanzada.mega_store.Repository.SubCategoriaRepository;
 
 import ch.qos.logback.core.util.StringUtil;
+import lombok.val;
 
 @Service
 public class ProductoService implements IProductoService {
@@ -108,39 +109,29 @@ public class ProductoService implements IProductoService {
 
         Producto producto = productoRepository.findById(id).filter(Producto::isEstaActivo).orElse(null);
         
-        if(dto.getNombre() != null){
-            producto.setNombre(dto.getNombre());
-        }
+        validarNombre(producto.getNombre());
 
-        if(dto.getDescripcion() != null){
-            producto.setDescripcion(dto.getDescripcion());
-        }
+        validarDescripcion(producto.getDescripcion());
 
-        if(dto.getTamano() != null){
-            producto.setTamano(dto.getTamano());
-        }
+        validarTamano(producto.getTamano());
 
-        if(dto.getColor() != null ){
-            producto.setColor(dto.getColor());
-        }
+        validarColor(producto.getColor());
 
-        /*
-         * Los 3 condicionales verifican que no se ingresen numeros negativos.
-         */
-        if(dto.getStock() > 0){
-            producto.setStock(dto.getStock());
-        }
+        valirdarPrecio(producto.getPrecioUnitario());
 
-        if(dto.getUmbralBajoStock() > 0){
-            producto.setUmbralBajoStock(dto.getUmbralBajoStock());
-        }
+        validarStock(producto.getStock());
 
-        if(dto.getMarcaId() > 0){
-           Marca marca = marcaRepository.findById(dto.getMarcaId()).orElse(null);
-           producto.setMarca(marca);
-        }
+        validarUmbralBajoStock(producto.getUmbralBajoStock());
 
-        //Falta sub categoria.
+        validarStockYUmbralBajoStock(producto.getStock(), producto.getUmbralBajoStock());
+
+        validarMarca(dto.getMarcaId(), producto);
+
+        ValidarSubCategoria(dto.getSubCategoriaId(), producto);
+
+        normalizarDatos(producto);
+
+        
 
         return registrarProductoMapper.toDto(productoRepository.save(producto));
     }
@@ -153,6 +144,149 @@ public class ProductoService implements IProductoService {
             producto.setEstaActivo(true);
             productoRepository.save(producto);
         }
+    }
+
+    private void validarNombre(String nombre){
+        if (nombre == null || nombre.isEmpty()) {
+            throw new IllegalArgumentException("El nombre del producto no puede estar vacío.");
+            
+        }
+        if (nombre.length() < 2 || nombre.length() > 64) {
+            throw new IllegalArgumentException("El nombre del producto debe tener entre 2 y 64 caracteres.");
+        }
+        if (nombre.contains(" ")) {
+            throw new IllegalArgumentException("El nombre del producto no debe contener espacios.");
+            
+        }
+    }
+
+    private void validarDescripcion(String descripcion){
+        if (descripcion == null || descripcion.isEmpty()) {
+            throw new IllegalArgumentException("La descripcion del producto no puede estar vacía.");
+            
+        }
+        if (descripcion.length() < 2 || descripcion.length() > 64) {
+            throw new IllegalArgumentException("La descripcion del producto debe tener entre 2 y 64 caracteres.");
+        }
+        if (descripcion.contains(" ")) {
+            throw new IllegalArgumentException("La descripcion del producto no debe contener espacios.");
+            
+        }
+    }
+
+    private void validarTamano(String tamano){
+        if (tamano == null || tamano.isEmpty()) {
+            throw new IllegalArgumentException("El tamaño del producto no puede estar vacío.");
+            
+        }
+        if (tamano.length() < 2 || tamano.length() > 3) {
+            throw new IllegalArgumentException("Solo se permite XS,S,M,L, XL O XXL para el tamaño del producto.");
+        }
+        if (tamano.contains(" ")) {
+            throw new IllegalArgumentException("El tamaño del producto no debe contener espacios.");
+            
+        }
+    }
+
+    private void validarColor(String color){
+        if (color == null || color.isEmpty()) {
+            throw new IllegalArgumentException("El color del producto no puede estar vacío.");
+            
+        }
+        if (color.length() < 2 || color.length() > 64) {
+            throw new IllegalArgumentException("El color del producto debe tener entre 2 y 64 caracteres.");
+        }
+        
+    }
+
+    private void valirdarPrecio(double precioUnitario){
+        if (precioUnitario < 0) {
+            throw new IllegalArgumentException("El precio unitario del producto debe ser mayor a 0.");
+        }
+
+        if (precioUnitario > 999999.99) {
+            throw new IllegalArgumentException("El precio unitario del producto debe ser menor a 999999.99.");
+            
+        }
+
+        if (precioUnitario == 0) {
+            throw new IllegalArgumentException("El precio unitario del producto no puede estar vacío.");
+            
+        }
+
+    }
+
+    private void validarStock(int stock){
+        if (stock < 0) {
+            throw new IllegalArgumentException("El stock del producto debe ser mayor a 0.");
+        }
+
+        if (stock > 999) {
+            throw new IllegalArgumentException("El stock del producto debe ser menor a 999999.");
+            
+        }
+
+        if (stock == 0) {
+            throw new IllegalArgumentException("El stock del producto no puede estar vacío.");
+            
+        }
+    }
+
+    private void validarUmbralBajoStock(int umbralBajoStock){
+        if (umbralBajoStock < 0) {
+            throw new IllegalArgumentException("El umbral bajo de stock del producto debe ser mayor a 0.");
+        }
+
+        if (umbralBajoStock > 999) {
+            throw new IllegalArgumentException("El umbral bajo de stock del producto debe ser menor a 999999.");
+            
+        }
+        if (umbralBajoStock == 0) {
+            throw new IllegalArgumentException("El umbral bajo de stock del producto no puede estar vacío.");
+            
+        }
+
+        
+    }
+
+    private void validarStockYUmbralBajoStock(int stock, int umbralBajoStock){
+        if (stock < umbralBajoStock) {
+            throw new IllegalArgumentException("El stock del producto debe ser mayor o igual al umbral bajo de stock.");
+        }
+    }
+
+    private void validarMarca(long marcaId, Producto producto){
+        if (marcaId <= 0) {
+            throw new IllegalArgumentException("La marca del producto no puede estar vacía.");
+        }
+
+        Marca marca = marcaRepository.findById(marcaId).orElse(null);
+        if (marca == null) {
+            throw new IllegalArgumentException("La marca del producto no existe.");
+        }
+        producto.setMarca(marca);
+
+        
+    }
+
+    private void ValidarSubCategoria(long subCategoriaId, Producto producto){
+        if (subCategoriaId <= 0) {
+            throw new IllegalArgumentException("La subcategoria del producto no puede estar vacía.");
+        }
+
+        SubCategoria subCategoria = subCategoriaRepository.findById(subCategoriaId).orElse(null);
+        if (subCategoria == null) {
+            throw new IllegalArgumentException("La subcategoria del producto no existe.");
+        }
+        producto.setSubcategoria(subCategoria);
+    }
+
+    private void normalizarDatos(Producto producto){
+        producto.setNombre(producto.getNombre().toLowerCase().trim());
+        producto.setDescripcion(producto.getDescripcion().toLowerCase().trim());
+        producto.setColor(producto.getColor().toLowerCase().trim());
+        producto.setTamano(producto.getTamano().toUpperCase().trim());
+
     }
 
 

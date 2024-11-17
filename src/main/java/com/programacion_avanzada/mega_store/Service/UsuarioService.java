@@ -69,8 +69,11 @@ public class UsuarioService implements IUsuarioService {
      */
     @Override
     public UsuarioDto actualizarInformacionPersonal(long id, UsuarioDto dto) {
-        Usuario usuario = usuarioRepository.findById(id)
-                .orElseThrow();
+        Usuario usuario = usuarioRepository.findById(id).orElse(null);
+        if (usuario == null) {
+            throw new IllegalArgumentException("Usuario no encontrado con el ID: " + id);
+            
+        }
     
         
         usuario.setNombre(StringUtil.capitalizeFirstLetter(dto.getNombre().toLowerCase()));
