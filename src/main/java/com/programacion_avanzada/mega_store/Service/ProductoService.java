@@ -5,6 +5,8 @@ import java.util.stream.Collectors;
 
 import com.programacion_avanzada.mega_store.DTOs.ProductoDto;
 import com.programacion_avanzada.mega_store.Mapper.RegistrarProductoMapper;
+import jakarta.persistence.EntityExistsException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -46,11 +48,19 @@ public class ProductoService implements IProductoService {
      */
     @Override
     public RegistrarProductoDto registrarProducto(RegistrarProductoDto dto) {
-    
+        // Primero, verifica si la marca y la subcategoría existen
+        if (!marcaRepository.existsById(dto.getMarcaId())) {
+            throw new EntityNotFoundException("La marca no existe");
+        }
+        if (!subCategoriaRepository.existsById(dto.getSubCategoriaId())) {
+            throw new EntityNotFoundException("La subcategoría no existe");
+        }
+
+
         // verificamos que el producto no no exista.
         if (!productoRepository.existsByNombre(dto.getNombre())) {
-            Producto producto = productoMapper.toEntity(dto);
-            
+            Producto producto = registrarProductoMapper.toEntity(dto);
+
             // Normarlizamos los atributos del producto.
             producto.setNombre(StringUtil.capitalizeFirstLetter(dto.getNombre().toLowerCase().trim()));
             producto.setDescripcion(StringUtil.capitalizeFirstLetter(dto.getDescripcion().toLowerCase().trim()));
@@ -61,7 +71,7 @@ public class ProductoService implements IProductoService {
 
             //Asignamos el estado como activo.
             producto.setEstaActivo(true);
-            
+
             //Buscamos la marca y se la asignamos.
             Marca marca = marcaRepository.findById(dto.getMarcaId()).orElseThrow();
             producto.setMarca(marca);
@@ -69,13 +79,14 @@ public class ProductoService implements IProductoService {
             //Buscamos la categoria y se la asignamos.(Hay que cambiarlo)
             SubCategoria subCategoria = subCategoriaRepository.findById(dto.getSubCategoriaId()).orElseThrow();
             producto.setSubcategoria(subCategoria);
-    
+
 
             return registrarProductoMapper.toDto(productoRepository.save(producto));
         }
-        
-        return null; //deberia salir una excepcion.
+
+        throw new EntityExistsException("El producto ya existe"); //deberia salir una excepcion.
     }
+
 
     /*
      * Metodo que para listar todos los productos que se encuentren activos.

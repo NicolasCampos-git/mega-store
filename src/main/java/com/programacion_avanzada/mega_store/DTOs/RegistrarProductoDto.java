@@ -1,5 +1,9 @@
 package com.programacion_avanzada.mega_store.DTOs;
 
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -7,12 +11,15 @@ import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
+import java.util.Set;
+
 @Data
 public class RegistrarProductoDto {
 
-    @NotBlank(message = "El nombre es obligatorio.")
+
+    @NotBlank(message = "El nombre no puede estar vacío.")
     @Size(min = 2, max = 64, message = "El nombre debe tener entre 2 y 64 caracteres.")
-    @Pattern(regexp = "^[A-Za-z]+$", message = "El nombre no debe contener espacios ni números.")
+    @Pattern(regexp = "^[^\\d\\s]+$", message = "El nombre no debe contener espacios ni números.")
     private String nombre;
 
     @NotBlank(message = "La descripción es obligatoria.")
@@ -48,4 +55,13 @@ public class RegistrarProductoDto {
     @NotNull(message = "La subcategoría es obligatoria.")
     @Positive(message = "La subcategoría debe ser un valor positivo.")
     private Long subCategoriaId;
+
+    //Metodo que valida los campos de acuerdo con las anotaciones
+    public boolean esValido() {
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        Validator validator = factory.getValidator();
+
+        Set<ConstraintViolation<RegistrarProductoDto>> violations = validator.validate(this);
+        return violations.isEmpty();
+    }
 }

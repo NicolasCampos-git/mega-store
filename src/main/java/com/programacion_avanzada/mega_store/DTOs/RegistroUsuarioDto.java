@@ -2,15 +2,21 @@ package com.programacion_avanzada.mega_store.DTOs;
 
 
 
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
+
+import java.util.Set;
+
 //Este DTO tiene estos atributos para poder hacer el registro del usuario.
 @Data
 public class RegistroUsuarioDto {
-    
-   
+
     @NotBlank(message = "El nombre es obligatorio.")
     @Pattern(regexp = "^[a-zA-ZÁÉÍÓÚáéíóúñÑ]{2,64}$", message = "El nombre solo puede contener letras, sin espacios, con un máximo de 64 caracteres.")
     private String nombre;
@@ -31,9 +37,22 @@ public class RegistroUsuarioDto {
     @Pattern(
         regexp = "^(?=.*[A-Z])(?=.*\\d)[A-Za-z\\d]{8,}$", 
         message = "La contraseña debe tener al menos 8 caracteres, incluyendo una mayúscula y un número."
+
     )
     private String contrasena;
 
     @NotBlank(message = "Debe repetir la contraseña.")
     private String contrasenaRepetida;
+
+    //Metodo que valida los campos de acuerdo con las anotaciones
+    public boolean esValido() {
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        Validator validator = factory.getValidator();
+
+        Set<ConstraintViolation<RegistroUsuarioDto>> violations = validator.validate(this);
+
+        boolean contrasenaCoincide = this.contrasena.equals(this.contrasenaRepetida);
+
+        return violations.isEmpty() && contrasenaCoincide;
+    }
 }

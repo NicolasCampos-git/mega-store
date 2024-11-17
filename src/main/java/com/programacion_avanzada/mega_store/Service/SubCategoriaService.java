@@ -3,6 +3,7 @@ package com.programacion_avanzada.mega_store.Service;
 import java.util.List;
 import java.util.Optional;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,24 +42,31 @@ public class SubCategoriaService implements ISubCategoriaService {
      */
     @Override
     public RegistrarSubCategoriaDto registrarSubCategoria(RegistrarSubCategoriaDto dto) {
-        
-        SubCategoria subCategoria = registrarSubCategoriaMapper.toEntity(dto);
-        
-        
-        if(subCategoriaRepository.existsByNombre(subCategoria.getNombre()) != true && categoriaRepository.existsById(dto.getCategoriaId())){
+        // Primero, verifica si la categoría existe
+        if (!categoriaRepository.existsById(dto.getCategoriaId())) {
+            throw new EntityNotFoundException("La categoría no existe");
+        }
 
-            Categoria categoria = categoriaRepository.findById(dto.getCategoriaId()).orElse(null);
-
-            subCategoria.setNombre(StringUtil.capitalizeFirstLetter(dto.getNombre().toLowerCase().trim()));
-            subCategoria.setDescripcion(dto.getDescripcion().toLowerCase().trim());
-            subCategoria.setCategoria(categoria);
-            subCategoria.setEstaActivo(true);
-
-            return registrarSubCategoriaMapper.toDto(subCategoriaRepository.save(subCategoria));
-
-        }else{
+        // Verifica si la subcategoría ya existe
+        if (subCategoriaRepository.existsByNombre(dto.getNombre())) {
             throw new EntityExistsException("La subcategoria ya existe");
         }
+
+        // Convertir el DTO a entidad
+        SubCategoria subCategoria = registrarSubCategoriaMapper.toEntity(dto);
+
+        // Normalizar los datos
+        subCategoria.setNombre(StringUtil.capitalizeFirstLetter(dto.getNombre().toLowerCase().trim()));
+        subCategoria.setDescripcion(dto.getDescripcion().toLowerCase().trim());
+
+        // Obtener la categoría y asignarla a la subcategoría
+        Categoria categoria = categoriaRepository.findById(dto.getCategoriaId())
+                .orElseThrow(() -> new EntityNotFoundException("La categoría no existe")); // Lanza excepción si no se encuentra la categoría
+        subCategoria.setCategoria(categoria);
+        subCategoria.setEstaActivo(true);
+
+        // Guardar la subcategoría en el repositorio
+        return registrarSubCategoriaMapper.toDto(subCategoriaRepository.save(subCategoria));
     }
 
     @Override

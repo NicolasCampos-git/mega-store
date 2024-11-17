@@ -1,11 +1,17 @@
 package com.programacion_avanzada.mega_store.DTOs;
 
 import io.micrometer.common.lang.NonNull;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+
+import java.util.Set;
 
 @Data
 public class RegistrarSubCategoriaDto {
@@ -21,4 +27,14 @@ public class RegistrarSubCategoriaDto {
 
     @NotNull(message = "Debe seleccionar una categoría.")
     private Long categoriaId;
+
+    //Metodo que valida los campos de acuerdo con las anotaciones
+    public boolean esValido() {
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        Validator validator = factory.getValidator();
+
+        Set<ConstraintViolation<RegistrarSubCategoriaDto>> violations = validator.validate(this);
+        return violations.isEmpty();
+    }
+
 }
