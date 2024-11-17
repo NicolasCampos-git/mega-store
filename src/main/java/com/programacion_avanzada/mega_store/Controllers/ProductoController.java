@@ -11,14 +11,12 @@ import com.programacion_avanzada.mega_store.Service.IProductoService;
 import jakarta.validation.Valid;
 
 import java.util.List;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PathVariable;
 
 
 
 @RestController
-@RequestMapping("producto")
+@RequestMapping("api/productos")
+@CrossOrigin(origins = "http://localhost:5173") 
 public class ProductoController {
     @Autowired
     IProductoService productoService;
@@ -36,7 +34,7 @@ public class ProductoController {
         return productoService.listar();
     }
 
-    @PutMapping("/editar/{id}")
+    @PutMapping("/actualizar/{id}")
     public RegistrarProductoDto editarProducto(@PathVariable("id") long id, @RequestBody RegistrarProductoDto dto) {
         
         

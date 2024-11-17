@@ -39,29 +39,28 @@ public class UsuarioService implements IUsuarioService {
     public RegistroUsuarioDto registrarUsuario(RegistroUsuarioDto dto) {
 
         if(dto.getContrasena().equals(dto.getContrasenaRepetida())){
-
-            Usuario usuario = RegistroUsuarioMapper.toEntity(dto);
-
-
-            if(usuarioRepository.existsByEmail(usuario.getEmail())){
-                throw new IllegalArgumentException("El email ya está registrado.");
-            }
-
-            //Nrmalizacion de datos
-            usuario.setNombre(StringUtil.capitalizeFirstLetter(dto.getNombre().toLowerCase()));
-            usuario.setApellido(StringUtil.capitalizeFirstLetter(dto.getApellido().toLowerCase()));
-            usuario.setEmail(dto.getEmail().trim().toLowerCase());
-            usuario.setTelefono(dto.getTelefono());
-
-            //Por temas de practicidad agrega por defecto el rol "Cliente".
-            usuario.setRol("cliente");
-            senderService.enviarCorreo(usuario.getEmail());
-
-
-            return RegistroUsuarioMapper.toDto(usuarioRepository.save(usuario));
-        }else{
-            throw new IllegalArgumentException("Las contrasenas no coinciden");
+            throw new IllegalArgumentException("Las contraseñas no coinciden.");   
+            
         }
+        Usuario usuario = RegistroUsuarioMapper.toEntity(dto);
+            
+            
+        if(usuarioRepository.existsByEmail(usuario.getEmail())){
+            throw new IllegalArgumentException("El email ya está registrado.");
+        }
+
+        //Nrmalizacion de datos
+        usuario.setNombre(StringUtil.capitalizeFirstLetter(dto.getNombre().toLowerCase()));
+        usuario.setApellido(StringUtil.capitalizeFirstLetter(dto.getApellido().toLowerCase()));
+        usuario.setEmail(dto.getEmail().trim().toLowerCase());
+        usuario.setTelefono(dto.getTelefono());
+
+        //Por temas de practicidad agrega por defecto el rol "Cliente".
+        usuario.setRol("cliente");
+        senderService.enviarCorreo(usuario.getEmail());
+
+            
+        return RegistroUsuarioMapper.toDto(usuarioRepository.save(usuario));
     }
 
     /*
@@ -69,16 +68,19 @@ public class UsuarioService implements IUsuarioService {
      */
     @Override
     public UsuarioDto actualizarInformacionPersonal(long id, UsuarioDto dto) {
-        Usuario usuario = usuarioRepository.findById(id)
-                .orElseThrow();
-
-
+        Usuario usuario = usuarioRepository.findById(id).orElse(null);
+        if (usuario == null) {
+            throw new IllegalArgumentException("Usuario no encontrado con el ID: " + id);
+            
+        }
+    
+        
         usuario.setNombre(StringUtil.capitalizeFirstLetter(dto.getNombre().toLowerCase()));
         usuario.setApellido(StringUtil.capitalizeFirstLetter(dto.getApellido().toLowerCase()));
         usuario.setEmail(dto.getEmail().trim().toLowerCase());
         usuario.setTelefono(dto.getTelefono());
-
-
+    
+        
         Usuario usuarioActualizado = usuarioRepository.save(usuario);
         return UsuarioMapper.toDto(usuarioActualizado);
     }
@@ -113,5 +115,5 @@ public class UsuarioService implements IUsuarioService {
     }
 
 
-
+    
 }

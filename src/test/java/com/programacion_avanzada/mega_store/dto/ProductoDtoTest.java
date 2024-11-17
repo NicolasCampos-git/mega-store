@@ -2,7 +2,8 @@ package com.programacion_avanzada.mega_store.dto;
 
 import com.programacion_avanzada.mega_store.DTOs.MarcaDto;
 import com.programacion_avanzada.mega_store.DTOs.ProductoDto;
-import com.programacion_avanzada.mega_store.DTOs.SubCategoriaDto;
+import com.programacion_avanzada.mega_store.DTOs.SubCategoriaDTO;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,7 +28,7 @@ public class ProductoDtoTest {
         marcaDto.setId(1L);
         marcaDto.setNombre("MarcaValida");
 
-        SubCategoriaDto subCategoriaDto = new SubCategoriaDto();
+        SubCategoriaDTO subCategoriaDto = new SubCategoriaDTO();
         subCategoriaDto.setId(1L);
         subCategoriaDto.setNombre("SubCategoriaValida");
 
@@ -51,7 +52,7 @@ public class ProductoDtoTest {
         marcaDto.setId(1L);
         marcaDto.setNombre("MarcaValida");
 
-        SubCategoriaDto subCategoriaDto = new SubCategoriaDto();
+        SubCategoriaDTO subCategoriaDto = new SubCategoriaDTO();
         subCategoriaDto.setId(1L);
         subCategoriaDto.setNombre("SubCategoriaValida");
 
@@ -75,7 +76,7 @@ public class ProductoDtoTest {
         marcaDto.setId(1L);
         marcaDto.setNombre("MarcaValida");
 
-        SubCategoriaDto subCategoriaDto = new SubCategoriaDto();
+        SubCategoriaDTO subCategoriaDto = new SubCategoriaDTO();
         subCategoriaDto.setId(1L);
         subCategoriaDto.setNombre("SubCategoriaValida");
 
@@ -99,7 +100,7 @@ public class ProductoDtoTest {
         marcaDto.setId(1L);
         marcaDto.setNombre("MarcaValida");
 
-        SubCategoriaDto subCategoriaDto = new SubCategoriaDto();
+        SubCategoriaDTO subCategoriaDto = new SubCategoriaDTO();
         subCategoriaDto.setId(1L);
         subCategoriaDto.setNombre("SubCategoriaValida");
 
@@ -123,7 +124,7 @@ public class ProductoDtoTest {
         marcaDto.setId(1L);
         marcaDto.setNombre("MarcaValida");
 
-        SubCategoriaDto subCategoriaDto = new SubCategoriaDto();
+        SubCategoriaDTO subCategoriaDto = new SubCategoriaDTO();
         subCategoriaDto.setId(1L);
         subCategoriaDto.setNombre("SubCategoriaValida");
 
@@ -147,7 +148,7 @@ public class ProductoDtoTest {
         marcaDto.setId(1L);
         marcaDto.setNombre("MarcaValida");
 
-        SubCategoriaDto subCategoriaDto = new SubCategoriaDto();
+        SubCategoriaDTO subCategoriaDto = new SubCategoriaDTO();
         subCategoriaDto.setId(1L);
         subCategoriaDto.setNombre("SubCategoriaValida");
 
@@ -171,7 +172,7 @@ public class ProductoDtoTest {
         marcaDto.setId(1L);
         marcaDto.setNombre("MarcaValida");
 
-        SubCategoriaDto subCategoriaDto = new SubCategoriaDto();
+        SubCategoriaDTO subCategoriaDto = new SubCategoriaDTO();
         subCategoriaDto.setId(1L);
         subCategoriaDto.setNombre("SubCategoriaValida");
 
@@ -195,7 +196,7 @@ public class ProductoDtoTest {
         marcaDto.setId(1L);
         marcaDto.setNombre("MarcaValida");
 
-        SubCategoriaDto subCategoriaDto = new SubCategoriaDto();
+        SubCategoriaDTO subCategoriaDto = new SubCategoriaDTO();
         subCategoriaDto.setId(1L);
         subCategoriaDto.setNombre("SubCategoriaValida");
 
@@ -219,7 +220,7 @@ public class ProductoDtoTest {
         marcaDto.setId(1L);
         marcaDto.setNombre("MarcaValida");
 
-        SubCategoriaDto subCategoriaDto = new SubCategoriaDto();
+        SubCategoriaDTO subCategoriaDto = new SubCategoriaDTO();
         subCategoriaDto.setId(1L);
         subCategoriaDto.setNombre("SubCategoriaValida");
 
@@ -243,7 +244,7 @@ public class ProductoDtoTest {
         marcaDto.setId(1L);
         marcaDto.setNombre("MarcaValida");
 
-        SubCategoriaDto subCategoriaDto = new SubCategoriaDto();
+        SubCategoriaDTO subCategoriaDto = new SubCategoriaDTO();
         subCategoriaDto.setId(1L);
         subCategoriaDto.setNombre("SubCategoriaValida");
 
@@ -267,7 +268,7 @@ public class ProductoDtoTest {
         marcaDto.setId(1L);
         marcaDto.setNombre("MarcaValida");
 
-        SubCategoriaDto subCategoriaDto = new SubCategoriaDto();
+        SubCategoriaDTO subCategoriaDto = new SubCategoriaDTO();
         subCategoriaDto.setId(1L);
         subCategoriaDto.setNombre("SubCategoriaValida");
 
@@ -291,7 +292,7 @@ public class ProductoDtoTest {
         marcaDto.setId(1L);
         marcaDto.setNombre("MarcaValida");
 
-        SubCategoriaDto subCategoriaDto = new SubCategoriaDto();
+        SubCategoriaDTO subCategoriaDto = new SubCategoriaDTO();
         subCategoriaDto.setId(1L);
         subCategoriaDto.setNombre("SubCategoriaValida");
 
@@ -315,7 +316,7 @@ public class ProductoDtoTest {
         marcaDto.setId(1L);
         marcaDto.setNombre("MarcaValida");
 
-        SubCategoriaDto subCategoriaDto = new SubCategoriaDto();
+        SubCategoriaDTO subCategoriaDto = new SubCategoriaDTO();
         subCategoriaDto.setId(1L);
         subCategoriaDto.setNombre("SubCategoriaValida");
 
@@ -338,7 +339,7 @@ public class ProductoDtoTest {
         marcaDto.setId(1L);
         marcaDto.setNombre("MarcaValida");
 
-        SubCategoriaDto subCategoriaDto = new SubCategoriaDto();
+        SubCategoriaDTO subCategoriaDto = new SubCategoriaDTO();
         subCategoriaDto.setId(1L);
         subCategoriaDto.setNombre("SubCategoriaValida");
 
@@ -361,7 +362,7 @@ public class ProductoDtoTest {
         marcaDto.setId(1L);
         marcaDto.setNombre("MarcaValida");
 
-        SubCategoriaDto subCategoriaDto = new SubCategoriaDto();
+        SubCategoriaDTO subCategoriaDto = new SubCategoriaDTO();
         subCategoriaDto.setId(1L);
         subCategoriaDto.setNombre("SubCategoriaValida");
 
@@ -384,7 +385,7 @@ public class ProductoDtoTest {
         marcaDto.setId(1L);
         marcaDto.setNombre("MarcaValida");
 
-        SubCategoriaDto subCategoriaDto = new SubCategoriaDto();
+        SubCategoriaDTO subCategoriaDto = new SubCategoriaDTO();
         subCategoriaDto.setId(1L);
         subCategoriaDto.setNombre("SubCategoriaValida");
 
@@ -407,7 +408,7 @@ public class ProductoDtoTest {
         marcaDto.setId(1L);
         marcaDto.setNombre("MarcaValida");
 
-        SubCategoriaDto subCategoriaDto = new SubCategoriaDto();
+        SubCategoriaDTO subCategoriaDto = new SubCategoriaDTO();
         subCategoriaDto.setId(1L);
         subCategoriaDto.setNombre("SubCategoriaValida");
 
@@ -430,7 +431,7 @@ public class ProductoDtoTest {
         marcaDto.setId(1L);
         marcaDto.setNombre("MarcaValida");
 
-        SubCategoriaDto subCategoriaDto = new SubCategoriaDto();
+        SubCategoriaDTO subCategoriaDto = new SubCategoriaDTO();
         subCategoriaDto.setId(1L);
         subCategoriaDto.setNombre("SubCategoriaValida");
 
@@ -453,7 +454,7 @@ public class ProductoDtoTest {
         marcaDto.setId(1L);
         marcaDto.setNombre("MarcaValida");
 
-        SubCategoriaDto subCategoriaDto = new SubCategoriaDto();
+        SubCategoriaDTO subCategoriaDto = new SubCategoriaDTO();
         subCategoriaDto.setId(1L);
         subCategoriaDto.setNombre("SubCategoriaValida");
 
@@ -476,7 +477,7 @@ public class ProductoDtoTest {
         marcaDto.setId(1L);
         marcaDto.setNombre("MarcaValida");
 
-        SubCategoriaDto subCategoriaDto = new SubCategoriaDto();
+        SubCategoriaDTO subCategoriaDto = new SubCategoriaDTO();
         subCategoriaDto.setId(1L);
         subCategoriaDto.setNombre("SubCategoriaValida");
 
@@ -499,7 +500,7 @@ public class ProductoDtoTest {
         marcaDto.setId(1L);
         marcaDto.setNombre("MarcaValida");
 
-        SubCategoriaDto subCategoriaDto = new SubCategoriaDto();
+        SubCategoriaDTO subCategoriaDto = new SubCategoriaDTO();
         subCategoriaDto.setId(1L);
         subCategoriaDto.setNombre("SubCategoriaValida");
 
@@ -523,7 +524,7 @@ public class ProductoDtoTest {
         marcaDto.setId(1L);
         marcaDto.setNombre("MarcaValida");
 
-        SubCategoriaDto subCategoriaDto = new SubCategoriaDto();
+        SubCategoriaDTO subCategoriaDto = new SubCategoriaDTO();
         subCategoriaDto.setId(1L);
         subCategoriaDto.setNombre("SubCategoriaValida");
 
@@ -546,7 +547,7 @@ public class ProductoDtoTest {
         marcaDto.setId(1L);
         marcaDto.setNombre("MarcaValida");
 
-        SubCategoriaDto subCategoriaDto = new SubCategoriaDto();
+        SubCategoriaDTO subCategoriaDto = new SubCategoriaDTO();
         subCategoriaDto.setId(1L);
         subCategoriaDto.setNombre("SubCategoriaValida");
 
@@ -569,7 +570,7 @@ public class ProductoDtoTest {
         marcaDto.setId(1L);
         marcaDto.setNombre("MarcaValida");
 
-        SubCategoriaDto subCategoriaDto = new SubCategoriaDto();
+        SubCategoriaDTO subCategoriaDto = new SubCategoriaDTO();
         subCategoriaDto.setId(1L);
         subCategoriaDto.setNombre("SubCategoriaValida");
 
@@ -592,7 +593,7 @@ public class ProductoDtoTest {
         marcaDto.setId(1L);
         marcaDto.setNombre("MarcaValida");
 
-        SubCategoriaDto subCategoriaDto = new SubCategoriaDto();
+        SubCategoriaDTO subCategoriaDto = new SubCategoriaDTO();
         subCategoriaDto.setId(1L);
         subCategoriaDto.setNombre("SubCategoriaValida");
 

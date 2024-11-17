@@ -13,7 +13,6 @@ import java.util.Set;
 
 @Data
 public class RegistrarCategoriaDto {
-  
 
     @NotBlank(message = "El nombre no puede estar vacío.")
     @Size(min = 2, max = 64, message = "El nombre debe tener entre 2 y 64 caracteres.")

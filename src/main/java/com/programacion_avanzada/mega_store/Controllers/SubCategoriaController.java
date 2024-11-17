@@ -5,6 +5,7 @@ import java.util.List;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.programacion_avanzada.mega_store.DTOs.RegistrarSubCategoriaDto;
-import com.programacion_avanzada.mega_store.DTOs.SubCategoriaDto;
+import com.programacion_avanzada.mega_store.DTOs.SubCategoriaDTO;
 import com.programacion_avanzada.mega_store.Mapper.SubCategoriaMapper;
 
 
@@ -25,7 +26,8 @@ import com.programacion_avanzada.mega_store.Service.ISubCategoriaService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("subcategoria")
+@RequestMapping("api/subcategorias")
+@CrossOrigin(origins = "http://localhost:5173") 
 public class SubCategoriaController {
 
     @Autowired
@@ -41,18 +43,18 @@ public class SubCategoriaController {
 
     
     @GetMapping("/listar")
-    public List<SubCategoriaDto> listar() {
+    public List<SubCategoriaDTO> listar() {
         return subCategoriaService.listar();
     }
 
     
     @GetMapping("buscar/{id}")
-    public SubCategoriaDto buscarPorId(@PathVariable long id) {
+    public SubCategoriaDTO buscarPorId(@PathVariable long id) {
         return subCategoriaMapper.toDto(subCategoriaService.buscarPorId(id));
     }
 
     @PutMapping("/actualizar/{id}")
-    public SubCategoriaDto actualizar(@PathVariable long id, @RequestBody @Valid SubCategoriaDto dto) {
+    public SubCategoriaDTO actualizar(@PathVariable long id, @RequestBody @Valid SubCategoriaDTO dto) {
         return subCategoriaService.actualizar(id, dto);
     }
     

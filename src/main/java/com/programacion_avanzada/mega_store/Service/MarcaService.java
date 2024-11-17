@@ -38,17 +38,19 @@ public class MarcaService implements IMarcaService{
 
         Marca marca = registrarMarcaMapper.toEntity(dto);
 
-        if(marcaRepository.existsByNombre(marca.getNombre().trim()) == false){
+        
+        if(marcaRepository.existsByNombre(marca.getNombre().trim()) == true){
 
-
-            marca.setNombre(StringUtil.capitalizeFirstLetter(dto.getNombre().toLowerCase().trim()));
-            marca.setDescripcion(dto.getDescripcion().toLowerCase().trim());
-            marca.setEstaActivo(true);
-            return registrarMarcaMapper.toDto(marcaRepository.save(marca));
-
-        }else{
             throw new EntityExistsException("La marca ya existe");
         }
+        validarNombre(marca.getNombre());
+        validarDescripcion(marca.getDescripcion());
+
+        normalizarDatos(marca);
+        marca.setEstaActivo(true);
+            
+        
+        return registrarMarcaMapper.toDto(marcaRepository.save(marca));
     }
 
 
@@ -91,9 +93,13 @@ public class MarcaService implements IMarcaService{
     public MarcaDto actualizar(long id, MarcaDto dto) {
         Marca marca = marcaRepository.findById(id).orElse(null);
         
-        // Aquí actualizamos los campos de la marca
+        validarNombre(dto.getNombre());
+        validarDescripcion(dto.getDescripcion());
+
         marca.setNombre(dto.getNombre());
         marca.setDescripcion(dto.getDescripcion());
+
+        normalizarDatos(marca);
 
         marcaRepository.save(marca);
         return marcaMapper.toDto(marca);
@@ -102,12 +108,47 @@ public class MarcaService implements IMarcaService{
     @Override
     public MarcaDto reactivar(long id){
         Marca marca = marcaRepository.findById(id).orElse(null);
-        if(marca.isEstaActivo() == false){
-            marca.setEstaActivo(true);
+        if(marca.isEstaActivo() == true){
+            throw new IllegalArgumentException("La marca ya esta activa.");
         }
+        marca.setEstaActivo(true);
         //Aca deberia haber una excepcion si la marca esta activa.
 
         return marcaMapper.toDto(marcaRepository.save(marca));
+    }
+
+    private void validarNombre(String nombre){
+        if (nombre == null || nombre.isEmpty()) {
+            throw new IllegalArgumentException("El nombre de la marca no puede estar vacío.");
+            
+        }
+        if (nombre.length() < 2 || nombre.length() > 64) {
+            throw new IllegalArgumentException("El nombre de la marca debe tener entre 2 y 64 caracteres.");
+        }
+        if (nombre.contains(" ")) {
+            throw new IllegalArgumentException("El nombre de la marca no debe contener espacios.");
+            
+        }
+    }
+
+    private void validarDescripcion(String descripcion){
+        if (descripcion == null || descripcion.isEmpty()) {
+            throw new IllegalArgumentException("La descripcion de la marca no puede estar vacía.");
+            
+        }
+        if (descripcion.length() < 2 || descripcion.length() > 64) {
+            throw new IllegalArgumentException("La descripcion de la marca debe tener entre 2 y 64 caracteres.");
+        }
+        if (descripcion.contains(" ")) {
+            throw new IllegalArgumentException("La descripcion de la marca no debe contener espacios.");
+            
+        }
+    }
+
+    private Marca normalizarDatos(Marca marca){
+        marca.setNombre(StringUtil.capitalizeFirstLetter(marca.getNombre().toLowerCase().trim()));
+        marca.setDescripcion(marca.getDescripcion().toLowerCase().trim());
+        return marca;
     }
     
 }

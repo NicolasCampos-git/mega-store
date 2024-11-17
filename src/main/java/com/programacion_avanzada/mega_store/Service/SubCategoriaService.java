@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.programacion_avanzada.mega_store.DTOs.RegistrarSubCategoriaDto;
-import com.programacion_avanzada.mega_store.DTOs.SubCategoriaDto;
+import com.programacion_avanzada.mega_store.DTOs.SubCategoriaDTO;
 import com.programacion_avanzada.mega_store.Mapper.RegistrarSubCategoriaMapper;
 import com.programacion_avanzada.mega_store.Mapper.SubCategoriaMapper;
 import com.programacion_avanzada.mega_store.Modelos.Categoria;
@@ -70,7 +70,7 @@ public class SubCategoriaService implements ISubCategoriaService {
     }
 
     @Override
-    public List<SubCategoriaDto> listar() {
+    public List<SubCategoriaDTO> listar() {
         List<SubCategoria> subCategorias = subCategoriaRepository.findAll();
         return subCategorias.stream().map(subCategoriaMapper::toDto).toList();
     }
@@ -97,7 +97,7 @@ public class SubCategoriaService implements ISubCategoriaService {
     }
 
     @Override
-    public SubCategoriaDto actualizar(long id, SubCategoriaDto dto) {
+    public SubCategoriaDTO actualizar(long id, SubCategoriaDTO dto) {
         SubCategoria subcategoria = subCategoriaRepository.findById(id).orElse(null);
         
         // Aquí actualizamos los campos de la subcategoría

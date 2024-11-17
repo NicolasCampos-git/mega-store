@@ -37,16 +37,15 @@ public class CategoriaService  implements ICategoriaService{
         
         Categoria categoria = registrarCategoriaMapper.toEntity(dto);
         
-        if(categoriaRepository.existsByNombre(categoria.getNombre()) == false){
-
-            categoria.setNombre(StringUtil.capitalizeFirstLetter(dto.getNombre().toLowerCase().trim()));
-            categoria.setDescripcion(dto.getDescripcion().toLowerCase().trim());
-            categoria.setEstaActivo(true);
-            return registrarCategoriaMapper.toDto(categoriaRepository.save(categoria));
-
-        }else{
+        if(categoriaRepository.existsByNombre(categoria.getNombre()) == true){
             throw new EntityExistsException("La categoria ya existe");
         }
+        validarNombre(categoria.getNombre());
+        validarDescripcion(categoria.getDescripcion());
+        categoria.setNombre(StringUtil.capitalizeFirstLetter(dto.getNombre().toLowerCase().trim()));
+        categoria.setDescripcion(dto.getDescripcion().toLowerCase().trim());
+        categoria.setEstaActivo(true);
+        return registrarCategoriaMapper.toDto(categoriaRepository.save(categoria));
     }
 
     /*
@@ -102,4 +101,32 @@ public class CategoriaService  implements ICategoriaService{
         }
 
     }
+
+    private void validarNombre(String nombre){
+        if (nombre == null || nombre.isEmpty()) {
+            throw new IllegalArgumentException("El nombre de la categoría no puede estar vacío.");
+            
+        }
+        if (nombre.length() < 2 || nombre.length() > 64) {
+            throw new IllegalArgumentException("El nombre de la categoría debe tener entre 2 y 64 caracteres.");
+        }
+        if (nombre.contains(" ")) {
+            throw new IllegalArgumentException("El nombre de la categoría no debe contener espacios.");
+            
+        }
+
+    }
+
+    private void validarDescripcion(String descripcion){
+        if (descripcion == null || descripcion.isEmpty()) {
+            throw new IllegalArgumentException("La descripción de la categoría no puede estar vacía.");
+        }
+        if (descripcion.length() < 2 || descripcion.length() > 100) {
+            throw new IllegalArgumentException("La descripción de la categoría debe tener entre 2 y 100 caracteres.");
+        }
+        if (descripcion.matches(".*\\d.*")) { // Verifica si contiene números
+            throw new IllegalArgumentException("La descripción no puede contener números.");
+        }
+    }
+
 }

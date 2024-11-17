@@ -3,6 +3,7 @@ package com.programacion_avanzada.mega_store.Controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,7 +22,8 @@ import com.programacion_avanzada.mega_store.Service.ICategoriaService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("categoria")
+@RequestMapping("api/categorias")
+@CrossOrigin(origins = "http://localhost:5173") 
 public class CategoriaController {
 
 

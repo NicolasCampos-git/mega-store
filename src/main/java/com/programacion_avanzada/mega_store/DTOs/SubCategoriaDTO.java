@@ -13,7 +13,7 @@ import lombok.Data;
 import java.util.Set;
 
 @Data
-public class SubCategoriaDto {
+public class SubCategoriaDTO{
 
 
     private long id;
@@ -38,7 +38,7 @@ public class SubCategoriaDto {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
 
-        Set<ConstraintViolation<SubCategoriaDto>> violations = validator.validate(this);
+        Set<ConstraintViolation<SubCategoriaDTO>> violations = validator.validate(this);
         return violations.isEmpty();
     }
 }

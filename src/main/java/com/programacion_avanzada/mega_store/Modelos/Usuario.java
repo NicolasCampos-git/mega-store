@@ -55,7 +55,7 @@ public class Usuario {
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true) //De esta forma salteamos tener que tener la clase de la tabla intermedia y se puede trabajar en el PUT.
     private List<DireccionEnvio> direcciones;
 
-    @NotBlank
+    
     @Column(name = "esta_activo")
     private boolean estaActivo;
     

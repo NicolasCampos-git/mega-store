@@ -55,7 +55,7 @@ public class ProductoDto {
     private MarcaDto marca;
 
     @NotNull(message = "La subcategoría es obligatoria.")
-    private SubCategoriaDto subCategoria;
+    private SubCategoriaDTO subCategoria;
 
     @NotNull
     private boolean estaActivo;
