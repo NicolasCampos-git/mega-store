@@ -29,7 +29,6 @@ public class UsuarioDto {
     @Pattern(regexp = "^[0-9]{9,15}$", message = "El teléfono solo puede contener números, con una longitud de entre 9 y 15 dígitos")
     private String telefono;
 
-    @NotNull
     @NotBlank
     private String rol;
 
