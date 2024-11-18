@@ -28,14 +28,10 @@ public class UsuarioDto {
     @Pattern(regexp = "^[0-9]{9,15}$", message = "El teléfono solo puede contener números, con una longitud de entre 9 y 15 dígitos.")
     private String telefono;
 
-<<<<<<< HEAD
-=======
     @NotBlank(message = "El email es obligatorio.")
     @Email(message = "Debe ingresar un formato de email válido.")
     private String email;
 
-    @NotNull
->>>>>>> 13a626063ab06f9a004621228eb9e15ae11771c5
     @NotBlank
     private String rol;
 

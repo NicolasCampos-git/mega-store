@@ -1,7 +1,7 @@
 package com.programacion_avanzada.mega_store.dto;
 
 import com.programacion_avanzada.mega_store.DTOs.CategoriaDto;
-import com.programacion_avanzada.mega_store.DTOs.SubCategoriaDto;
+import com.programacion_avanzada.mega_store.DTOs.SubCategoriaDTO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,11 +12,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @SpringBootTest
 public class SubCategoriaDtoTest {
 
-    private SubCategoriaDto subCategoriaDto;
+    private SubCategoriaDTO subCategoriaDto;
 
     @BeforeEach
     public void setUp() {
-        subCategoriaDto = new SubCategoriaDto();
+        subCategoriaDto = new SubCategoriaDTO();
     }
 
     @Test
