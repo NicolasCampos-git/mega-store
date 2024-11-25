@@ -144,8 +144,18 @@ public class ProductoService implements IProductoService {
 
         
 
-        return registrarProductoMapper.toDto(productoRepository.save(producto));
+        return registrarProductoMapper.toDto(guardar(producto));
     }
+
+    @Override
+    public Producto buscarPorId(long id){
+        Producto producto = productoRepository.findById(id).orElse(null);
+        if (producto == null) {
+            throw new EntityNotFoundException("El producto no existe.");
+        }
+        return null;
+    }
+
 
 
     @Override
@@ -153,7 +163,7 @@ public class ProductoService implements IProductoService {
         Producto producto = productoRepository.findById(id).orElse(null);
         if(producto != null && producto.isEstaActivo() == false){
             producto.setEstaActivo(true);
-            productoRepository.save(producto);
+            guardar(producto);
         }
     }
 
@@ -299,6 +309,13 @@ public class ProductoService implements IProductoService {
         producto.setTamano(producto.getTamano().toUpperCase().trim());
 
     }
+
+    @Override
+    public Producto guardar(Producto producto){
+        return productoRepository.save(producto);
+    }
+
+    
 
 
     

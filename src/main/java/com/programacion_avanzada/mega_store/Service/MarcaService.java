@@ -108,7 +108,7 @@ public class MarcaService implements IMarcaService{
     @Override
     public MarcaDto reactivar(long id){
         Marca marca = marcaRepository.findById(id).orElse(null);
-        if(marca.isEstaActivo() == true){
+        if(marca.isEstaActivo() == false){
             throw new IllegalArgumentException("La marca ya esta activa.");
         }
         marca.setEstaActivo(true);

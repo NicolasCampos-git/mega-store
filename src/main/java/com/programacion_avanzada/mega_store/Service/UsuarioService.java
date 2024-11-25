@@ -14,8 +14,9 @@ import com.programacion_avanzada.mega_store.DTOs.RegistroUsuarioDto;
 import com.programacion_avanzada.mega_store.DTOs.UsuarioDto;
 import com.programacion_avanzada.mega_store.Mapper.RegistroUsuarioMapper;
 import com.programacion_avanzada.mega_store.Mapper.UsuarioMapper;
+import com.programacion_avanzada.mega_store.Modelos.DireccionEnvio;
 import com.programacion_avanzada.mega_store.Modelos.Usuario;
-
+import com.programacion_avanzada.mega_store.Repository.DireccionEnvioRepository;
 import com.programacion_avanzada.mega_store.Repository.UsuarioRepository;
 
 import ch.qos.logback.core.util.StringUtil;
@@ -26,6 +27,9 @@ public class UsuarioService implements IUsuarioService {
 
     @Autowired
     UsuarioRepository usuarioRepository;
+
+    @Autowired
+    DireccionEnvioRepository direccionRepository;
 
     @Autowired
     ISenderService senderService;
@@ -114,6 +118,36 @@ public class UsuarioService implements IUsuarioService {
                 .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado con el ID: " + id));
         usuario.setEstaActivo(true);  // Marcar el usuario como activo
         usuarioRepository.save(usuario);
+    }
+
+    @Override
+    public Usuario asignarDireccionComoPrincial(long idUsuario, long idDireccion) {
+        Usuario usuario = buscarUsuario(idUsuario);
+
+
+        for(DireccionEnvio direcciones: usuario.getDirecciones()) {
+            if(direcciones.getId() == idDireccion) {
+                direcciones.setEsPrincipal(true);
+                direccionRepository.save(direcciones);
+                
+            }else{
+                direcciones.setEsPrincipal(false);
+                direccionRepository.save(direcciones);
+            }
+        }
+        usuarioRepository.save(usuario);
+
+        
+        return usuario.getDirecciones().stream().filter(direccionEnvio -> direccionEnvio.isEsPrincipal()).findFirst().get().getUsuario();
+    }
+
+
+    private Usuario buscarUsuario(long idUsuario) {
+        Usuario usuario = usuarioRepository.findById(idUsuario).orElse(null);
+        if (usuario == null) {
+            throw new IllegalArgumentException("Usuario no encontrado con el ID: " + idUsuario);
+        }        
+        return usuario;
     }
 
     private void valirdarNombre(String nombre) {

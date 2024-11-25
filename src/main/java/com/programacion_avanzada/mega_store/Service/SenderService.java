@@ -7,6 +7,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import com.programacion_avanzada.mega_store.Modelos.Producto;
+
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 
@@ -15,6 +17,10 @@ public class SenderService implements ISenderService {
     
     @Autowired
     JavaMailSender javaMailSender;
+
+    @Autowired
+    IProductoService productoService;
+
 
     /*
      * Metodo encargado de enviar el correo electronci al nuevo usuario.
@@ -40,6 +46,36 @@ public class SenderService implements ISenderService {
         }catch(MessagingException e){
             throw new RuntimeException(e);
         }
+    }
+
+    
+    public void notificarBajoStock(long idProducto) {
+        MimeMessage mensaje = javaMailSender.createMimeMessage();
+        Producto producto = productoService.buscarPorId(idProducto);
+
+        try{
+            mensaje.setSubject("¡Stock bajo! ");
+            MimeMessageHelper helper = new MimeMessageHelper(mensaje, true);
+            helper.setTo("nicolascampos4899@gmail.com");
+            helper.setText(
+                "El stock del producto:" +
+                producto.getId() +"\n "+
+                producto.getNombre() +"\n "+
+                producto.getTamano() +"\n "+
+                producto.getColor()+"\n "+
+                producto.getMarca().getNombre() +"\n "+
+                producto.getSubcategoria().getNombre()+"\n "+
+                producto.getSubcategoria().getCategoria().getNombre() +"\n "+
+                " está bajo"
+            );
+            helper.setFrom("nicolascampos4899@gmail.com");
+            javaMailSender.send(mensaje);
+
+
+        }catch(MessagingException e){
+            throw new RuntimeException(e);
+        }
+
     }
 
     // Metodo encargado de simular el token.
