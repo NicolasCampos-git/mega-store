@@ -10,6 +10,9 @@ public class InventarioService implements IInventarioService{
     
     @Autowired
     private IProductoService productoService;
+
+    @Autowired
+    SenderService senderService;
     
     @Override
         public Producto agregarStock(long idProducto, int cantidad){
@@ -36,7 +39,7 @@ public class InventarioService implements IInventarioService{
         if (producto.getStock() < 0) {
             throw new IllegalArgumentException("El stock no puede ser menor a 0.");
         }
-        producto.setStock(producto.getStock()+cantidad);
+        senderService.notificarBajoStock(idProducto);
         
         return productoService.guardar(producto);
     }

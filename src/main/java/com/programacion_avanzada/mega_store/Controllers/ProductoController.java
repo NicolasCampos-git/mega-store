@@ -6,11 +6,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.programacion_avanzada.mega_store.DTOs.RegistrarProductoDto;
+import com.programacion_avanzada.mega_store.DTOs.stockDTO;
+import com.programacion_avanzada.mega_store.Modelos.Producto;
+import com.programacion_avanzada.mega_store.Service.IInventarioService;
 import com.programacion_avanzada.mega_store.Service.IProductoService;
 
 import jakarta.validation.Valid;
 
 import java.util.List;
+import java.util.Map;
+
 
 
 
@@ -20,6 +25,9 @@ import java.util.List;
 public class ProductoController {
     @Autowired
     IProductoService productoService;
+
+    @Autowired
+    IInventarioService inventarioService;
 
 
     @PostMapping("/registrar")
@@ -50,6 +58,14 @@ public class ProductoController {
     @PutMapping("/reactivar/{id}")
     public void reactivarProducto(@PathVariable("id") long id){
         productoService.reactivar(id);
+    }
+
+    @PutMapping("/quitar-stock/{id}")
+    public Producto quitarStock(@PathVariable long id, @RequestBody stockDTO stockDto) {
+        
+        
+        inventarioService.quitarStock(id, stockDto.getCantidad());
+        return productoService.buscarPorId(id);
     }
 
 }

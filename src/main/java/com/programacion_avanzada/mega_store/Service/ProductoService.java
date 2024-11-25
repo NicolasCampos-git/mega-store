@@ -153,7 +153,7 @@ public class ProductoService implements IProductoService {
         if (producto == null) {
             throw new EntityNotFoundException("El producto no existe.");
         }
-        return null;
+        return producto;
     }
 
 
