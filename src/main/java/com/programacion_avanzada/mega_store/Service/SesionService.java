@@ -14,16 +14,16 @@ public class SesionService implements ISesionService {
     UsuarioRepository usuarioRepository;
 
     @Override
-    public boolean iniciarSesion(InicioSesionDTO inicioSesion) {
+    public Usuario iniciarSesion(InicioSesionDTO inicioSesion) {
        Usuario usuario = usuarioRepository.findByEmail(inicioSesion.getEmail());
        validarEmail(inicioSesion.getEmail());
-       if(usuario == null || !usuario.getContrasena().equals(inicioSesion.getContrasena())) {
-           return false;    
+       if(usuario == null || !usuario.getContrasena().equals(inicioSesion.getContrasena()) || !usuario.getEmail().equals(inicioSesion.getEmail())){
+           throw new IllegalArgumentException("El email o la contraseña son incorrectos.");   
        }
        
 
 
-        return true;
+        return usuario;
     }
 
     private void validarEmail(String email) {
