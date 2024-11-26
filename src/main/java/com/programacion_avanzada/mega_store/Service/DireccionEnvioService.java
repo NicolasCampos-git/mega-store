@@ -39,6 +39,51 @@ public class DireccionEnvioService implements IDireccionEnvioService {
         return DireccionEnvioMapper.toDto(direccionEnvioRepository.save(direccionEnvio));
     }
 
+    @Override
+    public DireccionEnvio actualizarDireccionEnvio(long id, DireccionEnvioDto dto) {
+        DireccionEnvio direccionEnvio = direccionEnvioRepository.findById(id).orElse(null);
+        if (direccionEnvio == null) {
+            throw new IllegalArgumentException("La dirección de envío no existe.");
+        }
+        validarProvincia(dto.getProvincia());
+        validarCiudad(dto.getCiudad());
+        validarCalle(dto.getCalle());
+        validarAltura(dto.getAltura());
+        validarCodigoPostal(dto.getCodigoPostal());
+        direccionEnvio.setProvincia(dto.getProvincia());
+        direccionEnvio.setCiudad(dto.getCiudad());
+        direccionEnvio.setCalle(dto.getCalle());
+        direccionEnvio.setAltura(dto.getAltura());
+        direccionEnvio.setCodigoPostal(dto.getCodigoPostal());
+        direccionEnvio.setDescripcionDireccionEnvio(dto.getDescripcionDireccionEnvio());
+
+        return direccionEnvioRepository.save(direccionEnvio);
+    }
+
+    @Override
+    public DireccionEnvio buscarDireccionEnvio(long id) {
+        return direccionEnvioRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public void eliminarDireccionEnvio(long id) {
+        DireccionEnvio direccionEnvio = direccionEnvioRepository.findById(id).orElse(null);
+        if (direccionEnvio == null) {
+            throw new IllegalArgumentException("La dirección de envío no existe.");
+        }
+        direccionEnvio.setEstaActivo(false);
+        direccionEnvioRepository.save(direccionEnvio);
+    }
+
+    @Override
+    public DireccionEnvio reactivarDireccionEnvio(long id) {
+        DireccionEnvio direccionEnvio = direccionEnvioRepository.findById(id).orElse(null);
+        if (direccionEnvio == null) {
+            throw new IllegalArgumentException("La dirección de envío no existe.");
+        }
+        direccionEnvio.setEstaActivo(true);
+        return direccionEnvioRepository.save(direccionEnvio);
+    }
     
 
     private void validarProvincia(String provincia) {

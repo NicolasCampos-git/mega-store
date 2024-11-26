@@ -189,10 +189,7 @@ public class ProductoService implements IProductoService {
         if (descripcion.length() < 2 || descripcion.length() > 64) {
             throw new IllegalArgumentException("La descripcion del producto debe tener entre 2 y 64 caracteres.");
         }
-        if (descripcion.contains(" ")) {
-            throw new IllegalArgumentException("La descripcion del producto no debe contener espacios.");
-            
-        }
+        
     }
 
     private void validarTamano(String tamano){

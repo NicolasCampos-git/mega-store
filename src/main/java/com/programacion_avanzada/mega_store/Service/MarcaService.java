@@ -139,10 +139,7 @@ public class MarcaService implements IMarcaService{
         if (descripcion.length() < 2 || descripcion.length() > 64) {
             throw new IllegalArgumentException("La descripcion de la marca debe tener entre 2 y 64 caracteres.");
         }
-        if (descripcion.contains(" ")) {
-            throw new IllegalArgumentException("La descripcion de la marca no debe contener espacios.");
-            
-        }
+        
     }
 
     private Marca normalizarDatos(Marca marca){

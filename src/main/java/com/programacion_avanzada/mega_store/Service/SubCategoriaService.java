@@ -122,9 +122,7 @@ public class SubCategoriaService implements ISubCategoriaService {
         if (descripcion.length() < 2 || descripcion.length() > 64) {
             throw new IllegalArgumentException("La descripcion debe tener entre 2 y 64 caracteres.");
         }
-        if (descripcion.contains(" ")) {
-            throw new IllegalArgumentException("La descripcion no debe contener espacios.");
-        }
+        
     }
 
     private void verificarCategoria(Long categoriaId) {

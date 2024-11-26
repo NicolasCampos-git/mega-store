@@ -58,4 +58,7 @@ public class DireccionEnvio {
     @Column(name = "es_principal")
     private boolean esPrincipal;
 
+    @Column(name = "esta_activo")
+    private boolean estaActivo;
+
 }
