@@ -4,6 +4,7 @@ package com.programacion_avanzada.mega_store.Service;
 
 
 import java.util.List;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +45,7 @@ public class UsuarioService implements IUsuarioService {
 
         valirdarContrasena(dto.getContrasena(), dto.getContrasenaRepetida());
         Usuario usuario = RegistroUsuarioMapper.toEntity(dto);
-        valirdarMailRepetido(usuario.getEmail());
+        validarMailRepetido(usuario.getEmail());
         valirdarNombre(usuario.getNombre());
         valirdarApellido(usuario.getApellido());
         valirdarTelefono(usuario.getTelefono());    
@@ -210,9 +211,18 @@ public class UsuarioService implements IUsuarioService {
         }
 
     }
-    private void valirdarMailRepetido(String email) {
+    private void validarMailRepetido(String email) {
+        if (email == null || email.isEmpty()) {
+            throw new IllegalArgumentException("El email no puede estar vacío.");
+        }
+        if (email.contains(" ")) {
+            throw new IllegalArgumentException("El email no puede contener espacios.");
+        }
+        if (!Pattern.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email)) {
+            throw new IllegalArgumentException("El email no tiene un formato válido.");
+        }
         if (usuarioRepository.existsByEmail(email)) {
-            throw new IllegalArgumentException("El email ya esta registrado.");
+            throw new IllegalArgumentException("El email ya está registrado.");
         }
     }
 
