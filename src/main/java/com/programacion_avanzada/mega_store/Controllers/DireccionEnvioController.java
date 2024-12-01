@@ -1,5 +1,7 @@
 package com.programacion_avanzada.mega_store.Controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,8 +25,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 
 
-@RestController("/api/direcciones")
-@RequestMapping
+@RestController
+@RequestMapping("/api/direcciones")
 public class DireccionEnvioController {
     @Autowired
     IDireccionEnvioService direccionEnvioService;
@@ -32,6 +34,11 @@ public class DireccionEnvioController {
     @PostMapping("/agregar_direccion/{id}")
     public ResponseEntity<DireccionEnvioDto> agregaDireccionEnvio(@PathVariable("id") Long usuarioId, @RequestBody @Valid DireccionEnvioDto dto) {
         return ResponseEntity.ok(direccionEnvioService.agregaDireccionEnvio(usuarioId, dto));
+    }
+
+    @GetMapping("/listar")
+    public ResponseEntity<List<DireccionEnvio>> listarDireccionesEnvio() {
+        return ResponseEntity.ok(direccionEnvioService.listar());
     }
 
     @GetMapping("/buscar_direccion/{id}")

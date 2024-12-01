@@ -53,7 +53,7 @@ public class CategoriaService  implements ICategoriaService{
      */
     @Override
     public List<CategoriaDto> listar() {
-        List<Categoria> categorias = categoriaRepository.findAllByEstaActivoIsTrue();
+        List<Categoria> categorias = categoriaRepository.findAll();
         return categorias.stream().map(categoriaMapper::toDto).toList();
     }
 

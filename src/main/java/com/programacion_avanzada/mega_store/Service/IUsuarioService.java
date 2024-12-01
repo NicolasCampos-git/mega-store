@@ -24,5 +24,7 @@ public interface IUsuarioService {
 
     Usuario asignarDireccionComoPrincial(long idUsuario, long idDireccion);
 
+    
+
 
 }

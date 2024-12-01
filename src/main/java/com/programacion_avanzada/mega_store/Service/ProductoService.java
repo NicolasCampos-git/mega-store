@@ -1,7 +1,7 @@
 package com.programacion_avanzada.mega_store.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 import com.programacion_avanzada.mega_store.DTOs.ProductoDto;
 import com.programacion_avanzada.mega_store.Mapper.RegistrarProductoMapper;
@@ -12,17 +12,15 @@ import org.springframework.stereotype.Service;
 
 import com.programacion_avanzada.mega_store.DTOs.RegistrarProductoDto;
 import com.programacion_avanzada.mega_store.Mapper.ProductoMapper;
-import com.programacion_avanzada.mega_store.Modelos.Categoria;
 import com.programacion_avanzada.mega_store.Modelos.Marca;
 import com.programacion_avanzada.mega_store.Modelos.Producto;
 import com.programacion_avanzada.mega_store.Modelos.SubCategoria;
-import com.programacion_avanzada.mega_store.Repository.CategoriaRepository;
 import com.programacion_avanzada.mega_store.Repository.MarcaRepository;
 import com.programacion_avanzada.mega_store.Repository.ProductoRepository;
 import com.programacion_avanzada.mega_store.Repository.SubCategoriaRepository;
 
 import ch.qos.logback.core.util.StringUtil;
-import lombok.val;
+
 
 @Service
 public class ProductoService implements IProductoService {
@@ -57,11 +55,12 @@ public class ProductoService implements IProductoService {
         }
 
 
-        // verificamos que el producto no no exista.
+        // verificamos que el producto no exista.
         if (!productoRepository.existsByNombre(dto.getNombre())) {
             Producto producto = registrarProductoMapper.toEntity(dto);
 
             // Normarlizamos los atributos del producto.
+            validarNombre(dto.getNombre());
             producto.setNombre(StringUtil.capitalizeFirstLetter(dto.getNombre().toLowerCase().trim()));
             producto.setDescripcion(StringUtil.capitalizeFirstLetter(dto.getDescripcion().toLowerCase().trim()));
             producto.setColor(StringUtil.capitalizeFirstLetter(dto.getColor().toLowerCase()).trim());
@@ -93,7 +92,7 @@ public class ProductoService implements IProductoService {
      */
     @Override
     public List<ProductoDto> listar() {
-        List<Producto> productos = productoRepository.findAllByEstaActivoIsTrue();
+        List<Producto> productos = productoRepository.findAll();
         return  productos.stream().map(productoMapper::toDto).toList();
     }
 
@@ -116,36 +115,58 @@ public class ProductoService implements IProductoService {
      * Comparte los mismos atributos que el DTO para registrar el producto.
      */
     @Override
-    public RegistrarProductoDto editarProducto(long id,RegistrarProductoDto dto) {
+    public RegistrarProductoDto editarProducto(long id, RegistrarProductoDto dto) {
+        // Buscar el producto existente
+        Producto producto = productoRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("El producto no existe"));
 
-        Producto producto = productoRepository.findById(id).filter(Producto::isEstaActivo).orElse(null);
-        
-        validarNombre(producto.getNombre());
+        // Verificar existencia de Marca y SubCategoría
+        if (!marcaRepository.existsById(dto.getMarcaId())) {
+            throw new EntityNotFoundException("La marca no existe");
+        }
+        if (!subCategoriaRepository.existsById(dto.getSubCategoriaId())) {
+            throw new EntityNotFoundException("La subcategoría no existe");
+        }
 
-        validarDescripcion(producto.getDescripcion());
+        // Validaciones de los datos
+        validarNombre(dto.getNombre());
+        validarDescripcion(dto.getDescripcion());
+        validarTamano(dto.getTamano());
+        validarColor(dto.getColor());
+        valirdarPrecio(dto.getPrecioUnitario());
+        validarStock(dto.getStock());
+        validarUmbralBajoStock(dto.getUmbralBajoStock());
+        validarStockYUmbralBajoStock(dto.getStock(), dto.getUmbralBajoStock());
 
-        validarTamano(producto.getTamano());
+        // Actualización del producto con los nuevos datos del DTO
+        producto.setNombre(dto.getNombre());
+        producto.setDescripcion(dto.getDescripcion());
+        producto.setTamano(dto.getTamano());
+        producto.setColor(dto.getColor());
+        producto.setPrecioUnitario(dto.getPrecioUnitario());
+        producto.setStock(dto.getStock());
+        producto.setUmbralBajoStock(dto.getUmbralBajoStock());
+        producto.setEstaActivo(true);
 
-        validarColor(producto.getColor());
+        // Asociar la Marca y SubCategoría al producto
+        Marca marca = marcaRepository.findById(dto.getMarcaId())
+                .orElseThrow(() -> new EntityNotFoundException("Error inesperado al buscar la marca"));
+        producto.setMarca(marca);
 
-        valirdarPrecio(producto.getPrecioUnitario());
+        SubCategoria subCategoria = subCategoriaRepository.findById(dto.getSubCategoriaId())
+                .orElseThrow(() -> new EntityNotFoundException("Error inesperado al buscar la subcategoría"));
+        producto.setSubcategoria(subCategoria);
 
-        validarStock(producto.getStock());
-
-        validarUmbralBajoStock(producto.getUmbralBajoStock());
-
-        validarStockYUmbralBajoStock(producto.getStock(), producto.getUmbralBajoStock());
-
-        validarMarca(dto.getMarcaId(), producto);
-
-        ValidarSubCategoria(dto.getSubCategoriaId(), producto);
-
+        // Normalizar datos
         normalizarDatos(producto);
 
-        
+        // Guardar el producto actualizado
+        Producto productoGuardado = guardar(producto);
 
-        return registrarProductoMapper.toDto(guardar(producto));
+        // Mapear y retornar el DTO
+        return registrarProductoMapper.toDto(productoGuardado);
     }
+
 
     @Override
     public Producto buscarPorId(long id){
@@ -197,7 +218,7 @@ public class ProductoService implements IProductoService {
             throw new IllegalArgumentException("El tamaño del producto no puede estar vacío.");
             
         }
-        if (tamano.length() < 2 || tamano.length() > 3) {
+        if (tamano.length() < 1 || tamano.length() > 3) {
             throw new IllegalArgumentException("Solo se permite XS,S,M,L, XL O XXL para el tamaño del producto.");
         }
         if (tamano.contains(" ")) {

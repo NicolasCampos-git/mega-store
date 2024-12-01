@@ -48,7 +48,7 @@ public class SenderService implements ISenderService {
         }
     }
 
-    
+    @Override
     public void notificarBajoStock(long idProducto) {
         MimeMessage mensaje = javaMailSender.createMimeMessage();
         Producto producto = productoService.buscarPorId(idProducto);

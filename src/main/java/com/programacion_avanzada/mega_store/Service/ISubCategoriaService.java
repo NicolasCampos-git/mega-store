@@ -12,5 +12,5 @@ public interface ISubCategoriaService {
     SubCategoria buscarPorId(long id);
     void eliminar(long id);
     void reactivar(long id);
-    SubCategoriaDTO actualizar(long id, SubCategoriaDTO dto);
+    SubCategoriaDTO actualizar(long id, RegistrarSubCategoriaDto dto);
 }

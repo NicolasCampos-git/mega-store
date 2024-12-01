@@ -60,7 +60,7 @@ public class MarcaService implements IMarcaService{
      */
     public List<MarcaDto> listar() {
 
-        List<Marca> marcas = marcaRepository.findAllByEstaActivoIsTrue();
+        List<Marca> marcas = marcaRepository.findAll();
 
         return marcas.stream().map(marcaMapper::toDto).toList();
     }
@@ -81,8 +81,7 @@ public class MarcaService implements IMarcaService{
      */
     @Override
     public void eliminar(long id) {
-        Marca marca = marcaRepository.findById(id).filter(Marca::isEstaActivo).orElse(null);
-        
+        Marca marca = marcaRepository.findById(id).orElse(null);
         if(marca != null){
             marca.setEstaActivo(false);
             marcaRepository.save(marca);
@@ -108,7 +107,7 @@ public class MarcaService implements IMarcaService{
     @Override
     public MarcaDto reactivar(long id){
         Marca marca = marcaRepository.findById(id).orElse(null);
-        if(marca.isEstaActivo() == false){
+        if(marca.isEstaActivo() != false){
             throw new IllegalArgumentException("La marca ya esta activa.");
         }
         marca.setEstaActivo(true);

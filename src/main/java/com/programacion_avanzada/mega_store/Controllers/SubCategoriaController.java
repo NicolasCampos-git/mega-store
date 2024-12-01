@@ -18,8 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.programacion_avanzada.mega_store.DTOs.RegistrarSubCategoriaDto;
 import com.programacion_avanzada.mega_store.DTOs.SubCategoriaDTO;
 import com.programacion_avanzada.mega_store.Mapper.SubCategoriaMapper;
-
-
+import com.programacion_avanzada.mega_store.Modelos.SubCategoria;
 import com.programacion_avanzada.mega_store.Service.ISubCategoriaService;
 
 
@@ -32,8 +31,7 @@ public class SubCategoriaController {
 
     @Autowired
     private ISubCategoriaService subCategoriaService;
-    @Autowired
-    private SubCategoriaMapper subCategoriaMapper;
+
 
     
     @PostMapping("/registrar")
@@ -49,12 +47,12 @@ public class SubCategoriaController {
 
     
     @GetMapping("buscar/{id}")
-    public SubCategoriaDTO buscarPorId(@PathVariable long id) {
-        return subCategoriaMapper.toDto(subCategoriaService.buscarPorId(id));
+    public SubCategoria buscarPorId(@PathVariable long id) {
+        return subCategoriaService.buscarPorId(id);
     }
 
     @PutMapping("/actualizar/{id}")
-    public SubCategoriaDTO actualizar(@PathVariable long id, @RequestBody @Valid SubCategoriaDTO dto) {
+    public SubCategoriaDTO actualizar(@PathVariable long id, @RequestBody @Valid RegistrarSubCategoriaDto dto) {
         return subCategoriaService.actualizar(id, dto);
     }
     

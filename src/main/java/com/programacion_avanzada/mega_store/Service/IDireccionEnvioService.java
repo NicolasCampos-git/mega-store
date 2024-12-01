@@ -1,5 +1,7 @@
 package com.programacion_avanzada.mega_store.Service;
 
+import java.util.List;
+
 import com.programacion_avanzada.mega_store.DTOs.DireccionEnvioDto;
 import com.programacion_avanzada.mega_store.Modelos.DireccionEnvio;
 
@@ -13,8 +15,10 @@ public interface IDireccionEnvioService {
 
     DireccionEnvio actualizarDireccionEnvio(long id, DireccionEnvioDto dto);
 
-    void eliminarDireccionEnvio(long id);
-
     DireccionEnvio reactivarDireccionEnvio(long id);
+
+    List<DireccionEnvio> listar();
+
+    void eliminarDireccionEnvio(long id);
     
 }

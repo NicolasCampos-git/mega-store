@@ -1,7 +1,6 @@
 package com.programacion_avanzada.mega_store.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +58,7 @@ public class SubCategoriaService implements ISubCategoriaService {
 
         // Obtener la categoría y asignarla a la subcategoría
         asignarCategoria(subCategoria, dto.getCategoriaId());
-
+        subCategoria.setEstaActivo(true);
         // Guardar la subcategoría en el repositorio
         return registrarSubCategoriaMapper.toDto(subCategoriaRepository.save(subCategoria));
     }
@@ -77,7 +76,11 @@ public class SubCategoriaService implements ISubCategoriaService {
 
     @Override
     public void eliminar(long id) {
-        SubCategoria subCategoria = subCategoriaRepository.findById(id).filter(SubCategoria::isEstaActivo).orElse(null);
+        SubCategoria subCategoria = subCategoriaRepository.findById(id).orElse(null);
+        if (subCategoria == null || subCategoria.isEstaActivo() == false) {
+            throw new EntityNotFoundException("La subcategoria no existe o ya esta inactiva.");
+            
+        }
         subCategoria.setEstaActivo(false);
         subCategoriaRepository.save(subCategoria);
     }
@@ -85,19 +88,33 @@ public class SubCategoriaService implements ISubCategoriaService {
     @Override
     public void reactivar(long id){
         SubCategoria subCategoria = subCategoriaRepository.findById(id).orElse(null);
-        if(subCategoria != null && subCategoria.isEstaActivo() == false){
-            subCategoria.setEstaActivo(true);
-            subCategoriaRepository.save(subCategoria);
+        if(subCategoria == null || subCategoria.isEstaActivo() == true){
+            throw new EntityNotFoundException("La subcategoria no existe o ya esta activa.");
         }
+        subCategoria.setEstaActivo(true);
+        subCategoriaRepository.save(subCategoria);
     }
 
     @Override
-    public SubCategoriaDTO actualizar(long id, SubCategoriaDTO dto) {
+    public SubCategoriaDTO actualizar(long id, RegistrarSubCategoriaDto dto) {
         SubCategoria subcategoria = subCategoriaRepository.findById(id).orElse(null);
         
         // Aquí actualizamos los campos de la subcategoría
+        valirdarNombre(dto.getNombre());
+        valirdarDescripcion(dto.getDescripcion());
+        verificarUnicidad(dto.getNombre());
+        
+
+        // Asignamos la categoría si es necesario
+        if (dto.getCategoriaId() != null) {
+            verificarCategoria(dto.getCategoriaId());
+            asignarCategoria(subcategoria, dto.getCategoriaId());
+        }
+
         subcategoria.setNombre(dto.getNombre());
-        //subcategoria.setCategoria(dto.getCategoria());
+        subcategoria.setDescripcion(dto.getDescripcion());
+
+        normalizarDatos(subcategoria);
 
         subCategoriaRepository.save(subcategoria);
         return subCategoriaMapper.toDto(subcategoria);
@@ -113,6 +130,7 @@ public class SubCategoriaService implements ISubCategoriaService {
         if (nombre.contains(" ")) {
             throw new IllegalArgumentException("El nombre no debe contener espacios.");
         }
+        
     }
 
     private void valirdarDescripcion(String descripcion) {
