@@ -2,6 +2,7 @@ package com.programacion_avanzada.mega_store.Service;
 
 import com.programacion_avanzada.mega_store.DTOs.ItemOrdenDto;
 import com.programacion_avanzada.mega_store.DTOs.OrdenCompraDto;
+import com.programacion_avanzada.mega_store.Mapper.OrdenCompraMapper;
 import com.programacion_avanzada.mega_store.Modelos.*;
 import com.programacion_avanzada.mega_store.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,9 @@ public class OrdenCompraService implements IOrdenCompraService {
     private ProductoRepository productoRepository;
 
     @Autowired
+    private OrdenCompraMapper ordenCompraMapper;
+
+    @Autowired
     private UsuarioRepository usuarioRepository;
 
     @Autowired
@@ -32,28 +36,28 @@ public class OrdenCompraService implements IOrdenCompraService {
 
     @Override
     public OrdenCompraDto crearOrden(Long usuarioId, Map<Long, Integer> productosYCantidades) {
-        // 1. Inicializamos la orden
+        //Se inicializa la orden
         OrdenCompra ordenCompra = new OrdenCompra();
 
-        // 2. Asignamos usuario y estado
+        //Se le asigna usuario y estado
         Usuario usuario = usuarioRepository.findById(usuarioId).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
         EstadoOrden estado = estadoOrdenRepository.findByNombre("PENDIENTE").orElseThrow(() -> new RuntimeException("Estado no encontrado"));
         ordenCompra.setUsuario(usuario);
         ordenCompra.setEstado(estado);
         ordenCompra.setFecha(LocalDateTime.now());
 
-        // 3. Crear los items y agregarlos a la orden
+        //Se crean los items y se agregan a la orden
         List<ItemOrden> items = new ArrayList<>();
         double total = 0.0;
         for (Map.Entry<Long, Integer> entry : productosYCantidades.entrySet()) {
             Producto producto = productoRepository.findById(entry.getKey()).orElseThrow(() -> new RuntimeException("Producto no encontrado"));
             Integer cantidad = entry.getValue();
 
-            // Calcular subtotal
+            //Se calcula el subtotal
             double subtotal = producto.getPrecioUnitario() * cantidad;
             total += subtotal;
 
-            // Crear item de orden
+            //Se crea el item de orden
             ItemOrden item = new ItemOrden();
             item.setProducto(producto);
             item.setCantidad(cantidad);
@@ -62,36 +66,19 @@ public class OrdenCompraService implements IOrdenCompraService {
             items.add(item);
         }
 
-        // Guardar la orden y los items en la base de datos
+        //Se guarda la orden y los items en la base de datos
         ordenCompra.setItems(items);
         ordenCompra.setTotal(total);
         ordenCompra = ordenCompraRepository.save(ordenCompra);  // Guardar orden primero para obtener ID
 
-        // Relacionar los items con la orden
+        //Se relacionan los items con la orden
         for (ItemOrden item : items) {
             item.setOrdenCompra(ordenCompra);
             itemOrdenRepository.save(item);
         }
 
-        // 4. Mapear la orden a DTO
-        OrdenCompraDto response = new OrdenCompraDto();
-        response.setId(ordenCompra.getId());
-        response.setFecha(ordenCompra.getFecha());
-        response.setTotal(ordenCompra.getTotal());
-        response.setEstado(ordenCompra.getEstado().getNombre());
-        response.setUsuarioId(ordenCompra.getUsuario().getId());
-
-        // Mapear los items a DTO y agregar a la respuesta
-        List<ItemOrdenDto> itemDtos = items.stream().map(item -> {
-            ItemOrdenDto dto = new ItemOrdenDto();
-            dto.setProductoNombre(item.getProducto().getNombre());
-            dto.setCantidad(item.getCantidad());
-            dto.setSubtotal(item.getSubtotal());
-            return dto;
-        }).collect(Collectors.toList());
-        response.setProductosYCantidades(itemDtos);
-
-        return response;
+        //Se mappea la orden a DTO usando el mapper
+        return ordenCompraMapper.toDto(ordenCompra);
     }
 
     @Override
@@ -102,7 +89,6 @@ public class OrdenCompraService implements IOrdenCompraService {
         EstadoOrden estado = estadoOrdenRepository.findByNombre(nuevoEstado)
                 .orElseThrow(() -> new RuntimeException("Estado no encontrado"));
 
-        // Ejemplo de lógica para transiciones de estados:
         if (!esTransicionValida(orden.getEstado().getNombre(), nuevoEstado)) {
             throw new RuntimeException("Transición de estado no permitida");
         }
@@ -112,7 +98,6 @@ public class OrdenCompraService implements IOrdenCompraService {
     }
 
     private boolean esTransicionValida(String estadoActual, String nuevoEstado) {
-        // Define las reglas de transición de estados
         Map<String, List<String>> transiciones = Map.of(
                 "Pendiente", List.of("Confirmada", "Cancelada"),
                 "Confirmada", List.of("Enviada", "Cancelada"),
