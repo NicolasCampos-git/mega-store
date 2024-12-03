@@ -143,7 +143,7 @@ public class UsuarioService implements IUsuarioService {
     }
 
 
-    private Usuario buscarUsuario(long idUsuario) {
+    public Usuario buscarUsuario(long idUsuario) {
         Usuario usuario = usuarioRepository.findById(idUsuario).orElse(null);
         if (usuario == null) {
             throw new IllegalArgumentException("Usuario no encontrado con el ID: " + idUsuario);
@@ -151,7 +151,7 @@ public class UsuarioService implements IUsuarioService {
         return usuario;
     }
 
-    private void valirdarNombre(String nombre) {
+    public void valirdarNombre(String nombre) {
         if (nombre == null || nombre.isEmpty()) {
             throw new IllegalArgumentException("El nombre no puede estar vacio.");
         }
@@ -164,7 +164,7 @@ public class UsuarioService implements IUsuarioService {
         }
     }
 
-    private void valirdarApellido(String apellido) {
+    public void valirdarApellido(String apellido) {
         if (apellido == null || apellido.isEmpty()) {
             throw new IllegalArgumentException("El apellido no puede estar vacio.");
         }
@@ -177,7 +177,7 @@ public class UsuarioService implements IUsuarioService {
         }
     }
 
-    private void valirdarTelefono(String telefono) {
+    public void valirdarTelefono(String telefono) {
         if (telefono == null || telefono.isEmpty()) {
             throw new IllegalArgumentException("El telefono no puede estar vacio.");
         }
@@ -195,7 +195,7 @@ public class UsuarioService implements IUsuarioService {
         
     }
 
-    private void valirdarEmail(String email) {
+    public void valirdarEmail(String email) {
         if (email == null || email.isEmpty()) {
             throw new IllegalArgumentException("El email no puede estar vacio.");
         }
@@ -211,7 +211,7 @@ public class UsuarioService implements IUsuarioService {
         }
 
     }
-    private void validarMailRepetido(String email) {
+    public void validarMailRepetido(String email) {
         if (email == null || email.isEmpty()) {
             throw new IllegalArgumentException("El email no puede estar vacío.");
         }
@@ -226,7 +226,7 @@ public class UsuarioService implements IUsuarioService {
         }
     }
 
-    private void valirdarContrasena(String contrasena, String contrasenaRepetida) {
+    public void valirdarContrasena(String contrasena, String contrasenaRepetida) {
         if (contrasena == null || contrasena.isEmpty()) {
             throw new IllegalArgumentException("La contrasena no puede estar vacia.");
         }
@@ -241,13 +241,9 @@ public class UsuarioService implements IUsuarioService {
         }
     }
 
-    private void normalizarDatos(Usuario usuario) {
+    public void normalizarDatos(Usuario usuario) {
         usuario.setNombre(StringUtil.capitalizeFirstLetter(usuario.getNombre().toLowerCase()));
         usuario.setApellido(StringUtil.capitalizeFirstLetter(usuario.getApellido().toLowerCase()));
         usuario.setEmail(usuario.getEmail().trim().toLowerCase());
     }
-    
-
-
-    
 }

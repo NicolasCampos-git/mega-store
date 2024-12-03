@@ -1,32 +1,46 @@
 package com.programacion_avanzada.mega_store.dto;
 
 import com.programacion_avanzada.mega_store.DTOs.UsuarioDto;
-import org.junit.jupiter.api.Assertions;
+import com.programacion_avanzada.mega_store.Service.UsuarioService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
+@ExtendWith(MockitoExtension.class)
 @SpringBootTest
 public class UsuarioDtoTest {
 
     private UsuarioDto usuarioDto;
+    private UsuarioService usuarioService;
 
     @BeforeEach
     public void setUp() {
+        // Instanciamos UsuarioService
+        usuarioService = new UsuarioService();
+        // Instanciamos UsuarioDto
         usuarioDto = new UsuarioDto();
     }
 
     @Test
-    public void testNombreVacio() {
-        usuarioDto.setNombre("");//Nombre vacio
+    public void testValidarNombreVacio() {
+        // Establecemos el nombre vacío
+        usuarioDto.setNombre("");
         usuarioDto.setApellido("Pérez");
         usuarioDto.setTelefono("123456789");
         usuarioDto.setEmail("juan.perez@example.com");
         usuarioDto.setRol("usuario");
 
-        Assertions.assertFalse(usuarioDto.esValido(), "El nombre no debe estar vacio.");
+
+        // Simulamos la validación
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            usuarioService.valirdarNombre(usuarioDto.getNombre()); // Llamamos al servicio para validar el nombre
+        });
+
+        assertEquals("El nombre no puede estar vacio.", exception.getMessage());
     }
 
     @Test
@@ -37,7 +51,12 @@ public class UsuarioDtoTest {
         usuarioDto.setEmail("juan.perez@example.com");
         usuarioDto.setRol("usuario");
 
-        Assertions.assertFalse(usuarioDto.esValido(), "El nombre no debe contener espacios en blanco.");
+        // Simulamos la validación
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            usuarioService.valirdarNombre(usuarioDto.getNombre()); // Llamamos al servicio para validar el nombre
+        });
+
+        assertEquals("El nombre no debe contener espacios.", exception.getMessage());
     }
 
     @Test
@@ -48,7 +67,13 @@ public class UsuarioDtoTest {
         usuarioDto.setEmail("juan.perez@example.com");
         usuarioDto.setRol("usuario");
 
-        Assertions.assertFalse(usuarioDto.esValido(), "El nombre no debe contener menos de 2 caracteres.");
+        // Simulamos la validación
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            usuarioService.valirdarNombre(usuarioDto.getNombre()); // Llamamos al servicio para validar el nombre
+        });
+
+        assertEquals("El nombre debe tener entre 2 y 64 caracteres.", exception.getMessage());
+
     }
 
     @Test
@@ -59,7 +84,12 @@ public class UsuarioDtoTest {
         usuarioDto.setEmail("juan.perez@example.com");
         usuarioDto.setRol("usuario");
 
-        Assertions.assertFalse(usuarioDto.esValido(), "El nombre no debe contener mas de 64 caracteres.");
+        // Simulamos la validación
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            usuarioService.valirdarNombre(usuarioDto.getNombre()); // Llamamos al servicio para validar el nombre
+        });
+
+        assertEquals("El nombre debe tener entre 2 y 64 caracteres.", exception.getMessage());
     }
 
     @Test
@@ -70,7 +100,12 @@ public class UsuarioDtoTest {
         usuarioDto.setEmail("juan.perez@example.com");
         usuarioDto.setRol("usuario");
 
-        Assertions.assertFalse(usuarioDto.esValido(), "El apellido no debe estar vacio.");
+        // Simulamos la validación
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            usuarioService.valirdarApellido(usuarioDto.getApellido()); // Llamamos al servicio para validar el nombre
+        });
+
+        assertEquals("El apellido no puede estar vacio.", exception.getMessage());
     }
 
     @Test
@@ -81,7 +116,12 @@ public class UsuarioDtoTest {
         usuarioDto.setEmail("juan.perez@example.com");
         usuarioDto.setRol("usuario");
 
-        Assertions.assertFalse(usuarioDto.esValido(), "El apellido no debe contener espacios en blanco.");
+        // Simulamos la validación
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            usuarioService.valirdarApellido(usuarioDto.getApellido()); // Llamamos al servicio para validar el nombre
+        });
+
+        assertEquals("El apellido no debe contener espacios.", exception.getMessage());
     }
 
     @Test
@@ -92,7 +132,12 @@ public class UsuarioDtoTest {
         usuarioDto.setEmail("juan.perez@example.com");
         usuarioDto.setRol("usuario");
 
-        Assertions.assertFalse(usuarioDto.esValido(), "El apellido no debe contener menos de 2 caracteres.");
+        // Simulamos la validación
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            usuarioService.valirdarApellido(usuarioDto.getApellido()); // Llamamos al servicio para validar el nombre
+        });
+
+        assertEquals("El apellido debe tener entre 2 y 64 caracteres.", exception.getMessage());
     }
 
     @Test
@@ -103,7 +148,12 @@ public class UsuarioDtoTest {
         usuarioDto.setEmail("juan.perez@example.com");
         usuarioDto.setRol("usuario");
 
-        Assertions.assertFalse(usuarioDto.esValido(), "El apellido no debe contener mas de 64 caracteres.");
+        // Simulamos la validación
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            usuarioService.valirdarApellido(usuarioDto.getApellido()); // Llamamos al servicio para validar el nombre
+        });
+
+        assertEquals("El apellido debe tener entre 2 y 64 caracteres.", exception.getMessage());
     }
 
     @Test
@@ -114,7 +164,12 @@ public class UsuarioDtoTest {
         usuarioDto.setEmail("juan.perez@example.com");
         usuarioDto.setRol("usuario");
 
-        Assertions.assertFalse(usuarioDto.esValido(), "El telefono no debe estar vacio.");
+        // Simulamos la validación
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            usuarioService.valirdarTelefono(usuarioDto.getTelefono()); // Llamamos al servicio para validar el nombre
+        });
+
+        assertEquals("El telefono no puede estar vacio.", exception.getMessage());
     }
 
     @Test
@@ -125,7 +180,12 @@ public class UsuarioDtoTest {
         usuarioDto.setEmail("juan.perez@example.com");
         usuarioDto.setRol("usuario");
 
-        Assertions.assertFalse(usuarioDto.esValido(), "El telefono no debe contener caracteres que no sean numeros.");
+        // Simulamos la validación
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            usuarioService.valirdarTelefono(usuarioDto.getTelefono()); // Llamamos al servicio para validar el nombre
+        });
+
+        assertEquals("El telefono solo debe contener numeros.", exception.getMessage());
     }
 
     @Test
@@ -136,7 +196,12 @@ public class UsuarioDtoTest {
         usuarioDto.setEmail("juan.perez@example.com");
         usuarioDto.setRol("usuario");
 
-        Assertions.assertFalse(usuarioDto.esValido(), "El telefono no debe tener menos de 9 digitos.");
+        // Simulamos la validación
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            usuarioService.valirdarTelefono(usuarioDto.getTelefono()); // Llamamos al servicio para validar el nombre
+        });
+
+        assertEquals("El telefono debe tener entre 9 y 15 caracteres.", exception.getMessage());
     }
 
     @Test
@@ -147,8 +212,14 @@ public class UsuarioDtoTest {
         usuarioDto.setEmail("juan.perez@example.com");
         usuarioDto.setRol("usuario");
 
-        Assertions.assertFalse(usuarioDto.esValido(), "El telefono no debe tener mas de 15 digitos.");
+        // Simulamos la validación
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            usuarioService.valirdarTelefono(usuarioDto.getTelefono()); // Llamamos al servicio para validar el nombre
+        });
+
+        assertEquals("El telefono debe tener entre 9 y 15 caracteres.", exception.getMessage());
     }
+
 
     @Test
     public void testEmailVacio() {
@@ -158,8 +229,12 @@ public class UsuarioDtoTest {
         usuarioDto.setEmail("");//Email vacio
         usuarioDto.setRol("usuario");
 
-        // Validación específica
-        Assertions.assertFalse(usuarioDto.esValido(), "El email no debe estar vacio.");
+        // Simulamos la validación
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            usuarioService.valirdarEmail(usuarioDto.getEmail()); // Llamamos al servicio para validar el nombre
+        });
+
+        assertEquals("El email no puede estar vacio.", exception.getMessage());
     }
 
     @Test
@@ -171,23 +246,30 @@ public class UsuarioDtoTest {
         usuarioDto.setRol("usuario");
 
 
-        // Validación específica
-        Assertions.assertFalse(usuarioDto.esValido(), "El email no puede no tener formato de email.");
-    }
+        // Simulamos la validación
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            usuarioService.valirdarEmail(usuarioDto.getEmail()); // Llamamos al servicio para validar el nombre
+        });
 
+        assertEquals("El email no es valido.", exception.getMessage());
+    }
 
     @Test
     public void testUsuarioValido() {
-        //Datos Validos
+        // Configuramos un usuario con datos válidos
         usuarioDto.setNombre("Juan");
         usuarioDto.setApellido("Pérez");
         usuarioDto.setTelefono("123456789");
         usuarioDto.setEmail("juan.perez@example.com");
-        usuarioDto.setRol("usuario");
+        usuarioDto.setRol("user");
 
-        // Validación específica
-        assertTrue(usuarioDto.esValido(), "El usuario debería ser válido.");
+        // No se debe lanzar ninguna excepción si todos los datos son válidos
+        // Validamos cada uno de los campos del usuario
+        usuarioService.valirdarNombre(usuarioDto.getNombre());
+        usuarioService.valirdarApellido(usuarioDto.getApellido());
+        usuarioService.valirdarTelefono(usuarioDto.getTelefono());
+        usuarioService.valirdarEmail(usuarioDto.getEmail());
+
+        // Si llegamos aquí, significa que las validaciones han pasado correctamente
     }
-
 }
-

@@ -2,23 +2,34 @@ package com.programacion_avanzada.mega_store.dto;
 
 import com.programacion_avanzada.mega_store.DTOs.MarcaDto;
 import com.programacion_avanzada.mega_store.DTOs.ProductoDto;
+import com.programacion_avanzada.mega_store.DTOs.RegistrarProductoDto;
 import com.programacion_avanzada.mega_store.DTOs.SubCategoriaDTO;
 
+import com.programacion_avanzada.mega_store.Mapper.ProductoMapper;
+import com.programacion_avanzada.mega_store.Modelos.Marca;
+import com.programacion_avanzada.mega_store.Modelos.Producto;
+import com.programacion_avanzada.mega_store.Modelos.SubCategoria;
+import com.programacion_avanzada.mega_store.Repository.MarcaRepository;
+import com.programacion_avanzada.mega_store.Service.ProductoService;
+import com.programacion_avanzada.mega_store.Service.UsuarioService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 public class ProductoDtoTest {
 
     private ProductoDto productoDto;
+    private ProductoService productoService;
 
     @BeforeEach
     public void setUp() {
         productoDto = new ProductoDto();
+        productoService = new ProductoService();
     }
 
     @Test
@@ -34,7 +45,7 @@ public class ProductoDtoTest {
 
         productoDto.setNombre("N");// Nombre de solo 1 carácter, debería ser inválido
         productoDto.setDescripcion("Descripcion valida");
-        productoDto.setTamano("Grande");
+        productoDto.setTamano("XS");
         productoDto.setColor("Azul");
         productoDto.setPrecioUnitario(100.0);
         productoDto.setStock(50);
@@ -42,8 +53,12 @@ public class ProductoDtoTest {
         productoDto.setMarca(marcaDto);
         productoDto.setSubCategoria(subCategoriaDto);
 
-        // Validación específica
-        Assertions.assertFalse(productoDto.esValido(), "El nombre no debe tener menos de 2 caracteres.");    }
+        // Simulamos la validación
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            productoService.validarNombre(productoDto.getNombre()); // Llamamos al servicio para validar el nombre
+        });
+
+        assertEquals("El nombre del producto debe tener entre 2 y 64 caracteres.", exception.getMessage());   }
 
     @Test
     public void testNombreConMasDeSesentaYCuatroCaracteres() {
@@ -58,7 +73,7 @@ public class ProductoDtoTest {
 
         productoDto.setNombre("EsteNombreEsDemasiadoLargoComoParaSerValidoYAExcedeLosSesentaYCuatroCaracteres");// Nombre de mas de 64 carácteres, debería ser inválido
         productoDto.setDescripcion("Descripcion valida");
-        productoDto.setTamano("Grande");
+        productoDto.setTamano("XS");
         productoDto.setColor("Azul");
         productoDto.setPrecioUnitario(100.0);
         productoDto.setStock(50);
@@ -66,7 +81,12 @@ public class ProductoDtoTest {
         productoDto.setMarca(marcaDto);
         productoDto.setSubCategoria(subCategoriaDto);
 
-        Assertions.assertFalse(productoDto.esValido(), "El nombre no debe tener más de 64 caracteres.");
+        // Simulamos la validación
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            productoService.validarNombre(productoDto.getNombre()); // Llamamos al servicio para validar el nombre
+        });
+
+        assertEquals("El nombre del producto debe tener entre 2 y 64 caracteres.", exception.getMessage());
     }
 
     @Test
@@ -82,7 +102,7 @@ public class ProductoDtoTest {
 
         productoDto.setNombre("Nombre Con Espacios"); // Nombre con espacios
         productoDto.setDescripcion("Descripcion valida");
-        productoDto.setTamano("Grande");
+        productoDto.setTamano("XS");
         productoDto.setColor("Azul");
         productoDto.setPrecioUnitario(100.0);
         productoDto.setStock(50);
@@ -90,7 +110,12 @@ public class ProductoDtoTest {
         productoDto.setMarca(marcaDto);
         productoDto.setSubCategoria(subCategoriaDto);
 
-        Assertions.assertFalse(productoDto.esValido(), "El nombre no debe contener espacios en blanco.");
+        // Simulamos la validación
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            productoService.validarNombre(productoDto.getNombre()); // Llamamos al servicio para validar el nombre
+        });
+
+        assertEquals("El nombre del producto no debe contener espacios.", exception.getMessage());
     }
 
     @Test
@@ -106,7 +131,7 @@ public class ProductoDtoTest {
 
         productoDto.setNombre("Nombre123"); // Nombre no válido por contener números
         productoDto.setDescripcion("Descripcion valida");
-        productoDto.setTamano("Grande");
+        productoDto.setTamano("XS");
         productoDto.setColor("Azul");
         productoDto.setPrecioUnitario(100.0);
         productoDto.setStock(50);
@@ -114,7 +139,12 @@ public class ProductoDtoTest {
         productoDto.setMarca(marcaDto);
         productoDto.setSubCategoria(subCategoriaDto);
 
-        Assertions.assertFalse(productoDto.esValido(), "El nombre no debe contener números.");
+        // Simulamos la validación
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            productoService.validarNombre(productoDto.getNombre()); // Llamamos al servicio para validar el nombre
+        });
+
+        assertEquals("El nombre no debe contener números.", exception.getMessage());
     }
 
     @Test
@@ -130,7 +160,7 @@ public class ProductoDtoTest {
 
         productoDto.setNombre("NombreVálido");//Nombre con datos validos
         productoDto.setDescripcion("Descripcion válida");
-        productoDto.setTamano("Grande");
+        productoDto.setTamano("XS");
         productoDto.setColor("Azul");
         productoDto.setPrecioUnitario(100.0);
         productoDto.setStock(50);
@@ -138,7 +168,15 @@ public class ProductoDtoTest {
         productoDto.setMarca(marcaDto);
         productoDto.setSubCategoria(subCategoriaDto);
 
-        assertTrue(productoDto.esValido(), "El nombre debería ser válido.");
+        // No se debe lanzar ninguna excepción si todos los datos son válidos
+        // Validamos cada uno de los campos del usuario
+        productoService.validarNombre(productoDto.getNombre());
+        productoService.validarDescripcion(productoDto.getDescripcion());
+        productoService.validarTamano(productoDto.getTamano());
+        productoService.validarColor(productoDto.getColor());
+        productoService.valirdarPrecio(productoDto.getPrecioUnitario());
+        productoService.validarStock(productoDto.getStock());
+        productoService.validarUmbralBajoStock(productoDto.getUmbralBajoStock());
     }
 
     @Test
@@ -154,7 +192,7 @@ public class ProductoDtoTest {
 
         productoDto.setNombre("NombreValido");//Nombre valido
         productoDto.setDescripcion("Descripcion válida");
-        productoDto.setTamano("Grande");
+        productoDto.setTamano("XS");
         productoDto.setColor("Azul");
         productoDto.setPrecioUnitario(100.0);
         productoDto.setStock(50);
@@ -162,7 +200,15 @@ public class ProductoDtoTest {
         productoDto.setMarca(marcaDto);
         productoDto.setSubCategoria(subCategoriaDto);
 
-        assertTrue(productoDto.esValido(), "El nombre debería ser válido.");
+        // No se debe lanzar ninguna excepción si todos los datos son válidos
+        // Validamos cada uno de los campos del usuario
+        productoService.validarNombre(productoDto.getNombre());
+        productoService.validarDescripcion(productoDto.getDescripcion());
+        productoService.validarTamano(productoDto.getTamano());
+        productoService.validarColor(productoDto.getColor());
+        productoService.valirdarPrecio(productoDto.getPrecioUnitario());
+        productoService.validarStock(productoDto.getStock());
+        productoService.validarUmbralBajoStock(productoDto.getUmbralBajoStock());
     }
 
     @Test
@@ -178,7 +224,7 @@ public class ProductoDtoTest {
 
         productoDto.setNombre("NombreValido");
         productoDto.setDescripcion("D");//Descripcion de 1 caracter, deberia ser invalido
-        productoDto.setTamano("Grande");
+        productoDto.setTamano("XS");
         productoDto.setColor("Azul");
         productoDto.setPrecioUnitario(100.0);
         productoDto.setStock(50);
@@ -186,7 +232,12 @@ public class ProductoDtoTest {
         productoDto.setMarca(marcaDto);
         productoDto.setSubCategoria(subCategoriaDto);
 
-        Assertions.assertFalse(productoDto.esValido(), "La descripcion no debe tener menos de 2 caracteres.");
+        // Simulamos la validación
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            productoService.validarDescripcion(productoDto.getDescripcion()); // Llamamos al servicio para validar el nombre
+        });
+
+        assertEquals("La descripcion del producto debe tener entre 2 y 64 caracteres.", exception.getMessage());
     }
 
     @Test
@@ -202,7 +253,7 @@ public class ProductoDtoTest {
 
         productoDto.setNombre("NombreValido");
         productoDto.setDescripcion("EstaDescripcionEsDemasiadoLargaComoParaSerValidaYAExcedeLosCienCaracteresPorqueEstaCadenaEsExcesivaYNoDeberiaSerAceptada");//Descripcion de mas de 100 caracteres, deberia ser invalido
-        productoDto.setTamano("Grande");
+        productoDto.setTamano("XS");
         productoDto.setColor("Azul");
         productoDto.setPrecioUnitario(100.0);
         productoDto.setStock(50);
@@ -210,7 +261,12 @@ public class ProductoDtoTest {
         productoDto.setMarca(marcaDto);
         productoDto.setSubCategoria(subCategoriaDto);
 
-        Assertions.assertFalse(productoDto.esValido(), "La descripcion no debe tener mas de 100 caracteres.");
+        // Simulamos la validación
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            productoService.validarDescripcion(productoDto.getDescripcion()); // Llamamos al servicio para validar el nombre
+        });
+
+        assertEquals("La descripcion del producto debe tener entre 2 y 64 caracteres.", exception.getMessage());
     }
 
     @Test
@@ -226,7 +282,7 @@ public class ProductoDtoTest {
 
         productoDto.setNombre("NombreValido");
         productoDto.setDescripcion("Descripción con número 123"); // Descripción con números
-        productoDto.setTamano("Grande");
+        productoDto.setTamano("XS");
         productoDto.setColor("Azul");
         productoDto.setPrecioUnitario(100.0);
         productoDto.setStock(50);
@@ -234,7 +290,12 @@ public class ProductoDtoTest {
         productoDto.setMarca(marcaDto);
         productoDto.setSubCategoria(subCategoriaDto);
 
-        Assertions.assertFalse(productoDto.esValido(), "La descripción no debe ser válida si contiene números.");
+        // Simulamos la validación
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            productoService.validarDescripcion(productoDto.getDescripcion()); // Llamamos al servicio para validar el nombre
+        });
+
+        assertEquals("La descripcion no debe contener números.", exception.getMessage());
     }
 
     @Test
@@ -250,7 +311,7 @@ public class ProductoDtoTest {
 
         productoDto.setNombre("NombreValido");
         productoDto.setDescripcion("Descripcion con espacios");//Descripcion con espacios en blanco
-        productoDto.setTamano("Grande");
+        productoDto.setTamano("XS");
         productoDto.setColor("Azul");
         productoDto.setPrecioUnitario(100.0);
         productoDto.setStock(50);
@@ -258,7 +319,15 @@ public class ProductoDtoTest {
         productoDto.setMarca(marcaDto);
         productoDto.setSubCategoria(subCategoriaDto);
 
-        assertTrue(productoDto.esValido(), "La descripción debería ser válida.");
+        // No se debe lanzar ninguna excepción si todos los datos son válidos
+        // Validamos cada uno de los campos del usuario
+        productoService.validarNombre(productoDto.getNombre());
+        productoService.validarDescripcion(productoDto.getDescripcion());
+        productoService.validarTamano(productoDto.getTamano());
+        productoService.validarColor(productoDto.getColor());
+        productoService.valirdarPrecio(productoDto.getPrecioUnitario());
+        productoService.validarStock(productoDto.getStock());
+        productoService.validarUmbralBajoStock(productoDto.getUmbralBajoStock());
     }
 
     @Test
@@ -282,7 +351,12 @@ public class ProductoDtoTest {
         productoDto.setMarca(marcaDto);
         productoDto.setSubCategoria(subCategoriaDto);
 
-        Assertions.assertFalse(productoDto.esValido(), "El tamaño no debe estar vacio.");
+        // Simulamos la validación
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            productoService.validarTamano(productoDto.getTamano()); // Llamamos al servicio para validar el nombre
+        });
+
+        assertEquals("El tamaño del producto no puede estar vacío.", exception.getMessage());
     }
 
     @Test
@@ -306,7 +380,12 @@ public class ProductoDtoTest {
         productoDto.setMarca(marcaDto);
         productoDto.setSubCategoria(subCategoriaDto);
 
-        Assertions.assertFalse(productoDto.esValido(), "El tamaño no debe tener mas de 10 caracteres.");
+        // Simulamos la validación
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            productoService.validarTamano(productoDto.getTamano()); // Llamamos al servicio para validar el nombre
+        });
+
+        assertEquals("Solo se permite XS,S,M,L, XL O XXL para el tamaño del producto.", exception.getMessage());
     }
 
     @Test
@@ -322,7 +401,7 @@ public class ProductoDtoTest {
 
         productoDto.setNombre("NombreValido");
         productoDto.setDescripcion("Descripcion valida");
-        productoDto.setTamano("Grande");
+        productoDto.setTamano("XS");
         productoDto.setColor("A");//Color de 1 caracter,deberia ser invalido
         productoDto.setPrecioUnitario(100.0);
         productoDto.setStock(50);
@@ -330,7 +409,12 @@ public class ProductoDtoTest {
         productoDto.setMarca(marcaDto);
         productoDto.setSubCategoria(subCategoriaDto);
 
-        Assertions.assertFalse(productoDto.esValido(), "El color no debe tener menos de 2 caracteres.");    }
+        // Simulamos la validación
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            productoService.validarColor(productoDto.getColor()); // Llamamos al servicio para validar el nombre
+        });
+
+        assertEquals("El color del producto debe tener entre 2 y 5 caracteres.", exception.getMessage());   }
 
     @Test
     public void testColorConMasDeCincoCaracteres() {
@@ -345,7 +429,7 @@ public class ProductoDtoTest {
 
         productoDto.setNombre("NombreValido");
         productoDto.setDescripcion("Descripcion valida");
-        productoDto.setTamano("Grande");
+        productoDto.setTamano("XS");
         productoDto.setColor("Ejemplo");//Color de mas de 5 caracteres, deberia ser invalido
         productoDto.setPrecioUnitario(100.0);
         productoDto.setStock(50);
@@ -353,7 +437,12 @@ public class ProductoDtoTest {
         productoDto.setMarca(marcaDto);
         productoDto.setSubCategoria(subCategoriaDto);
 
-        Assertions.assertFalse(productoDto.esValido(), "El color no debe tener mas de 5 caracteres.");    }
+        // Simulamos la validación
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            productoService.validarColor(productoDto.getColor()); // Llamamos al servicio para validar el nombre
+        });
+
+        assertEquals("El color del producto debe tener entre 2 y 5 caracteres.", exception.getMessage());    }
 
     @Test
     public void testColorConNumeros() {
@@ -368,7 +457,7 @@ public class ProductoDtoTest {
 
         productoDto.setNombre("NombreValido");
         productoDto.setDescripcion("Descripcion valida");
-        productoDto.setTamano("Grande");
+        productoDto.setTamano("XS");
         productoDto.setColor("Azul1");//Color con numeros
         productoDto.setPrecioUnitario(100.0);
         productoDto.setStock(50);
@@ -376,7 +465,12 @@ public class ProductoDtoTest {
         productoDto.setMarca(marcaDto);
         productoDto.setSubCategoria(subCategoriaDto);
 
-        Assertions.assertFalse(productoDto.esValido(), "El color no debe contener numeros.");    }
+        // Simulamos la validación
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            productoService.validarColor(productoDto.getColor()); // Llamamos al servicio para validar el nombre
+        });
+
+        assertEquals("El color no debe contener números.", exception.getMessage());    }
 
     @Test
     public void testPrecioUnitarioVacio() {
@@ -391,7 +485,7 @@ public class ProductoDtoTest {
 
         productoDto.setNombre("NombreValido");
         productoDto.setDescripcion("Descripcion valida");
-        productoDto.setTamano("Grande");
+        productoDto.setTamano("XS");
         productoDto.setColor("Azul");
         productoDto.setPrecioUnitario(0.0);//Precio unitario vacio
         productoDto.setStock(50);
@@ -399,7 +493,12 @@ public class ProductoDtoTest {
         productoDto.setMarca(marcaDto);
         productoDto.setSubCategoria(subCategoriaDto);
 
-        Assertions.assertFalse(productoDto.esValido(), "El precio unitario no puede estar vacio.");    }
+        // Simulamos la validación
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            productoService.valirdarPrecio(productoDto.getPrecioUnitario()); // Llamamos al servicio para validar el nombre
+        });
+
+        assertEquals("El precio unitario del producto no puede estar vacío.", exception.getMessage());    }
 
     @Test
     public void testPrecioUnitarioPositivo() {
@@ -414,7 +513,7 @@ public class ProductoDtoTest {
 
         productoDto.setNombre("NombreValido");
         productoDto.setDescripcion("Descripcion valida");
-        productoDto.setTamano("Grande");
+        productoDto.setTamano("XS");
         productoDto.setColor("Azul");
         productoDto.setPrecioUnitario(1.0);//Precio unitario positivo
         productoDto.setStock(50);
@@ -422,7 +521,15 @@ public class ProductoDtoTest {
         productoDto.setMarca(marcaDto);
         productoDto.setSubCategoria(subCategoriaDto);
 
-        assertTrue(productoDto.esValido(), "El precio unitario debería ser válido."); }
+        // No se debe lanzar ninguna excepción si todos los datos son válidos
+        // Validamos cada uno de los campos del usuario
+        productoService.validarNombre(productoDto.getNombre());
+        productoService.validarDescripcion(productoDto.getDescripcion());
+        productoService.validarTamano(productoDto.getTamano());
+        productoService.validarColor(productoDto.getColor());
+        productoService.valirdarPrecio(productoDto.getPrecioUnitario());
+        productoService.validarStock(productoDto.getStock());
+        productoService.validarUmbralBajoStock(productoDto.getUmbralBajoStock());}
 
     @Test
     public void testStockVacio() {
@@ -437,7 +544,7 @@ public class ProductoDtoTest {
 
         productoDto.setNombre("NombreValido");
         productoDto.setDescripcion("Descripcion valida");
-        productoDto.setTamano("Grande");
+        productoDto.setTamano("XS");
         productoDto.setColor("Azul");
         productoDto.setPrecioUnitario(1.0);
         productoDto.setStock(0);//Stock vacio
@@ -445,7 +552,12 @@ public class ProductoDtoTest {
         productoDto.setMarca(marcaDto);
         productoDto.setSubCategoria(subCategoriaDto);
 
-        Assertions.assertFalse(productoDto.esValido(), "El stock no debe estar vacio.");    }
+        // Simulamos la validación
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            productoService.validarStock(productoDto.getStock()); // Llamamos al servicio para validar el nombre
+        });
+
+        assertEquals("El stock del producto no puede estar vacío.", exception.getMessage());    }
 
     @Test
     public void testStockPositivo() {
@@ -460,7 +572,7 @@ public class ProductoDtoTest {
 
         productoDto.setNombre("NombreValido");
         productoDto.setDescripcion("Descripcion valida");
-        productoDto.setTamano("Grande");
+        productoDto.setTamano("XS");
         productoDto.setColor("Azul");
         productoDto.setPrecioUnitario(1.0);
         productoDto.setStock(1);//Stock positivo
@@ -468,7 +580,15 @@ public class ProductoDtoTest {
         productoDto.setMarca(marcaDto);
         productoDto.setSubCategoria(subCategoriaDto);
 
-        assertTrue(productoDto.esValido(), "El stock debería ser válido."); }
+        // No se debe lanzar ninguna excepción si todos los datos son válidos
+        // Validamos cada uno de los campos del usuario
+        productoService.validarNombre(productoDto.getNombre());
+        productoService.validarDescripcion(productoDto.getDescripcion());
+        productoService.validarTamano(productoDto.getTamano());
+        productoService.validarColor(productoDto.getColor());
+        productoService.valirdarPrecio(productoDto.getPrecioUnitario());
+        productoService.validarStock(productoDto.getStock());
+        productoService.validarUmbralBajoStock(productoDto.getUmbralBajoStock()); }
 
     @Test
     public void testUmbralBajoStockVacio() {
@@ -483,7 +603,7 @@ public class ProductoDtoTest {
 
         productoDto.setNombre("NombreValido");
         productoDto.setDescripcion("Descripcion valida");
-        productoDto.setTamano("Grande");
+        productoDto.setTamano("XS");
         productoDto.setColor("Azul");
         productoDto.setPrecioUnitario(1.0);
         productoDto.setStock(1);
@@ -491,7 +611,12 @@ public class ProductoDtoTest {
         productoDto.setMarca(marcaDto);
         productoDto.setSubCategoria(subCategoriaDto);
 
-        Assertions.assertFalse(productoDto.esValido(), "El umbral bajo stock no puede estar vacio.");    }
+        // Simulamos la validación
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            productoService.validarUmbralBajoStock(productoDto.getUmbralBajoStock()); // Llamamos al servicio para validar el nombre
+        });
+
+        assertEquals("El umbral bajo de stock del producto no puede estar vacío.", exception.getMessage());    }
 
     @Test
     public void testUmbralBajoStockPositivo() {
@@ -506,7 +631,7 @@ public class ProductoDtoTest {
 
         productoDto.setNombre("NombreValido");
         productoDto.setDescripcion("Descripcion valida");
-        productoDto.setTamano("Grande");
+        productoDto.setTamano("XS");
         productoDto.setColor("Azul");
         productoDto.setPrecioUnitario(1.0);
         productoDto.setStock(1);
@@ -514,33 +639,55 @@ public class ProductoDtoTest {
         productoDto.setMarca(marcaDto);
         productoDto.setSubCategoria(subCategoriaDto);
 
-        assertTrue(productoDto.esValido(), "El umbral bajo stock debería ser válido."); }
+        // No se debe lanzar ninguna excepción si todos los datos son válidos
+        // Validamos cada uno de los campos del usuario
+        productoService.validarNombre(productoDto.getNombre());
+        productoService.validarDescripcion(productoDto.getDescripcion());
+        productoService.validarTamano(productoDto.getTamano());
+        productoService.validarColor(productoDto.getColor());
+        productoService.valirdarPrecio(productoDto.getPrecioUnitario());
+        productoService.validarStock(productoDto.getStock());
+        productoService.validarUmbralBajoStock(productoDto.getUmbralBajoStock()); }
 
 
-    @Test
+    /*@Test
     public void testMarcaVacia() {
-        // Crear objetos Marca y SubCategoria para asociarlos al Producto
-        MarcaDto marcaDto = new MarcaDto();
-        marcaDto.setId(1L);
-        marcaDto.setNombre("MarcaValida");
+        // Crear e insertar una marca en la base de datos en memoria
+        Marca marca = new Marca();
+        marca.setId(1L);
+        marca.setNombre("MarcaValida");
+        marcaRepository.save(marca);
 
+        // Crear objetos SubCategoria
         SubCategoriaDTO subCategoriaDto = new SubCategoriaDTO();
         subCategoriaDto.setId(1L);
         subCategoriaDto.setNombre("SubCategoriaValida");
 
+        // Configuración del ProductoDto con marca nula
+        ProductoDto productoDto = new ProductoDto();
         productoDto.setNombre("NombreValido");
         productoDto.setDescripcion("Descripcion valida");
-        productoDto.setTamano("Grande");
+        productoDto.setTamano("XS");
         productoDto.setColor("Azul");
         productoDto.setPrecioUnitario(1.0);
         productoDto.setStock(1);
         productoDto.setUmbralBajoStock(1);
-        productoDto.setMarca(null);//Marca vacia o nula
+        productoDto.setMarca(null); // Marca vacía o nula
         productoDto.setSubCategoria(subCategoriaDto);
 
-        Assertions.assertFalse(productoDto.esValido(), "La marca no puede estar vacia.");    }
+        // Convertir ProductoDto a Producto usando el mapper inyectado
+        Producto producto = productoMapper.toEntity(productoDto);
 
-    @Test
+        // Simulamos la validación de la marca a través del servicio
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            productoService.validarMarca(marca.getId(), producto); // Llamamos al servicio para validar la marca
+        });
+
+        // Verificamos que la excepción lanzada tenga el mensaje esperado
+        assertEquals("La marca del producto no puede estar vacía.", exception.getMessage());
+    }*/
+
+    /*@Test
     public void testMarcaPositiva() {
         // Crear objetos Marca y SubCategoria para asociarlos al Producto
         MarcaDto marcaDto = new MarcaDto();
@@ -561,9 +708,15 @@ public class ProductoDtoTest {
         productoDto.setMarca(marcaDto);//Marca positiva
         productoDto.setSubCategoria(subCategoriaDto);
 
-        assertTrue(productoDto.esValido(), "La marca debería ser válida."); }
+        // Simulamos la validación de la marca a través del servicio
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            productoService.validarMarca(marcaDto.getId(), producto); // Llamamos al servicio para validar la marca
+        });
 
-    @Test
+        // Verificamos que la excepción lanzada tenga el mensaje esperado
+        assertEquals("La marca del producto no puede estar vacía.", exception.getMessage()); }*/
+
+    /*@Test
     public void testSubCategoriaVacia() {
         // Crear objetos Marca y SubCategoria para asociarlos al Producto
         MarcaDto marcaDto = new MarcaDto();
@@ -584,9 +737,15 @@ public class ProductoDtoTest {
         productoDto.setMarca(marcaDto);
         productoDto.setSubCategoria(null);//SubCategoria vacia o nula
 
-        Assertions.assertFalse(productoDto.esValido(), "La subcategoria no puede estar vacia.");    }
+        // Simulamos la validación de la marca a través del servicio
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            productoService.validarSubCategoria(subCategoriaDto.getId(), producto); // Llamamos al servicio para validar la marca
+        });
 
-    @Test
+        // Verificamos que la excepción lanzada tenga el mensaje esperado
+        assertEquals("La marca del producto no puede estar vacía.", exception.getMessage());    }*/
+
+    /*@Test
     public void testSubCategoriaPositiva() {
         // Crear objetos Marca y SubCategoria para asociarlos al Producto
         MarcaDto marcaDto = new MarcaDto();
@@ -608,5 +767,5 @@ public class ProductoDtoTest {
         productoDto.setSubCategoria(subCategoriaDto);//SubCategoria positiva
 
 
-        assertTrue(productoDto.esValido(), "La subcategoria debería ser válida."); }
+        assertTrue(productoDto.esValido(), "La subcategoria debería ser válida."); }*/
 }

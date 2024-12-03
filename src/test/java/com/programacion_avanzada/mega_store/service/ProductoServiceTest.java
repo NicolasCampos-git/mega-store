@@ -49,7 +49,7 @@ public class ProductoServiceTest {
     void testRegistrarProducto() {
         // Crear un objeto DTO de prueba
         RegistrarProductoDto dto = new RegistrarProductoDto();
-        dto.setNombre("Producto de Prueba");
+        dto.setNombre("Producto");
         dto.setDescripcion("Descripción válida");
         dto.setColor("Rojo");
         dto.setTamano("Mediano");
@@ -76,11 +76,11 @@ public class ProductoServiceTest {
         when(subCategoriaRepository.findById(1L)).thenReturn(Optional.of(subCategoria));
 
         // Verificar si el nombre del producto ya existe
-        when(productoRepository.existsByNombre("Producto de Prueba")).thenReturn(false); // Debe devolver false para que pase la verificación
+        when(productoRepository.existsByNombre("Producto")).thenReturn(false); // Debe devolver false para que pase la verificación
 
         // Configurar el comportamiento del mock para convertir el DTO a Producto
         Producto productoEsperado = new Producto();
-        productoEsperado.setNombre("Producto de Prueba");
+        productoEsperado.setNombre("Producto");
         productoEsperado.setDescripcion("Descripción válida");
         productoEsperado.setColor("Rojo");
         productoEsperado.setTamano("Mediano");
@@ -100,7 +100,7 @@ public class ProductoServiceTest {
 
         // Verificar los resultados
         assertNotNull(result, "El resultado no debería ser nulo");
-        assertEquals("Producto de Prueba", result.getNombre());
+        assertEquals("Producto", result.getNombre());
         assertEquals("Descripción válida", result.getDescripcion());
 
         // Verificar que se hayan llamado los métodos esperados
@@ -108,7 +108,7 @@ public class ProductoServiceTest {
         verify(marcaRepository).findById(1L);
         verify(subCategoriaRepository).existsById(1L);
         verify(subCategoriaRepository).findById(1L);
-        verify(productoRepository).existsByNombre("Producto de Prueba");
+        verify(productoRepository).existsByNombre("Producto");
         verify(productoRepository).save(productoEsperado);
     }
 

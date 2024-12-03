@@ -116,7 +116,7 @@ public class MarcaService implements IMarcaService{
         return marcaMapper.toDto(marcaRepository.save(marca));
     }
 
-    private void validarNombre(String nombre){
+    public void validarNombre(String nombre){
         if (nombre == null || nombre.isEmpty()) {
             throw new IllegalArgumentException("El nombre de la marca no puede estar vacío.");
             
@@ -128,9 +128,12 @@ public class MarcaService implements IMarcaService{
             throw new IllegalArgumentException("El nombre de la marca no debe contener espacios.");
             
         }
+        if (nombre.matches(".*\\d.*")) {
+            throw new IllegalArgumentException("El nombre no debe contener números.");
+        }
     }
 
-    private void validarDescripcion(String descripcion){
+    public void validarDescripcion(String descripcion){
         if (descripcion == null || descripcion.isEmpty()) {
             throw new IllegalArgumentException("La descripcion de la marca no puede estar vacía.");
             
@@ -138,10 +141,13 @@ public class MarcaService implements IMarcaService{
         if (descripcion.length() < 2 || descripcion.length() > 64) {
             throw new IllegalArgumentException("La descripcion de la marca debe tener entre 2 y 64 caracteres.");
         }
+        if (descripcion.matches(".*\\d.*")) {
+            throw new IllegalArgumentException("La descripcion no debe contener números.");
+        }
         
     }
 
-    private Marca normalizarDatos(Marca marca){
+    public Marca normalizarDatos(Marca marca){
         marca.setNombre(StringUtil.capitalizeFirstLetter(marca.getNombre().toLowerCase().trim()));
         marca.setDescripcion(marca.getDescripcion().toLowerCase().trim());
         return marca;

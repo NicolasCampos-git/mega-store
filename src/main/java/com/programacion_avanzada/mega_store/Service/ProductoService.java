@@ -188,7 +188,7 @@ public class ProductoService implements IProductoService {
         }
     }
 
-    private void validarNombre(String nombre){
+    public void validarNombre(String nombre){
         if (nombre == null || nombre.isEmpty()) {
             throw new IllegalArgumentException("El nombre del producto no puede estar vacío.");
             
@@ -198,11 +198,13 @@ public class ProductoService implements IProductoService {
         }
         if (nombre.contains(" ")) {
             throw new IllegalArgumentException("El nombre del producto no debe contener espacios.");
-            
+        }
+        if (nombre.matches(".*\\d.*")) {
+            throw new IllegalArgumentException("El nombre no debe contener números.");
         }
     }
 
-    private void validarDescripcion(String descripcion){
+    public void validarDescripcion(String descripcion){
         if (descripcion == null || descripcion.isEmpty()) {
             throw new IllegalArgumentException("La descripcion del producto no puede estar vacía.");
             
@@ -210,10 +212,13 @@ public class ProductoService implements IProductoService {
         if (descripcion.length() < 2 || descripcion.length() > 64) {
             throw new IllegalArgumentException("La descripcion del producto debe tener entre 2 y 64 caracteres.");
         }
+        if (descripcion.matches(".*\\d.*")) {
+            throw new IllegalArgumentException("La descripcion no debe contener números.");
+        }
         
     }
 
-    private void validarTamano(String tamano){
+    public void validarTamano(String tamano){
         if (tamano == null || tamano.isEmpty()) {
             throw new IllegalArgumentException("El tamaño del producto no puede estar vacío.");
             
@@ -227,18 +232,21 @@ public class ProductoService implements IProductoService {
         }
     }
 
-    private void validarColor(String color){
+    public void validarColor(String color){
         if (color == null || color.isEmpty()) {
             throw new IllegalArgumentException("El color del producto no puede estar vacío.");
             
         }
-        if (color.length() < 2 || color.length() > 64) {
-            throw new IllegalArgumentException("El color del producto debe tener entre 2 y 64 caracteres.");
+        if (color.length() < 2 || color.length() > 5) {
+            throw new IllegalArgumentException("El color del producto debe tener entre 2 y 5 caracteres.");
+        }
+        if (color.matches(".*\\d.*")) {
+            throw new IllegalArgumentException("El color no debe contener números.");
         }
         
     }
 
-    private void valirdarPrecio(double precioUnitario){
+    public void valirdarPrecio(double precioUnitario){
         if (precioUnitario < 0) {
             throw new IllegalArgumentException("El precio unitario del producto debe ser mayor a 0.");
         }
@@ -255,7 +263,7 @@ public class ProductoService implements IProductoService {
 
     }
 
-    private void validarStock(int stock){
+    public void validarStock(int stock){
         if (stock < 0) {
             throw new IllegalArgumentException("El stock del producto debe ser mayor a 0.");
         }
@@ -271,7 +279,7 @@ public class ProductoService implements IProductoService {
         }
     }
 
-    private void validarUmbralBajoStock(int umbralBajoStock){
+    public void validarUmbralBajoStock(int umbralBajoStock){
         if (umbralBajoStock < 0) {
             throw new IllegalArgumentException("El umbral bajo de stock del producto debe ser mayor a 0.");
         }
@@ -288,13 +296,13 @@ public class ProductoService implements IProductoService {
         
     }
 
-    private void validarStockYUmbralBajoStock(int stock, int umbralBajoStock){
+    public void validarStockYUmbralBajoStock(int stock, int umbralBajoStock){
         if (stock < umbralBajoStock) {
             throw new IllegalArgumentException("El stock del producto debe ser mayor o igual al umbral bajo de stock.");
         }
     }
 
-    private void validarMarca(long marcaId, Producto producto){
+    public void validarMarca(long marcaId, Producto producto){
         if (marcaId <= 0) {
             throw new IllegalArgumentException("La marca del producto no puede estar vacía.");
         }
@@ -308,7 +316,7 @@ public class ProductoService implements IProductoService {
         
     }
 
-    private void ValidarSubCategoria(long subCategoriaId, Producto producto){
+    public void validarSubCategoria(long subCategoriaId, Producto producto){
         if (subCategoriaId <= 0) {
             throw new IllegalArgumentException("La subcategoria del producto no puede estar vacía.");
         }
@@ -320,7 +328,7 @@ public class ProductoService implements IProductoService {
         producto.setSubcategoria(subCategoria);
     }
 
-    private void normalizarDatos(Producto producto){
+    public void normalizarDatos(Producto producto){
         producto.setNombre(producto.getNombre().toLowerCase().trim());
         producto.setDescripcion(producto.getDescripcion().toLowerCase().trim());
         producto.setColor(producto.getColor().toLowerCase().trim());

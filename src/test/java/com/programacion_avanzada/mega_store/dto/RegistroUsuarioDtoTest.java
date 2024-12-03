@@ -1,25 +1,28 @@
 package com.programacion_avanzada.mega_store.dto;
 
 import com.programacion_avanzada.mega_store.DTOs.RegistroUsuarioDto;
-import org.junit.jupiter.api.Assertions;
+import com.programacion_avanzada.mega_store.Service.UsuarioService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 public class RegistroUsuarioDtoTest {
 
     private RegistroUsuarioDto usuarioDto;
+    private UsuarioService usuarioService;
 
     @BeforeEach
     public void setUp() {
         usuarioDto = new RegistroUsuarioDto();
+        usuarioService = new UsuarioService();
     }
 
     @Test
     public void testNombreVacio() {
+        // Establecemos el nombre vacío
         usuarioDto.setNombre("");//Nombre vacio
         usuarioDto.setApellido("Pérez");
         usuarioDto.setTelefono("123456789");
@@ -27,7 +30,13 @@ public class RegistroUsuarioDtoTest {
         usuarioDto.setContrasena("Test1Contraseña");
         usuarioDto.setContrasenaRepetida("Test1Contraseña");
 
-        Assertions.assertFalse(usuarioDto.esValido(), "El nombre no debe estar vacio.");
+
+        // Simulamos la validación
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            usuarioService.valirdarNombre(usuarioDto.getNombre()); // Llamamos al servicio para validar el nombre
+        });
+
+        assertEquals("El nombre no puede estar vacio.", exception.getMessage());
     }
 
     @Test
@@ -39,7 +48,12 @@ public class RegistroUsuarioDtoTest {
         usuarioDto.setContrasena("Test1Contraseña");
         usuarioDto.setContrasenaRepetida("Test1Contraseña");
 
-        Assertions.assertFalse(usuarioDto.esValido(), "El nombre no debe contener espacios en blanco.");
+        // Simulamos la validación
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            usuarioService.valirdarNombre(usuarioDto.getNombre()); // Llamamos al servicio para validar el nombre
+        });
+
+        assertEquals("El nombre no debe contener espacios.", exception.getMessage());
     }
 
     @Test
@@ -51,7 +65,12 @@ public class RegistroUsuarioDtoTest {
         usuarioDto.setContrasena("Test1Contraseña");
         usuarioDto.setContrasenaRepetida("Test1Contraseña");
 
-        Assertions.assertFalse(usuarioDto.esValido(), "El nombre no debe contener menos de 2 caracteres.");
+        // Simulamos la validación
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            usuarioService.valirdarNombre(usuarioDto.getNombre()); // Llamamos al servicio para validar el nombre
+        });
+
+        assertEquals("El nombre debe tener entre 2 y 64 caracteres.", exception.getMessage());
     }
 
     @Test
@@ -63,7 +82,12 @@ public class RegistroUsuarioDtoTest {
         usuarioDto.setContrasena("Test1Contraseña");
         usuarioDto.setContrasenaRepetida("Test1Contraseña");
 
-        Assertions.assertFalse(usuarioDto.esValido(), "El nombre no debe contener mas de 64 caracteres.");
+        // Simulamos la validación
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            usuarioService.valirdarNombre(usuarioDto.getNombre()); // Llamamos al servicio para validar el nombre
+        });
+
+        assertEquals("El nombre debe tener entre 2 y 64 caracteres.", exception.getMessage());
     }
 
     @Test
@@ -75,7 +99,12 @@ public class RegistroUsuarioDtoTest {
         usuarioDto.setContrasena("Test1Contraseña");
         usuarioDto.setContrasenaRepetida("Test1Contraseña");
 
-        Assertions.assertFalse(usuarioDto.esValido(), "El apellido no debe estar vacio.");
+        // Simulamos la validación
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            usuarioService.valirdarApellido(usuarioDto.getApellido()); // Llamamos al servicio para validar el nombre
+        });
+
+        assertEquals("El apellido no puede estar vacio.", exception.getMessage());
     }
 
     @Test
@@ -87,7 +116,12 @@ public class RegistroUsuarioDtoTest {
         usuarioDto.setContrasena("Test1Contraseña");
         usuarioDto.setContrasenaRepetida("Test1Contraseña");
 
-        Assertions.assertFalse(usuarioDto.esValido(), "El apellido no debe contener espacios en blanco.");
+        // Simulamos la validación
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            usuarioService.valirdarApellido(usuarioDto.getApellido()); // Llamamos al servicio para validar el nombre
+        });
+
+        assertEquals("El apellido no debe contener espacios.", exception.getMessage());
     }
 
     @Test
@@ -99,7 +133,12 @@ public class RegistroUsuarioDtoTest {
         usuarioDto.setContrasena("Test1Contraseña");
         usuarioDto.setContrasenaRepetida("Test1Contraseña");
 
-        Assertions.assertFalse(usuarioDto.esValido(), "El apellido no debe contener menos de 2 caracteres.");
+        // Simulamos la validación
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            usuarioService.valirdarApellido(usuarioDto.getApellido()); // Llamamos al servicio para validar el nombre
+        });
+
+        assertEquals("El apellido debe tener entre 2 y 64 caracteres.", exception.getMessage());
     }
 
     @Test
@@ -111,7 +150,12 @@ public class RegistroUsuarioDtoTest {
         usuarioDto.setContrasena("Test1Contraseña");
         usuarioDto.setContrasenaRepetida("Test1Contraseña");
 
-        Assertions.assertFalse(usuarioDto.esValido(), "El apellido no debe contener mas de 64 caracteres.");
+        // Simulamos la validación
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            usuarioService.valirdarApellido(usuarioDto.getApellido()); // Llamamos al servicio para validar el nombre
+        });
+
+        assertEquals("El apellido debe tener entre 2 y 64 caracteres.", exception.getMessage());
     }
 
     @Test
@@ -123,7 +167,12 @@ public class RegistroUsuarioDtoTest {
         usuarioDto.setContrasena("Test1Contraseña");
         usuarioDto.setContrasenaRepetida("Test1Contraseña");
 
-        Assertions.assertFalse(usuarioDto.esValido(), "El telefono no debe estar vacio.");
+        // Simulamos la validación
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            usuarioService.valirdarTelefono(usuarioDto.getTelefono()); // Llamamos al servicio para validar el nombre
+        });
+
+        assertEquals("El telefono no puede estar vacio.", exception.getMessage());
     }
 
     @Test
@@ -135,7 +184,12 @@ public class RegistroUsuarioDtoTest {
         usuarioDto.setContrasena("Test1Contraseña");
         usuarioDto.setContrasenaRepetida("Test1Contraseña");
 
-        Assertions.assertFalse(usuarioDto.esValido(), "El telefono no debe contener caracteres que no sean numeros.");
+        // Simulamos la validación
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            usuarioService.valirdarTelefono(usuarioDto.getTelefono()); // Llamamos al servicio para validar el nombre
+        });
+
+        assertEquals("El telefono solo debe contener numeros.", exception.getMessage());
     }
 
     @Test
@@ -147,7 +201,12 @@ public class RegistroUsuarioDtoTest {
         usuarioDto.setContrasena("Test1Contraseña");
         usuarioDto.setContrasenaRepetida("Test1Contraseña");
 
-        Assertions.assertFalse(usuarioDto.esValido(), "El telefono no debe tener menos de 9 digitos.");
+        // Simulamos la validación
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            usuarioService.valirdarTelefono(usuarioDto.getTelefono()); // Llamamos al servicio para validar el nombre
+        });
+
+        assertEquals("El telefono debe tener entre 9 y 15 caracteres.", exception.getMessage());
     }
 
     @Test
@@ -159,7 +218,12 @@ public class RegistroUsuarioDtoTest {
         usuarioDto.setContrasena("Test1Contraseña");
         usuarioDto.setContrasenaRepetida("Test1Contraseña");
 
-        Assertions.assertFalse(usuarioDto.esValido(), "El telefono no debe tener mas de 15 digitos.");
+        // Simulamos la validación
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            usuarioService.valirdarTelefono(usuarioDto.getTelefono()); // Llamamos al servicio para validar el nombre
+        });
+
+        assertEquals("El telefono debe tener entre 9 y 15 caracteres.", exception.getMessage());
     }
 
     @Test
@@ -171,8 +235,12 @@ public class RegistroUsuarioDtoTest {
         usuarioDto.setContrasena("Test1Contraseña");  // Debe ser válido
         usuarioDto.setContrasenaRepetida("Test1Contraseña");  // Debe coincidir
 
-        // Validación específica
-        Assertions.assertFalse(usuarioDto.esValido(), "El email no debe estar vacio.");
+        // Simulamos la validación
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            usuarioService.valirdarEmail(usuarioDto.getEmail()); // Llamamos al servicio para validar el nombre
+        });
+
+        assertEquals("El email no puede estar vacio.", exception.getMessage());
     }
 
     @Test
@@ -184,8 +252,12 @@ public class RegistroUsuarioDtoTest {
         usuarioDto.setContrasena("Test1Contraseña");
         usuarioDto.setContrasenaRepetida("Test1Contraseña");
 
-        // Validación específica
-        Assertions.assertFalse(usuarioDto.esValido(), "El email no puede no tener formato de email.");
+        // Simulamos la validación
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            usuarioService.valirdarEmail(usuarioDto.getEmail()); // Llamamos al servicio para validar el nombre
+        });
+
+        assertEquals("El email no es valido.", exception.getMessage());
     }
 
     @Test
@@ -197,8 +269,12 @@ public class RegistroUsuarioDtoTest {
         usuarioDto.setContrasena(""); //Contraseña vacia
         usuarioDto.setContrasenaRepetida(""); //Contraseña vacia
 
-        // Validación específica
-        Assertions.assertFalse(usuarioDto.esValido(), "La contraseña no debe estar vacia.");
+        // Simulamos la validación
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            usuarioService.valirdarContrasena(usuarioDto.getContrasena(), usuarioDto.getContrasenaRepetida()); // Llamamos al servicio para validar el nombre
+        });
+
+        assertEquals("La contrasena no puede estar vacia.", exception.getMessage());
     }
 
     @Test
@@ -210,8 +286,12 @@ public class RegistroUsuarioDtoTest {
         usuarioDto.setContrasena("A1bcdef");//Contraseña con menos de 8 caracteres
         usuarioDto.setContrasenaRepetida("A1bcdef");//Contraseña con menos de 8 caracteres
 
-        // Validación específica
-        Assertions.assertFalse(usuarioDto.esValido(), "La contraseña no debe tener menos de 8 caracteres.");
+        // Simulamos la validación
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            usuarioService.valirdarContrasena(usuarioDto.getContrasena(), usuarioDto.getContrasenaRepetida()); // Llamamos al servicio para validar el nombre
+        });
+
+        assertEquals("La contrasena debe tener al menos 8 caracteres.", exception.getMessage());
     }
 
     @Test
@@ -223,8 +303,12 @@ public class RegistroUsuarioDtoTest {
         usuarioDto.setContrasena("contrasena1");//Contraseña sin aunque sea una mayuscula
         usuarioDto.setContrasenaRepetida("contrasena1");//Contraseña sin aunque sea una mayuscula
 
-        // Validación específica
-        Assertions.assertFalse(usuarioDto.esValido(), "La contraseña necesita tener al menos una mayuscula.");
+        // Simulamos la validación
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            usuarioService.valirdarContrasena(usuarioDto.getContrasena(), usuarioDto.getContrasenaRepetida()); // Llamamos al servicio para validar el nombre
+        });
+
+        assertEquals("La contrasena debe tener al menos una mayuscula y un numero.", exception.getMessage());
     }
 
     @Test
@@ -236,8 +320,12 @@ public class RegistroUsuarioDtoTest {
         usuarioDto.setContrasena("Contrasena");//Contraseña sin al menos un numero
         usuarioDto.setContrasenaRepetida("Contrasena");//Contraseña sin al menos un numero
 
-        // Validación específica
-        Assertions.assertFalse(usuarioDto.esValido(), "La contraseña necesita tener al menos un numero.");
+        // Simulamos la validación
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            usuarioService.valirdarContrasena(usuarioDto.getContrasena(), usuarioDto.getContrasenaRepetida()); // Llamamos al servicio para validar el nombre
+        });
+
+        assertEquals("La contrasena debe tener al menos una mayuscula y un numero.", exception.getMessage());
     }
 
 
@@ -250,8 +338,12 @@ public class RegistroUsuarioDtoTest {
         usuarioDto.setContrasena("Contrasena1");
         usuarioDto.setContrasenaRepetida("");//Contraseñas no coinciden
 
-        // Validación específica
-        Assertions.assertFalse(usuarioDto.esValido(), "Las contraseñas deben coincidir.");
+        // Simulamos la validación
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            usuarioService.valirdarContrasena(usuarioDto.getContrasena(), usuarioDto.getContrasenaRepetida()); // Llamamos al servicio para validar el nombre
+        });
+
+        assertEquals("Las contrasenas no coinciden.", exception.getMessage());
     }
 
 
@@ -262,11 +354,18 @@ public class RegistroUsuarioDtoTest {
         usuarioDto.setApellido("Pérez");
         usuarioDto.setTelefono("123456789");
         usuarioDto.setEmail("juan.perez@example.com");
-        usuarioDto.setContrasena("Test1Contraseña");
-        usuarioDto.setContrasenaRepetida("Test1Contraseña");
+        usuarioDto.setContrasena("Contrasena1");
+        usuarioDto.setContrasenaRepetida("Contrasena1");
 
-        // Validación específica
-        assertTrue(usuarioDto.esValido(), "El usuario debería ser válido.");
+        // No se debe lanzar ninguna excepción si todos los datos son válidos
+        // Validamos cada uno de los campos del usuario
+        usuarioService.valirdarNombre(usuarioDto.getNombre());
+        usuarioService.valirdarApellido(usuarioDto.getApellido());
+        usuarioService.valirdarTelefono(usuarioDto.getTelefono());
+        usuarioService.valirdarEmail(usuarioDto.getEmail());
+        usuarioService.valirdarContrasena(usuarioDto.getContrasena(), usuarioDto.getContrasenaRepetida());
+
+        // Si llegamos aquí, significa que las validaciones han pasado correctamente
     }
 
 }

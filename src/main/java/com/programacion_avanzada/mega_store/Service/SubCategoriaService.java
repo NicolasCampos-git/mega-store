@@ -120,7 +120,7 @@ public class SubCategoriaService implements ISubCategoriaService {
         return subCategoriaMapper.toDto(subcategoria);
     }
 
-    private void valirdarNombre(String nombre) {
+    public void valirdarNombre(String nombre) {
         if (nombre == null || nombre.isEmpty()) {
             throw new IllegalArgumentException("El nombre no puede estar vacio.");
         }
@@ -130,37 +130,42 @@ public class SubCategoriaService implements ISubCategoriaService {
         if (nombre.contains(" ")) {
             throw new IllegalArgumentException("El nombre no debe contener espacios.");
         }
+        if (nombre.matches(".*\\d.*")) {
+            throw new IllegalArgumentException("El nombre no debe contener números.");
+        }
         
     }
 
-    private void valirdarDescripcion(String descripcion) {
+    public void valirdarDescripcion(String descripcion) {
         if (descripcion == null || descripcion.isEmpty()) {
             throw new IllegalArgumentException("La descripcion no puede estar vacia.");
         }
         if (descripcion.length() < 2 || descripcion.length() > 64) {
             throw new IllegalArgumentException("La descripcion debe tener entre 2 y 64 caracteres.");
         }
-        
+        if (descripcion.matches(".*\\d.*")) {
+            throw new IllegalArgumentException("La descripcion no debe contener números.");
+        }
     }
 
-    private void verificarCategoria(Long categoriaId) {
+    public void verificarCategoria(Long categoriaId) {
         if (!categoriaRepository.existsById(categoriaId)) {
             throw new EntityNotFoundException("La categoría no existe");
         }
     }
 
-    private void verificarUnicidad(String nombre) {
+    public void verificarUnicidad(String nombre) {
         if (subCategoriaRepository.existsByNombre(nombre)) {
             throw new EntityExistsException("La subcategoria ya existe");
         }
     }
 
-    private void normalizarDatos(SubCategoria subCategoria) {
+    public void normalizarDatos(SubCategoria subCategoria) {
         subCategoria.setNombre(StringUtil.capitalizeFirstLetter(subCategoria.getNombre().toLowerCase().trim()));
         subCategoria.setDescripcion(subCategoria.getDescripcion().toLowerCase().trim());
     }
 
-    private void asignarCategoria(SubCategoria subCategoria, Long categoriaId) {
+    public void asignarCategoria(SubCategoria subCategoria, Long categoriaId) {
         Categoria categoria = categoriaRepository.findById(categoriaId)
                 .orElseThrow(() -> new EntityNotFoundException("La categoría no existe")); // Lanza excepción si no se encuentra la categoría
         subCategoria.setCategoria(categoria);

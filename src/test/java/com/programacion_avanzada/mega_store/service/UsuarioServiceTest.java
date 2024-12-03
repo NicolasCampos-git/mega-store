@@ -90,7 +90,7 @@ public class UsuarioServiceTest {
                 () -> usuarioService.registrarUsuario(dto)
         );
 
-        assertEquals("Las contrasenas no coinciden", exception.getMessage());
+        assertEquals("Las contrasenas no coinciden.", exception.getMessage());
 
         // Verificar que el metodo existsByEmail nunca fue llamado
         verify(usuarioRepository, never()).existsByEmail(anyString());
