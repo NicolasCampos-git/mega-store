@@ -3,6 +3,7 @@ package com.programacion_avanzada.mega_store.Modelos;
 
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import io.micrometer.common.lang.NonNull;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -42,6 +43,7 @@ public class SubCategoria {
 
     @ManyToOne
     @JoinColumn(name = "categoria_id")
+    @JsonBackReference
     private Categoria categoria;
      
     @NonNull

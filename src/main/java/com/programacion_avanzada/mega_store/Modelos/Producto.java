@@ -1,5 +1,6 @@
 package com.programacion_avanzada.mega_store.Modelos;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import io.micrometer.common.lang.NonNull;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -59,10 +60,12 @@ public class Producto {
 
     @ManyToOne
     @JoinColumn(name = "marca_id", nullable = false)
+    @JsonBackReference
     private Marca marca;
 
     @ManyToOne
     @JoinColumn(name = "sucategoria_id", nullable = false)
+    @JsonBackReference
     private SubCategoria Subcategoria;
 
     @NonNull
