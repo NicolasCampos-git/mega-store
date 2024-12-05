@@ -18,13 +18,5 @@ public class RegistrarCategoriaDto {
 
     private String descripcion;
 
-    //Metodo que valida los campos de acuerdo con las anotaciones
-    public boolean esValido() {
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        Validator validator = factory.getValidator();
-
-        Set<ConstraintViolation<RegistrarCategoriaDto>> violations = validator.validate(this);
-        return violations.isEmpty();
-    }
 
 }

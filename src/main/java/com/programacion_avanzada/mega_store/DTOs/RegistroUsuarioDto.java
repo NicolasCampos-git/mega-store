@@ -29,15 +29,4 @@ public class RegistroUsuarioDto {
 
     private String contrasenaRepetida;
 
-    //Metodo que valida los campos de acuerdo con las anotaciones
-    public boolean esValido() {
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        Validator validator = factory.getValidator();
-
-        Set<ConstraintViolation<RegistroUsuarioDto>> violations = validator.validate(this);
-
-        boolean contrasenaCoincide = this.contrasena.equals(this.contrasenaRepetida);
-
-        return violations.isEmpty() && contrasenaCoincide;
-    }
 }

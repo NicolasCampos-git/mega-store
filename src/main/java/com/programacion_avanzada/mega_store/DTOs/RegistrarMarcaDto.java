@@ -17,13 +17,5 @@ public class RegistrarMarcaDto {
 
     private String descripcion;
 
-    //Metodo que valida los campos de acuerdo con las anotaciones
-    public boolean esValido() {
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        Validator validator = factory.getValidator();
-
-        Set<ConstraintViolation<RegistrarMarcaDto>> violations = validator.validate(this);
-        return violations.isEmpty();
-    }
 
 }

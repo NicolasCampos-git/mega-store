@@ -11,7 +11,7 @@ import lombok.Data;
 
 import java.util.Set;
 
-//Este DTO es en caso de queter motrar datos del usuario.
+
 @Data
 public class UsuarioDto {
 

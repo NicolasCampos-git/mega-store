@@ -18,13 +18,5 @@ public class RegistrarSubCategoriaDto {
 
     private Long categoriaId;
 
-    //Metodo que valida los campos de acuerdo con las anotaciones
-    public boolean esValido() {
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        Validator validator = factory.getValidator();
-
-        Set<ConstraintViolation<RegistrarSubCategoriaDto>> violations = validator.validate(this);
-        return violations.isEmpty();
-    }
 
 }

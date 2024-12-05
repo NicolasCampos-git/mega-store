@@ -21,13 +21,4 @@ public class SubCategoriaDTO{
     private CategoriaDto categoriaDto;
 
     private boolean estaActivo;
-
-    //Metodo que valida los campos de acuerdo con las anotaciones
-    public boolean esValido() {
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        Validator validator = factory.getValidator();
-
-        Set<ConstraintViolation<SubCategoriaDTO>> violations = validator.validate(this);
-        return violations.isEmpty();
-    }
 }
