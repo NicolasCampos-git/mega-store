@@ -15,7 +15,7 @@ public class OrdenCompra {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
+    @ManyToOne
     private Usuario usuario;
 
     @OneToMany(cascade = CascadeType.ALL)

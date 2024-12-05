@@ -76,12 +76,19 @@ public class UsuarioService implements IUsuarioService {
             throw new IllegalArgumentException("Usuario no encontrado con el ID: " + id);
             
         }
-    
+
+        valirdarNombre(dto.getNombre());
+        valirdarApellido(dto.getApellido());
+        valirdarEmail(dto.getEmail());
+        valirdarTelefono(dto.getTelefono());
+        valirdarContrasena(dto.getContrasena(), dto.getContrasena());
         
         usuario.setNombre(StringUtil.capitalizeFirstLetter(dto.getNombre().toLowerCase()));
         usuario.setApellido(StringUtil.capitalizeFirstLetter(dto.getApellido().toLowerCase()));
         usuario.setEmail(dto.getEmail().trim().toLowerCase());
         usuario.setTelefono(dto.getTelefono());
+        usuario.setContrasena(dto.getContrasena());
+
     
         
         Usuario usuarioActualizado = usuarioRepository.save(usuario);

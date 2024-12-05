@@ -2,6 +2,7 @@ package com.programacion_avanzada.mega_store.Modelos;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -53,6 +54,7 @@ public class Usuario {
 
     //Relacion 1:N
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true) //De esta forma salteamos tener que tener la clase de la tabla intermedia y se puede trabajar en el PUT.
+    @JsonManagedReference
     private List<DireccionEnvio> direcciones;
 
     

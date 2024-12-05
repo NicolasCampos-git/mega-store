@@ -1,5 +1,6 @@
 package com.programacion_avanzada.mega_store.Modelos;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Column;
@@ -56,6 +57,7 @@ public class DireccionEnvio {
 
     @ManyToOne //Relacion N:1
     @JoinColumn(name = "usuario_id")
+    @JsonBackReference
     private Usuario usuario;
 
     @Column(name = "es_principal")

@@ -46,6 +46,9 @@ public class InventarioService implements IInventarioService{
         if (producto.getStock() < 0) {
             throw new IllegalArgumentException("El stock no puede ser menor a 0.");
         }
+        if(producto.getStock() < producto.getUmbralBajoStock()){
+            senderService.notificarBajoStock(producto.getId());
+        }
         
         
         return productoService.guardar(producto);

@@ -19,5 +19,7 @@ public class UsuarioDto {
 
     private String rol;
 
+    private String contrasena;
+
 
 }

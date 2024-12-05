@@ -56,7 +56,7 @@ public class SenderService implements ISenderService {
         try{
             mensaje.setSubject("¡Stock bajo! ");
             MimeMessageHelper helper = new MimeMessageHelper(mensaje, true);
-            helper.setTo("nicolascampos4899@gmail.com");
+            helper.setTo("alexisgutierrez1072@gmail.com");
             helper.setText(
                 "El stock del producto:" +
                 producto.getId() +"\n "+
