@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.programacion_avanzada.mega_store.DTOs.ProductoDto;
 import com.programacion_avanzada.mega_store.Mapper.RegistrarProductoMapper;
+import com.programacion_avanzada.mega_store.Modelos.Categoria;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -116,19 +117,8 @@ public class ProductoService implements IProductoService {
      */
     @Override
     public RegistrarProductoDto editarProducto(long id, RegistrarProductoDto dto) {
-        // Buscar el producto existente
-        Producto producto = productoRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("El producto no existe"));
+        Producto producto = productoRepository.findById(id).orElse(null);
 
-        // Verificar existencia de Marca y SubCategoría
-        if (!marcaRepository.existsById(dto.getMarcaId())) {
-            throw new EntityNotFoundException("La marca no existe");
-        }
-        if (!subCategoriaRepository.existsById(dto.getSubCategoriaId())) {
-            throw new EntityNotFoundException("La subcategoría no existe");
-        }
-
-        // Validaciones de los datos
         validarNombre(dto.getNombre());
         validarDescripcion(dto.getDescripcion());
         validarTamano(dto.getTamano());
@@ -136,9 +126,7 @@ public class ProductoService implements IProductoService {
         valirdarPrecio(dto.getPrecioUnitario());
         validarStock(dto.getStock());
         validarUmbralBajoStock(dto.getUmbralBajoStock());
-        validarStockYUmbralBajoStock(dto.getStock(), dto.getUmbralBajoStock());
 
-        // Actualización del producto con los nuevos datos del DTO
         producto.setNombre(dto.getNombre());
         producto.setDescripcion(dto.getDescripcion());
         producto.setTamano(dto.getTamano());
@@ -146,20 +134,10 @@ public class ProductoService implements IProductoService {
         producto.setPrecioUnitario(dto.getPrecioUnitario());
         producto.setStock(dto.getStock());
         producto.setUmbralBajoStock(dto.getUmbralBajoStock());
-        producto.setEstaActivo(true);
 
-        // Asociar la Marca y SubCategoría al producto
-        Marca marca = marcaRepository.findById(dto.getMarcaId())
-                .orElseThrow(() -> new EntityNotFoundException("Error inesperado al buscar la marca"));
-        producto.setMarca(marca);
-
-        SubCategoria subCategoria = subCategoriaRepository.findById(dto.getSubCategoriaId())
-                .orElseThrow(() -> new EntityNotFoundException("Error inesperado al buscar la subcategoría"));
-        producto.setSubcategoria(subCategoria);
-
-        // Normalizar datos
         normalizarDatos(producto);
 
+        productoRepository.save(producto);
         // Guardar el producto actualizado
         Producto productoGuardado = guardar(producto);
 

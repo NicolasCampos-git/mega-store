@@ -81,8 +81,11 @@ public class CategoriaService  implements ICategoriaService{
     @Override
     public CategoriaDto actualizar(long id, CategoriaDto dto) {
         Categoria categoria = categoriaRepository.findById(id).orElse(null);
-        
-        
+
+        validarNombre(dto.getNombre());
+        validarDescripcion(dto.getDescripcion());
+
+
         categoria.setNombre(dto.getNombre());
         categoria.setDescripcion(dto.getDescripcion());
 

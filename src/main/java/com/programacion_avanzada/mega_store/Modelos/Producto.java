@@ -64,7 +64,7 @@ public class Producto {
     private Marca marca;
 
     @ManyToOne
-    @JoinColumn(name = "sucategoria_id", nullable = false)
+    @JoinColumn(name = "subcategoria_id", nullable = false)
     @JsonBackReference
     private SubCategoria Subcategoria;
 

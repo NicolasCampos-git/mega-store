@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 
 import com.programacion_avanzada.mega_store.DTOs.RegistrarProductoDto;
 import com.programacion_avanzada.mega_store.Modelos.Producto;
-import com.programacion_avanzada.mega_store.Service.IInventarioService;
 import com.programacion_avanzada.mega_store.Service.IProductoService;
 
 import jakarta.validation.Valid;
@@ -39,7 +38,7 @@ public class ProductoController {
     }
 
     @PutMapping("/actualizar/{id}")
-    public RegistrarProductoDto editarProducto(@PathVariable("id") long id, @RequestBody RegistrarProductoDto dto) {
+    public RegistrarProductoDto editarProducto(@PathVariable long id, @RequestBody RegistrarProductoDto dto) {
         
         
         return productoService.editarProducto(id, dto);
