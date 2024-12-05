@@ -37,6 +37,7 @@ public class SesionService implements ISesionService {
         }
         
         usuario.setContrasena("1234");
+        usuario = usuarioRepository.save(usuario);
         return usuario;
     }
 
