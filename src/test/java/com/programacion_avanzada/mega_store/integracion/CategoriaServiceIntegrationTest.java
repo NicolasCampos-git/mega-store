@@ -85,7 +85,7 @@ class CategoriaServiceIntegrationTest {
 
         categoriaRepository.save(categoriaExistente);
 
-        categoriaService.eliminar(1L); // Método hipotético que implementa la eliminación lógica
+        categoriaService.eliminar(1L); // Metodo hipotético que implementa la eliminación lógica
 
         Optional<Categoria> categoriaEliminadaOptional = categoriaRepository.findById(1L);
         assertTrue(categoriaEliminadaOptional.isPresent(), "La categoría debería existir en la base de datos");
