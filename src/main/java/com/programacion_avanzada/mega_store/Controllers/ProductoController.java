@@ -25,9 +25,6 @@ public class ProductoController {
     @Autowired
     IProductoService productoService;
 
-    @Autowired
-    IInventarioService inventarioService;
-
 
     @PostMapping("/registrar")
     public RegistrarProductoDto registrarProducto(@RequestBody @Valid RegistrarProductoDto dto) {

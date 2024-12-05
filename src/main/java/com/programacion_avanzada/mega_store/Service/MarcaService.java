@@ -30,7 +30,7 @@ public class MarcaService implements IMarcaService{
     
 
     /*
-     * Metodo encargad de cargar una nueva marca,
+     * Metodo encargado de cargar una nueva marca,
      * verificando que la marca no este registrada previamente.
      */
     @Override
@@ -55,8 +55,7 @@ public class MarcaService implements IMarcaService{
 
 
     /*
-     * Metodo encargado de listar las marcas,
-     * verificanto si estan activas.
+     * Metodo encargado de listar las marcas
      */
     public List<MarcaDto> listar() {
 
@@ -67,8 +66,7 @@ public class MarcaService implements IMarcaService{
 
 
     /*
-     * Metodo encargado de buscar marca por id,
-     * verificando que este acitva.
+     * Metodo encargado de buscar marca por id
      */
     @Override
     public Marca buscarPorId(long id) {

@@ -95,7 +95,7 @@ public class UsuarioService implements IUsuarioService {
         return UsuarioMapper.toDto(usuario);
     }
 
-    // Método para listar todos los usuarios
+    // Metodo para listar todos los usuarios
     @Override
     public List<UsuarioDto> listarUsuarios() {
         return usuarioRepository.findAll().stream()
@@ -103,7 +103,7 @@ public class UsuarioService implements IUsuarioService {
                 .collect(Collectors.toList());
     }
 
-    // Método para "eliminar" un usuario (desactivar)
+    // Metodo para "eliminar" un usuario (desactivar)
     @Override
     public void eliminarUsuario(long id) {
         Usuario usuario = usuarioRepository.findById(id)
@@ -112,7 +112,7 @@ public class UsuarioService implements IUsuarioService {
         usuarioRepository.save(usuario);
     }
 
-    // Método para "reactivar" un usuario (activar)
+    // Metodo para "reactivar" un usuario (activar)
     @Override
     public void reactivarUsuario(long id) {
         Usuario usuario = usuarioRepository.findById(id)

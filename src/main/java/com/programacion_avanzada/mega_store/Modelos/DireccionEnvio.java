@@ -23,7 +23,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor //Genera un constructor son argimentos.
 @Entity //Especifica que va a ser una entidad de la db.
-@Table(name = "direcciones_envio") //Le da el nombre a la tabla de la 
+@Table(name = "direcciones_envio") //Le da el nombre a la tabla de la db
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class DireccionEnvio {
     

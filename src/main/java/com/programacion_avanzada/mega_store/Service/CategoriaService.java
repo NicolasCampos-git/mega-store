@@ -29,7 +29,7 @@ public class CategoriaService  implements ICategoriaService{
     private RegistrarCategoriaMapper registrarCategoriaMapper;
 
     /*
-     * Metodo para registrar una nueva categoria, verifica que si nombre ya existe.
+     * Metodo para registrar una nueva categoria, verifica si nombre ya existe.
      * Al momento de guardarse las categorias, sus nombres y descripcion quedan normalizados.
      */
     @Override
@@ -49,7 +49,7 @@ public class CategoriaService  implements ICategoriaService{
     }
 
     /*
-     * Metodo que lista todas las categorias existentes que esten activas
+     * Metodo que lista todas las categorias existentes
      */
     @Override
     public List<CategoriaDto> listar() {
@@ -58,8 +58,7 @@ public class CategoriaService  implements ICategoriaService{
     }
 
     /*
-     * Metodo encargado de la busqueda de categorias por id,
-     * verificando que se encuentran activas.
+     * Metodo encargado de la busqueda de categorias por id
      */
     @Override
     public Categoria buscarPorId(long id) {

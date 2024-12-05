@@ -23,7 +23,7 @@ public class SenderService implements ISenderService {
 
 
     /*
-     * Metodo encargado de enviar el correo electronci al nuevo usuario.
+     * Metodo encargado de enviar el correo electronico al nuevo usuario.
      * Usamos un hack para generar el token, ya que no implementamos JWT.
      */
     public void enviarCorreo(String email){

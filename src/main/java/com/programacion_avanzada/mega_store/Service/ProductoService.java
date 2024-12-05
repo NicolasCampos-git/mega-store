@@ -42,7 +42,7 @@ public class ProductoService implements IProductoService {
 
     /*
      * Metodo encargado de registrar el producto, verificando que el nombre no exista,
-     * luego se encarga de nombalizar los datos y asignar que se encuentra activo.
+     * luego se encarga de normalizar los datos y asignar que se encuentra activo.
      */
     @Override
     public RegistrarProductoDto registrarProducto(RegistrarProductoDto dto) {
@@ -75,7 +75,7 @@ public class ProductoService implements IProductoService {
             Marca marca = marcaRepository.findById(dto.getMarcaId()).orElseThrow();
             producto.setMarca(marca);
 
-            //Buscamos la categoria y se la asignamos.(Hay que cambiarlo)
+            //Buscamos la categoria y se la asignamos.
             SubCategoria subCategoria = subCategoriaRepository.findById(dto.getSubCategoriaId()).orElseThrow();
             producto.setSubcategoria(subCategoria);
 
@@ -88,7 +88,7 @@ public class ProductoService implements IProductoService {
 
 
     /*
-     * Metodo que para listar todos los productos que se encuentren activos.
+     * Metodo que para listar todos los productos
      */
     @Override
     public List<ProductoDto> listar() {
@@ -111,7 +111,7 @@ public class ProductoService implements IProductoService {
     }
 
     /*
-     * Meotodo encargado de editar los productos, verificando si se encuentra activo.
+     * Meotodo encargado de editar los productos
      * Comparte los mismos atributos que el DTO para registrar el producto.
      */
     @Override
