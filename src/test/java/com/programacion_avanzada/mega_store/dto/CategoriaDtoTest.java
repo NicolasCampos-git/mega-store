@@ -1,21 +1,24 @@
 package com.programacion_avanzada.mega_store.dto;
 
 import com.programacion_avanzada.mega_store.DTOs.CategoriaDto;
+import com.programacion_avanzada.mega_store.Service.CategoriaService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 public class CategoriaDtoTest {
 
     private CategoriaDto categoriaDto;
+    private CategoriaService categoriaService;
 
     @BeforeEach
     public void setUp() {
         categoriaDto = new CategoriaDto();
+        categoriaService = new CategoriaService();
     }
 
     @Test
@@ -23,14 +26,24 @@ public class CategoriaDtoTest {
         categoriaDto.setNombre("A"); // Nombre de solo 1 carácter, debería ser inválido
         categoriaDto.setDescripcion("Descripción válida");
 
-        Assertions.assertFalse(categoriaDto.esValido(), "El nombre no debe tener menos de 2 caracteres.");    }
+        // Simulamos la validación
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            categoriaService.validarNombre(categoriaDto.getNombre()); // Llamamos al servicio para validar el nombre
+        });
+
+        assertEquals("El nombre de la categoría debe tener entre 2 y 64 caracteres.", exception.getMessage());    }
 
     @Test
     public void testNombreConMasDeSesentaYCuatroCaracteres() {
         categoriaDto.setNombre("EsteNombreEsDemasiadoLargoComoParaSerValidoYAExcedeLosSesentaYCuatroCaracteres");// Nombre de mas de 64 carácteres, debería ser inválido
         categoriaDto.setDescripcion("Descripcion valida");
 
-        Assertions.assertFalse(categoriaDto.esValido(), "El nombre no debe tener más de 64 caracteres.");
+        // Simulamos la validación
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            categoriaService.validarNombre(categoriaDto.getNombre()); // Llamamos al servicio para validar el nombre
+        });
+
+        assertEquals("El nombre de la categoría debe tener entre 2 y 64 caracteres.", exception.getMessage());
     }
 
     @Test
@@ -38,7 +51,12 @@ public class CategoriaDtoTest {
         categoriaDto.setNombre("Nombre Con Espacios"); // Nombre con espacios
         categoriaDto.setDescripcion("Descripcion valida");
 
-        Assertions.assertFalse(categoriaDto.esValido(), "El nombre no debe contener espacios en blanco.");
+        // Simulamos la validación
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            categoriaService.validarNombre(categoriaDto.getNombre()); // Llamamos al servicio para validar el nombre
+        });
+
+        assertEquals("El nombre de la categoría no debe contener espacios.", exception.getMessage());
     }
 
     @Test
@@ -46,7 +64,12 @@ public class CategoriaDtoTest {
         categoriaDto.setNombre("Nombre123"); // Nombre no válido por contener números
         categoriaDto.setDescripcion("Descripcion valida");
 
-        Assertions.assertFalse(categoriaDto.esValido(), "El nombre no debe contener números.");
+        // Simulamos la validación
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            categoriaService.validarNombre(categoriaDto.getNombre()); // Llamamos al servicio para validar el nombre
+        });
+
+        assertEquals("El nombre no debe contener números.", exception.getMessage());
     }
 
     @Test
@@ -54,7 +77,12 @@ public class CategoriaDtoTest {
         categoriaDto.setNombre("NombreValido");
         categoriaDto.setDescripcion("D"); // Descripcion de solo 1 carácter, debería ser inválido
 
-        Assertions.assertFalse(categoriaDto.esValido(), "La categoria no debe tener menos de 2 caracteres.");
+        // Simulamos la validación
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            categoriaService.validarDescripcion(categoriaDto.getDescripcion()); // Llamamos al servicio para validar el nombre
+        });
+
+        assertEquals("La descripción de la categoría debe tener entre 2 y 100 caracteres.", exception.getMessage());
     }
 
     @Test
@@ -62,7 +90,12 @@ public class CategoriaDtoTest {
         categoriaDto.setNombre("NombreValido");
         categoriaDto.setDescripcion("EstaDescripcionEsDemasiadoLargaComoParaSerValidaYAExcedeLosCienCaracteresPorqueEstaCadenaEsExcesivaYNoDeberiaSerAceptada");// Descripcion de mas de 100 carácteres, debería ser inválido
 
-        Assertions.assertFalse(categoriaDto.esValido(), "La descripción no debe tener más de 100 caracteres.");
+        // Simulamos la validación
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            categoriaService.validarDescripcion(categoriaDto.getDescripcion()); // Llamamos al servicio para validar el nombre
+        });
+
+        assertEquals("La descripción de la categoría debe tener entre 2 y 100 caracteres.", exception.getMessage());
     }
 
     @Test
@@ -70,7 +103,12 @@ public class CategoriaDtoTest {
         categoriaDto.setNombre("NombreVálido");
         categoriaDto.setDescripcion("Descripción con número 123"); // Descripción con números
 
-        Assertions.assertFalse(categoriaDto.esValido(), "La descripción no debe ser válida si contiene números.");
+        // Simulamos la validación
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            categoriaService.validarDescripcion(categoriaDto.getDescripcion()); // Llamamos al servicio para validar el nombre
+        });
+
+        assertEquals("La descripción no puede contener números.", exception.getMessage());
     }
 
     @Test
@@ -78,7 +116,8 @@ public class CategoriaDtoTest {
         categoriaDto.setNombre("NombreValido");// Nombre valido
         categoriaDto.setDescripcion("Descripcion valida");// Descripcion valida
 
-        assertTrue(categoriaDto.esValido(), "El nombre y la descripción deberían ser válidos.");
+        categoriaService.validarNombre(categoriaDto.getNombre());
+        categoriaService.validarDescripcion(categoriaDto.getDescripcion());
     }
 
     @Test
@@ -86,7 +125,8 @@ public class CategoriaDtoTest {
         categoriaDto.setNombre("NombreVálido");// Nombre valido
         categoriaDto.setDescripcion("Descripcion válida");// Descripcion valida
 
-        assertTrue(categoriaDto.esValido(), "El nombre y la descripción deberían ser válidos.");
+        categoriaService.validarNombre(categoriaDto.getNombre());
+        categoriaService.validarDescripcion(categoriaDto.getDescripcion());
     }
 }
 

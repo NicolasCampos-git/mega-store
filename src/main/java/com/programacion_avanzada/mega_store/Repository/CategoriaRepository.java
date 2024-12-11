@@ -1,6 +1,8 @@
 package com.programacion_avanzada.mega_store.Repository;
 
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.programacion_avanzada.mega_store.Modelos.Categoria;
@@ -13,4 +15,7 @@ public interface CategoriaRepository extends JpaRepository<Categoria, Long>{
 
     //Metodo para buscar categorias que esten solamente activos.
     List<Categoria> findAllByEstaActivoIsTrue();
+
+    //Metodo para buscar categorias por nombre.
+    Optional<Categoria> findByNombre(String nombre);
 }

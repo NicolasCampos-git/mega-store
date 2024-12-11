@@ -4,6 +4,7 @@ package com.programacion_avanzada.mega_store.Controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,8 +26,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 
 @RestController
-@RequestMapping("/api/")
-@CrossOrigin(origins = "http://localhost:5173") 
+@RequestMapping("/api/usuarios")
+@CrossOrigin(origins = "http://localhost:3000") 
 public class UsuarioController {
     
     @Autowired
@@ -53,7 +54,7 @@ public class UsuarioController {
     }
 
     // Método para listar todos los usuarios
-    @GetMapping
+    @GetMapping("/listar")
     public ResponseEntity<List<UsuarioDto>> listarUsuarios() {
         return ResponseEntity.ok(usuarioService.listarUsuarios());
     }
@@ -70,6 +71,13 @@ public class UsuarioController {
     public ResponseEntity<Void> reactivarUsuario(@PathVariable("id") long id) {
         usuarioService.reactivarUsuario(id);
         return ResponseEntity.noContent().build();  // Retorna 204 No Content
+    }
+
+    @PutMapping("/AsignarDireccionComoPrincipal/{idUsuario}-{idDireccion}")
+    public ResponseEntity<Void> asignarDireccionComoPrincial(@PathVariable("idUsuario") long idUsuario, @PathVariable("idDireccion") long idDireccion) {
+        usuarioService.asignarDireccionComoPrincial(idUsuario, idDireccion);
+        return ResponseEntity.status(HttpStatusCode.valueOf(200)).build();  // Retorna 204 No Content
+
     }
     
 

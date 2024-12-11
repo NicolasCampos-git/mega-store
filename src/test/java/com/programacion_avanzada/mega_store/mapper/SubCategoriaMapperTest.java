@@ -1,6 +1,6 @@
 package com.programacion_avanzada.mega_store.mapper;
 
-import com.programacion_avanzada.mega_store.DTOs.SubCategoriaDto;
+import com.programacion_avanzada.mega_store.DTOs.SubCategoriaDTO;
 import com.programacion_avanzada.mega_store.Mapper.SubCategoriaMapper;
 import com.programacion_avanzada.mega_store.Modelos.SubCategoria;
 import org.junit.jupiter.api.Test;
@@ -18,7 +18,7 @@ public class SubCategoriaMapperTest {
     @Test
     void testToEntity() {
         // Crear un objeto DTO de prueba
-        SubCategoriaDto dto = new SubCategoriaDto();
+        SubCategoriaDTO dto = new SubCategoriaDTO();
         dto.setNombre("SubCategoriaValida");
         dto.setDescripcion("Descripción válida");
 
@@ -39,7 +39,7 @@ public class SubCategoriaMapperTest {
         subCategoria.setDescripcion("Descripción válida");
 
         // Usar el mapper para convertir la entidad en DTO
-        SubCategoriaDto dto = subCategoriaMapper.toDto(subCategoria);
+        SubCategoriaDTO dto = subCategoriaMapper.toDto(subCategoria);
 
         // Verificar que el DTO no sea nulo y que los valores sean correctos
         assertNotNull(dto, "El DTO no debería ser nulo");

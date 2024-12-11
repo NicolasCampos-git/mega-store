@@ -1,6 +1,8 @@
 package com.programacion_avanzada.mega_store.Service;
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,6 +41,58 @@ public class DireccionEnvioService implements IDireccionEnvioService {
         return DireccionEnvioMapper.toDto(direccionEnvioRepository.save(direccionEnvio));
     }
 
+    @Override
+    public List<DireccionEnvio> listar(){
+        return direccionEnvioRepository.findAll();
+    }
+
+    @Override
+    public DireccionEnvio actualizarDireccionEnvio(long id, DireccionEnvioDto dto) {
+        DireccionEnvio direccionEnvio = direccionEnvioRepository.findById(id).orElse(null);
+        if (direccionEnvio == null) {
+            throw new IllegalArgumentException("La dirección de envío no existe.");
+        }
+        validarProvincia(dto.getProvincia());
+        validarCiudad(dto.getCiudad());
+        validarCalle(dto.getCalle());
+        validarAltura(dto.getAltura());
+        validarCodigoPostal(dto.getCodigoPostal());
+        direccionEnvio.setProvincia(dto.getProvincia());
+        direccionEnvio.setCiudad(dto.getCiudad());
+        direccionEnvio.setCalle(dto.getCalle());
+        direccionEnvio.setAltura(dto.getAltura());
+        direccionEnvio.setCodigoPostal(dto.getCodigoPostal());
+        direccionEnvio.setDescripcionDireccionEnvio(dto.getDescripcionDireccionEnvio());
+
+        return direccionEnvioRepository.save(direccionEnvio);
+    }
+
+    @Override
+    public DireccionEnvio buscarDireccionEnvio(long id) {
+        return direccionEnvioRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public void eliminarDireccionEnvio(long id) {
+        DireccionEnvio direccionEnvio = direccionEnvioRepository.findById(id).orElse(null);
+        if (direccionEnvio == null) {
+            throw new IllegalArgumentException("La dirección de envío no existe.");
+        }
+        direccionEnvio.setEstaActivo(false);
+        direccionEnvioRepository.save(direccionEnvio);
+    }
+
+    @Override
+    public DireccionEnvio reactivarDireccionEnvio(long id) {
+        DireccionEnvio direccionEnvio = direccionEnvioRepository.findById(id).orElse(null);
+        if (direccionEnvio == null) {
+            throw new IllegalArgumentException("La dirección de envío no existe.");
+        }
+        direccionEnvio.setEstaActivo(true);
+        return direccionEnvioRepository.save(direccionEnvio);
+    }
+    
+
     private void validarProvincia(String provincia) {
         if (provincia == null || provincia.isEmpty()) {
             throw new IllegalArgumentException("La provincia no puede estar vacía.");
@@ -46,9 +100,10 @@ public class DireccionEnvioService implements IDireccionEnvioService {
         if (provincia.length() < 2 || provincia.length() > 64) {
             throw new IllegalArgumentException("La provincia debe tener entre 2 y 30 caracteres.");
         }
-        if (!provincia.matches("^[a-zA-Z]+$")) {
-            throw new IllegalArgumentException("La provincia debe contener solo letras.");
+        if (!provincia.matches("^[a-zA-Z\\s]+$")) {
+            throw new IllegalArgumentException("La la provincia debe contener solo letras y espacios.");
         }
+        
     }
 
     private void validarCiudad(String ciudad) {
@@ -59,9 +114,10 @@ public class DireccionEnvioService implements IDireccionEnvioService {
         if (ciudad.length() < 2 || ciudad.length() > 64) {
             throw new IllegalArgumentException("La ciudad debe tener entre 2 y 30 caracteres.");
         }
-        if (!ciudad.matches("^[a-zA-Z]+$")) {
-            throw new IllegalArgumentException("La ciudad debe contener solo letras.");
+        if (!ciudad.matches("^[a-zA-Z\\s]+$")) {
+            throw new IllegalArgumentException("La ciudad debe contener solo letras y espacios.");
         }
+        
     }
 
     private void validarCalle(String calle) {
@@ -74,6 +130,7 @@ public class DireccionEnvioService implements IDireccionEnvioService {
         if (!calle.matches("^[a-zA-Z]+$")) {
             throw new IllegalArgumentException("La calle debe contener solo letras.");
         }
+        
     }
 
     private void validarAltura(String altura) {
@@ -86,6 +143,11 @@ public class DireccionEnvioService implements IDireccionEnvioService {
         }
         if (!altura.matches("^[0-9]+$")) {
             throw new IllegalArgumentException("La altura debe contener solo números.");
+
+        }
+        if (altura.contains(" ")) {
+            throw new IllegalArgumentException("La altura no puede contener espacios.");
+            
         }
     }
 
@@ -98,6 +160,9 @@ public class DireccionEnvioService implements IDireccionEnvioService {
         }
         if (!codigoPostal.matches("^[0-9]+$")) {
             throw new IllegalArgumentException("El código postal debe contener solo números.");
+        }
+        if(codigoPostal.contains(" ")){
+            throw new IllegalArgumentException("El código postal no puede contener espacios.");
         }
     }
 

@@ -2,7 +2,7 @@ package com.programacion_avanzada.mega_store.mapper;
 
 import com.programacion_avanzada.mega_store.DTOs.MarcaDto;
 import com.programacion_avanzada.mega_store.DTOs.RegistrarProductoDto;
-import com.programacion_avanzada.mega_store.DTOs.SubCategoriaDto;
+import com.programacion_avanzada.mega_store.DTOs.SubCategoriaDTO;
 import com.programacion_avanzada.mega_store.Mapper.RegistrarProductoMapper;
 import com.programacion_avanzada.mega_store.Modelos.Marca;
 import com.programacion_avanzada.mega_store.Modelos.Producto;
@@ -25,7 +25,7 @@ public class RegistrarProductoMapperTest {
         marcaDto.setId(1L);
         marcaDto.setNombre("MarcaValida");
 
-        SubCategoriaDto subCategoriaDto = new SubCategoriaDto();
+        SubCategoriaDTO subCategoriaDto = new SubCategoriaDTO();
         subCategoriaDto.setId(1L);
         subCategoriaDto.setNombre("SubCategoriaValida");
 

@@ -10,11 +10,14 @@ import com.programacion_avanzada.mega_store.Modelos.SubCategoria;
 
 import org.mapstruct.Mapper;
 
+
 @Mapper(componentModel = "spring")
 public interface ProductoMapper {
 
     // Convierte Producto entity a ProductoDto
     ProductoDto toDto(Producto producto);
+
+    Producto toEntity(ProductoDto productoDto);
     
     // Convierte RegistrarProductoDto a Producto entity
     Producto toEntity(RegistrarProductoDto registrarProductoDto);

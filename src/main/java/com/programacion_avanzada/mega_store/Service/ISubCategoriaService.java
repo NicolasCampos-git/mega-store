@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.programacion_avanzada.mega_store.DTOs.RegistrarSubCategoriaDto;
 import com.programacion_avanzada.mega_store.DTOs.SubCategoriaDTO;
-import com.programacion_avanzada.mega_store.DTOs.SubCategoriaDto;
 import com.programacion_avanzada.mega_store.Modelos.SubCategoria;
 
 public interface ISubCategoriaService {
@@ -13,5 +12,5 @@ public interface ISubCategoriaService {
     SubCategoria buscarPorId(long id);
     void eliminar(long id);
     void reactivar(long id);
-    SubCategoriaDTO actualizar(long id, SubCategoriaDTO dto);
+    SubCategoriaDTO actualizar(long id, RegistrarSubCategoriaDto dto);
 }

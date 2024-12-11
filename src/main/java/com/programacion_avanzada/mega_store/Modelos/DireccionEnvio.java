@@ -1,5 +1,8 @@
 package com.programacion_avanzada.mega_store.Modelos;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -22,6 +25,7 @@ import lombok.Setter;
 @NoArgsConstructor //Genera un constructor son argimentos.
 @Entity //Especifica que va a ser una entidad de la db.
 @Table(name = "direcciones_envio") //Le da el nombre a la tabla de la db
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class DireccionEnvio {
     
     @Id //Espefica que es el id.
@@ -53,9 +57,13 @@ public class DireccionEnvio {
 
     @ManyToOne //Relacion N:1
     @JoinColumn(name = "usuario_id")
+    @JsonBackReference
     private Usuario usuario;
 
     @Column(name = "es_principal")
     private boolean esPrincipal;
+
+    @Column(name = "esta_activo")
+    private boolean estaActivo;
 
 }

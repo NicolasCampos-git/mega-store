@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.programacion_avanzada.mega_store.DTOs.RegistrarProductoDto;
+import com.programacion_avanzada.mega_store.Modelos.Producto;
 import com.programacion_avanzada.mega_store.Service.IProductoService;
 
 import jakarta.validation.Valid;
@@ -14,9 +15,11 @@ import java.util.List;
 
 
 
+
+
 @RestController
 @RequestMapping("api/productos")
-@CrossOrigin(origins = "http://localhost:5173") 
+@CrossOrigin(origins = "http://localhost:3000")
 public class ProductoController {
     @Autowired
     IProductoService productoService;
@@ -35,7 +38,7 @@ public class ProductoController {
     }
 
     @PutMapping("/actualizar/{id}")
-    public RegistrarProductoDto editarProducto(@PathVariable("id") long id, @RequestBody RegistrarProductoDto dto) {
+    public RegistrarProductoDto editarProducto(@PathVariable long id, @RequestBody RegistrarProductoDto dto) {
         
         
         return productoService.editarProducto(id, dto);
@@ -51,5 +54,12 @@ public class ProductoController {
     public void reactivarProducto(@PathVariable("id") long id){
         productoService.reactivar(id);
     }
+
+    @GetMapping("/buscar/{id}")
+    public Producto buscarPorId(@PathVariable("id") long id){
+        return productoService.buscarPorId(id);
+    }
+
+    
 
 }

@@ -1,21 +1,24 @@
 package com.programacion_avanzada.mega_store.dto;
 
 import com.programacion_avanzada.mega_store.DTOs.RegistrarMarcaDto;
+import com.programacion_avanzada.mega_store.Service.MarcaService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 public class RegistrarMarcaDtoTest {
 
     private RegistrarMarcaDto marcaDto;
+    private MarcaService marcaService;
 
     @BeforeEach
     public void setUp() {
         marcaDto = new RegistrarMarcaDto();
+        marcaService = new MarcaService();
     }
 
     @Test
@@ -23,7 +26,12 @@ public class RegistrarMarcaDtoTest {
         marcaDto.setNombre("A"); // Nombre de solo 1 carácter, debería ser inválido
         marcaDto.setDescripcion("Descripcion valida");
 
-        assertFalse(marcaDto.esValido(), "El nombre no debe tener menos de 2 caracteres.");
+        // Simulamos la validación
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            marcaService.validarNombre(marcaDto.getNombre()); // Llamamos al servicio para validar el nombre
+        });
+
+        assertEquals("El nombre de la marca debe tener entre 2 y 64 caracteres.", exception.getMessage());
     }
 
     @Test
@@ -31,7 +39,12 @@ public class RegistrarMarcaDtoTest {
         marcaDto.setNombre("EsteNombreEsDemasiadoLargoComoParaSerValidoYAExcedeLosSesentaYCuatroCaracteres");// Nombre de mas de 64 carácteres, debería ser inválido
         marcaDto.setDescripcion("Descripcion valida");
 
-        assertFalse(marcaDto.esValido(), "El nombre no debe tener más de 64 caracteres.");
+        // Simulamos la validación
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            marcaService.validarNombre(marcaDto.getNombre()); // Llamamos al servicio para validar el nombre
+        });
+
+        assertEquals("El nombre de la marca debe tener entre 2 y 64 caracteres.", exception.getMessage());
     }
 
     @Test
@@ -39,7 +52,12 @@ public class RegistrarMarcaDtoTest {
         marcaDto.setNombre("Nombre123"); // Nombre no válido por contener números
         marcaDto.setDescripcion("Descripcion valida");
 
-        assertFalse(marcaDto.esValido(), "El nombre no debe contener números.");
+        // Simulamos la validación
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            marcaService.validarNombre(marcaDto.getNombre()); // Llamamos al servicio para validar el nombre
+        });
+
+        assertEquals("El nombre no debe contener números.", exception.getMessage());
     }
 
     @Test
@@ -47,7 +65,12 @@ public class RegistrarMarcaDtoTest {
         marcaDto.setNombre("NombreValido");
         marcaDto.setDescripcion("EstaDescripcionEsDemasiadoLargaComoParaSerValidaYAExcedeLosCienCaracteresPorqueEstaCadenaEsExcesivaYNoDeberiaSerAceptada");// Descripcion de mas de 100 carácteres, debería ser inválido
 
-        assertFalse(marcaDto.esValido(), "La descripción no debe tener más de 100 caracteres.");
+        // Simulamos la validación
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            marcaService.validarDescripcion(marcaDto.getDescripcion()); // Llamamos al servicio para validar el nombre
+        });
+
+        assertEquals("La descripcion de la marca debe tener entre 2 y 64 caracteres.", exception.getMessage());
     }
 
     @Test
@@ -55,7 +78,12 @@ public class RegistrarMarcaDtoTest {
         marcaDto.setNombre("Nombre Con Espacios"); // Nombre con espacios
         marcaDto.setDescripcion("Descripcion valida");
 
-        assertFalse(marcaDto.esValido(), "El nombre no debe contener espacios en blanco.");
+        // Simulamos la validación
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            marcaService.validarNombre(marcaDto.getNombre()); // Llamamos al servicio para validar el nombre
+        });
+
+        assertEquals("El nombre de la marca no debe contener espacios.", exception.getMessage());
     }
 
     @Test
@@ -63,7 +91,8 @@ public class RegistrarMarcaDtoTest {
         marcaDto.setNombre("NombreValido");// Nombre valido
         marcaDto.setDescripcion("Descripcion valida"); // Descripcion valida
 
-        assertTrue(marcaDto.esValido(), "El nombre y la descripción deberían ser válidos.");
+        marcaService.validarNombre(marcaDto.getNombre());
+        marcaService.validarDescripcion(marcaDto.getDescripcion());
     }
 
     @Test
@@ -71,7 +100,12 @@ public class RegistrarMarcaDtoTest {
         marcaDto.setNombre("NombreVálido");
         marcaDto.setDescripcion(null); // Descripción nula
 
-        assertTrue(marcaDto.esValido(), "El DTO debe ser válido con descripción nula.");
+        // Simulamos la validación
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            marcaService.validarDescripcion(marcaDto.getDescripcion()); // Llamamos al servicio para validar el nombre
+        });
+
+        assertEquals("La descripcion de la marca no puede estar vacía.", exception.getMessage());
     }
 
     @Test
@@ -79,6 +113,11 @@ public class RegistrarMarcaDtoTest {
         marcaDto.setNombre("NombreVálido");
         marcaDto.setDescripcion("Descripción con número 123"); // Descripción con números
 
-        assertFalse(marcaDto.esValido(), "La descripción no debe ser válida si contiene números.");
+        // Simulamos la validación
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            marcaService.validarDescripcion(marcaDto.getDescripcion()); // Llamamos al servicio para validar el nombre
+        });
+
+        assertEquals("La descripcion no debe contener números.", exception.getMessage());
     }
 }

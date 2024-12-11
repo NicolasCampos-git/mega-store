@@ -29,7 +29,7 @@ public class CategoriaService  implements ICategoriaService{
     private RegistrarCategoriaMapper registrarCategoriaMapper;
 
     /*
-     * Metodo para registrar una nueva categoria, verifica que si nombre ya existe.
+     * Metodo para registrar una nueva categoria, verifica si nombre ya existe.
      * Al momento de guardarse las categorias, sus nombres y descripcion quedan normalizados.
      */
     @Override
@@ -49,17 +49,16 @@ public class CategoriaService  implements ICategoriaService{
     }
 
     /*
-     * Metodo que lista todas las categorias existentes que esten activas
+     * Metodo que lista todas las categorias existentes
      */
     @Override
     public List<CategoriaDto> listar() {
-        List<Categoria> categorias = categoriaRepository.findAllByEstaActivoIsTrue();
+        List<Categoria> categorias = categoriaRepository.findAll();
         return categorias.stream().map(categoriaMapper::toDto).toList();
     }
 
     /*
-     * Metodo encargado de la busqueda de categorias por id,
-     * verificando que se encuentran activas.
+     * Metodo encargado de la busqueda de categorias por id
      */
     @Override
     public Categoria buscarPorId(long id) {
@@ -82,8 +81,11 @@ public class CategoriaService  implements ICategoriaService{
     @Override
     public CategoriaDto actualizar(long id, CategoriaDto dto) {
         Categoria categoria = categoriaRepository.findById(id).orElse(null);
-        
-        
+
+        validarNombre(dto.getNombre());
+        validarDescripcion(dto.getDescripcion());
+
+
         categoria.setNombre(dto.getNombre());
         categoria.setDescripcion(dto.getDescripcion());
 
@@ -102,7 +104,7 @@ public class CategoriaService  implements ICategoriaService{
 
     }
 
-    private void validarNombre(String nombre){
+    public void validarNombre(String nombre){
         if (nombre == null || nombre.isEmpty()) {
             throw new IllegalArgumentException("El nombre de la categoría no puede estar vacío.");
             
@@ -114,10 +116,13 @@ public class CategoriaService  implements ICategoriaService{
             throw new IllegalArgumentException("El nombre de la categoría no debe contener espacios.");
             
         }
+        if (nombre.matches(".*\\d.*")) {
+            throw new IllegalArgumentException("El nombre no debe contener números.");
+        }
 
     }
 
-    private void validarDescripcion(String descripcion){
+    public void validarDescripcion(String descripcion){
         if (descripcion == null || descripcion.isEmpty()) {
             throw new IllegalArgumentException("La descripción de la categoría no puede estar vacía.");
         }

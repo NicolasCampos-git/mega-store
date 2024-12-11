@@ -1,7 +1,6 @@
 package com.programacion_avanzada.mega_store.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,28 +42,23 @@ public class SubCategoriaService implements ISubCategoriaService {
     @Override
     public RegistrarSubCategoriaDto registrarSubCategoria(RegistrarSubCategoriaDto dto) {
         // Primero, verifica si la categoría existe
-        if (!categoriaRepository.existsById(dto.getCategoriaId())) {
-            throw new EntityNotFoundException("La categoría no existe");
-        }
+        verificarCategoria(dto.getCategoriaId());
 
         // Verifica si la subcategoría ya existe
-        if (subCategoriaRepository.existsByNombre(dto.getNombre())) {
-            throw new EntityExistsException("La subcategoria ya existe");
-        }
+        verificarUnicidad(dto.getNombre());
 
         // Convertir el DTO a entidad
         SubCategoria subCategoria = registrarSubCategoriaMapper.toEntity(dto);
 
+        valirdarNombre(subCategoria.getNombre());
+        valirdarDescripcion(subCategoria.getDescripcion());
+        
         // Normalizar los datos
-        subCategoria.setNombre(StringUtil.capitalizeFirstLetter(dto.getNombre().toLowerCase().trim()));
-        subCategoria.setDescripcion(dto.getDescripcion().toLowerCase().trim());
+        normalizarDatos(subCategoria);
 
         // Obtener la categoría y asignarla a la subcategoría
-        Categoria categoria = categoriaRepository.findById(dto.getCategoriaId())
-                .orElseThrow(() -> new EntityNotFoundException("La categoría no existe")); // Lanza excepción si no se encuentra la categoría
-        subCategoria.setCategoria(categoria);
+        asignarCategoria(subCategoria, dto.getCategoriaId());
         subCategoria.setEstaActivo(true);
-
         // Guardar la subcategoría en el repositorio
         return registrarSubCategoriaMapper.toDto(subCategoriaRepository.save(subCategoria));
     }
@@ -82,7 +76,11 @@ public class SubCategoriaService implements ISubCategoriaService {
 
     @Override
     public void eliminar(long id) {
-        SubCategoria subCategoria = subCategoriaRepository.findById(id).filter(SubCategoria::isEstaActivo).orElse(null);
+        SubCategoria subCategoria = subCategoriaRepository.findById(id).orElse(null);
+        if (subCategoria == null || subCategoria.isEstaActivo() == false) {
+            throw new EntityNotFoundException("La subcategoria no existe o ya esta inactiva.");
+            
+        }
         subCategoria.setEstaActivo(false);
         subCategoriaRepository.save(subCategoria);
     }
@@ -90,21 +88,86 @@ public class SubCategoriaService implements ISubCategoriaService {
     @Override
     public void reactivar(long id){
         SubCategoria subCategoria = subCategoriaRepository.findById(id).orElse(null);
-        if(subCategoria != null && subCategoria.isEstaActivo() == false){
-            subCategoria.setEstaActivo(true);
-            subCategoriaRepository.save(subCategoria);
+        if(subCategoria == null || subCategoria.isEstaActivo() == true){
+            throw new EntityNotFoundException("La subcategoria no existe o ya esta activa.");
         }
+        subCategoria.setEstaActivo(true);
+        subCategoriaRepository.save(subCategoria);
     }
 
     @Override
-    public SubCategoriaDTO actualizar(long id, SubCategoriaDTO dto) {
+    public SubCategoriaDTO actualizar(long id, RegistrarSubCategoriaDto dto) {
         SubCategoria subcategoria = subCategoriaRepository.findById(id).orElse(null);
         
         // Aquí actualizamos los campos de la subcategoría
+        valirdarNombre(dto.getNombre());
+        valirdarDescripcion(dto.getDescripcion());
+        verificarUnicidad(dto.getNombre());
+        
+
+        // Asignamos la categoría si es necesario
+        if (dto.getCategoriaId() != null) {
+            verificarCategoria(dto.getCategoriaId());
+            asignarCategoria(subcategoria, dto.getCategoriaId());
+        }
+
         subcategoria.setNombre(dto.getNombre());
-        //subcategoria.setCategoria(dto.getCategoria());
+        subcategoria.setDescripcion(dto.getDescripcion());
+
+        normalizarDatos(subcategoria);
 
         subCategoriaRepository.save(subcategoria);
         return subCategoriaMapper.toDto(subcategoria);
+    }
+
+    public void valirdarNombre(String nombre) {
+        if (nombre == null || nombre.isEmpty()) {
+            throw new IllegalArgumentException("El nombre no puede estar vacio.");
+        }
+        if (nombre.length() < 2 || nombre.length() > 64) {
+            throw new IllegalArgumentException("El nombre debe tener entre 2 y 64 caracteres.");
+        }
+        if (nombre.contains(" ")) {
+            throw new IllegalArgumentException("El nombre no debe contener espacios.");
+        }
+        if (nombre.matches(".*\\d.*")) {
+            throw new IllegalArgumentException("El nombre no debe contener números.");
+        }
+        
+    }
+
+    public void valirdarDescripcion(String descripcion) {
+        if (descripcion == null || descripcion.isEmpty()) {
+            throw new IllegalArgumentException("La descripcion no puede estar vacia.");
+        }
+        if (descripcion.length() < 2 || descripcion.length() > 64) {
+            throw new IllegalArgumentException("La descripcion debe tener entre 2 y 64 caracteres.");
+        }
+        if (descripcion.matches(".*\\d.*")) {
+            throw new IllegalArgumentException("La descripcion no debe contener números.");
+        }
+    }
+
+    public void verificarCategoria(Long categoriaId) {
+        if (!categoriaRepository.existsById(categoriaId)) {
+            throw new EntityNotFoundException("La categoría no existe");
+        }
+    }
+
+    public void verificarUnicidad(String nombre) {
+        if (subCategoriaRepository.existsByNombre(nombre)) {
+            throw new EntityExistsException("La subcategoria ya existe");
+        }
+    }
+
+    public void normalizarDatos(SubCategoria subCategoria) {
+        subCategoria.setNombre(StringUtil.capitalizeFirstLetter(subCategoria.getNombre().toLowerCase().trim()));
+        subCategoria.setDescripcion(subCategoria.getDescripcion().toLowerCase().trim());
+    }
+
+    public void asignarCategoria(SubCategoria subCategoria, Long categoriaId) {
+        Categoria categoria = categoriaRepository.findById(categoriaId)
+                .orElseThrow(() -> new EntityNotFoundException("La categoría no existe")); // Lanza excepción si no se encuentra la categoría
+        subCategoria.setCategoria(categoria);
     }
 }

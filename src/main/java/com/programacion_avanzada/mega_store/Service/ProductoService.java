@@ -1,10 +1,11 @@
 package com.programacion_avanzada.mega_store.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 import com.programacion_avanzada.mega_store.DTOs.ProductoDto;
 import com.programacion_avanzada.mega_store.Mapper.RegistrarProductoMapper;
+import com.programacion_avanzada.mega_store.Modelos.Categoria;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,17 +13,15 @@ import org.springframework.stereotype.Service;
 
 import com.programacion_avanzada.mega_store.DTOs.RegistrarProductoDto;
 import com.programacion_avanzada.mega_store.Mapper.ProductoMapper;
-import com.programacion_avanzada.mega_store.Modelos.Categoria;
 import com.programacion_avanzada.mega_store.Modelos.Marca;
 import com.programacion_avanzada.mega_store.Modelos.Producto;
 import com.programacion_avanzada.mega_store.Modelos.SubCategoria;
-import com.programacion_avanzada.mega_store.Repository.CategoriaRepository;
 import com.programacion_avanzada.mega_store.Repository.MarcaRepository;
 import com.programacion_avanzada.mega_store.Repository.ProductoRepository;
 import com.programacion_avanzada.mega_store.Repository.SubCategoriaRepository;
 
 import ch.qos.logback.core.util.StringUtil;
-import lombok.val;
+
 
 @Service
 public class ProductoService implements IProductoService {
@@ -44,7 +43,7 @@ public class ProductoService implements IProductoService {
 
     /*
      * Metodo encargado de registrar el producto, verificando que el nombre no exista,
-     * luego se encarga de nombalizar los datos y asignar que se encuentra activo.
+     * luego se encarga de normalizar los datos y asignar que se encuentra activo.
      */
     @Override
     public RegistrarProductoDto registrarProducto(RegistrarProductoDto dto) {
@@ -57,11 +56,12 @@ public class ProductoService implements IProductoService {
         }
 
 
-        // verificamos que el producto no no exista.
+        // verificamos que el producto no exista.
         if (!productoRepository.existsByNombre(dto.getNombre())) {
             Producto producto = registrarProductoMapper.toEntity(dto);
 
             // Normarlizamos los atributos del producto.
+            validarNombre(dto.getNombre());
             producto.setNombre(StringUtil.capitalizeFirstLetter(dto.getNombre().toLowerCase().trim()));
             producto.setDescripcion(StringUtil.capitalizeFirstLetter(dto.getDescripcion().toLowerCase().trim()));
             producto.setColor(StringUtil.capitalizeFirstLetter(dto.getColor().toLowerCase()).trim());
@@ -76,7 +76,7 @@ public class ProductoService implements IProductoService {
             Marca marca = marcaRepository.findById(dto.getMarcaId()).orElseThrow();
             producto.setMarca(marca);
 
-            //Buscamos la categoria y se la asignamos.(Hay que cambiarlo)
+            //Buscamos la categoria y se la asignamos.
             SubCategoria subCategoria = subCategoriaRepository.findById(dto.getSubCategoriaId()).orElseThrow();
             producto.setSubcategoria(subCategoria);
 
@@ -89,11 +89,11 @@ public class ProductoService implements IProductoService {
 
 
     /*
-     * Metodo que para listar todos los productos que se encuentren activos.
+     * Metodo que para listar todos los productos
      */
     @Override
     public List<ProductoDto> listar() {
-        List<Producto> productos = productoRepository.findAllByEstaActivoIsTrue();
+        List<Producto> productos = productoRepository.findAll();
         return  productos.stream().map(productoMapper::toDto).toList();
     }
 
@@ -112,40 +112,49 @@ public class ProductoService implements IProductoService {
     }
 
     /*
-     * Meotodo encargado de editar los productos, verificando si se encuentra activo.
+     * Meotodo encargado de editar los productos
      * Comparte los mismos atributos que el DTO para registrar el producto.
      */
     @Override
-    public RegistrarProductoDto editarProducto(long id,RegistrarProductoDto dto) {
+    public RegistrarProductoDto editarProducto(long id, RegistrarProductoDto dto) {
+        Producto producto = productoRepository.findById(id).orElse(null);
 
-        Producto producto = productoRepository.findById(id).filter(Producto::isEstaActivo).orElse(null);
-        
-        validarNombre(producto.getNombre());
+        validarNombre(dto.getNombre());
+        validarDescripcion(dto.getDescripcion());
+        validarTamano(dto.getTamano());
+        validarColor(dto.getColor());
+        valirdarPrecio(dto.getPrecioUnitario());
+        validarStock(dto.getStock());
+        validarUmbralBajoStock(dto.getUmbralBajoStock());
 
-        validarDescripcion(producto.getDescripcion());
-
-        validarTamano(producto.getTamano());
-
-        validarColor(producto.getColor());
-
-        valirdarPrecio(producto.getPrecioUnitario());
-
-        validarStock(producto.getStock());
-
-        validarUmbralBajoStock(producto.getUmbralBajoStock());
-
-        validarStockYUmbralBajoStock(producto.getStock(), producto.getUmbralBajoStock());
-
-        validarMarca(dto.getMarcaId(), producto);
-
-        ValidarSubCategoria(dto.getSubCategoriaId(), producto);
+        producto.setNombre(dto.getNombre());
+        producto.setDescripcion(dto.getDescripcion());
+        producto.setTamano(dto.getTamano());
+        producto.setColor(dto.getColor());
+        producto.setPrecioUnitario(dto.getPrecioUnitario());
+        producto.setStock(dto.getStock());
+        producto.setUmbralBajoStock(dto.getUmbralBajoStock());
 
         normalizarDatos(producto);
 
-        
+        productoRepository.save(producto);
+        // Guardar el producto actualizado
+        Producto productoGuardado = guardar(producto);
 
-        return registrarProductoMapper.toDto(productoRepository.save(producto));
+        // Mapear y retornar el DTO
+        return registrarProductoMapper.toDto(productoGuardado);
     }
+
+
+    @Override
+    public Producto buscarPorId(long id){
+        Producto producto = productoRepository.findById(id).orElse(null);
+        if (producto == null) {
+            throw new EntityNotFoundException("El producto no existe.");
+        }
+        return producto;
+    }
+
 
 
     @Override
@@ -153,11 +162,11 @@ public class ProductoService implements IProductoService {
         Producto producto = productoRepository.findById(id).orElse(null);
         if(producto != null && producto.isEstaActivo() == false){
             producto.setEstaActivo(true);
-            productoRepository.save(producto);
+            guardar(producto);
         }
     }
 
-    private void validarNombre(String nombre){
+    public void validarNombre(String nombre){
         if (nombre == null || nombre.isEmpty()) {
             throw new IllegalArgumentException("El nombre del producto no puede estar vacío.");
             
@@ -167,11 +176,13 @@ public class ProductoService implements IProductoService {
         }
         if (nombre.contains(" ")) {
             throw new IllegalArgumentException("El nombre del producto no debe contener espacios.");
-            
+        }
+        if (nombre.matches(".*\\d.*")) {
+            throw new IllegalArgumentException("El nombre no debe contener números.");
         }
     }
 
-    private void validarDescripcion(String descripcion){
+    public void validarDescripcion(String descripcion){
         if (descripcion == null || descripcion.isEmpty()) {
             throw new IllegalArgumentException("La descripcion del producto no puede estar vacía.");
             
@@ -179,18 +190,18 @@ public class ProductoService implements IProductoService {
         if (descripcion.length() < 2 || descripcion.length() > 64) {
             throw new IllegalArgumentException("La descripcion del producto debe tener entre 2 y 64 caracteres.");
         }
-        if (descripcion.contains(" ")) {
-            throw new IllegalArgumentException("La descripcion del producto no debe contener espacios.");
-            
+        if (descripcion.matches(".*\\d.*")) {
+            throw new IllegalArgumentException("La descripcion no debe contener números.");
         }
+        
     }
 
-    private void validarTamano(String tamano){
+    public void validarTamano(String tamano){
         if (tamano == null || tamano.isEmpty()) {
             throw new IllegalArgumentException("El tamaño del producto no puede estar vacío.");
             
         }
-        if (tamano.length() < 2 || tamano.length() > 3) {
+        if (tamano.length() < 1 || tamano.length() > 3) {
             throw new IllegalArgumentException("Solo se permite XS,S,M,L, XL O XXL para el tamaño del producto.");
         }
         if (tamano.contains(" ")) {
@@ -199,18 +210,21 @@ public class ProductoService implements IProductoService {
         }
     }
 
-    private void validarColor(String color){
+    public void validarColor(String color){
         if (color == null || color.isEmpty()) {
             throw new IllegalArgumentException("El color del producto no puede estar vacío.");
             
         }
-        if (color.length() < 2 || color.length() > 64) {
-            throw new IllegalArgumentException("El color del producto debe tener entre 2 y 64 caracteres.");
+        if (color.length() < 2 || color.length() > 5) {
+            throw new IllegalArgumentException("El color del producto debe tener entre 2 y 5 caracteres.");
+        }
+        if (color.matches(".*\\d.*")) {
+            throw new IllegalArgumentException("El color no debe contener números.");
         }
         
     }
 
-    private void valirdarPrecio(double precioUnitario){
+    public void valirdarPrecio(double precioUnitario){
         if (precioUnitario < 0) {
             throw new IllegalArgumentException("El precio unitario del producto debe ser mayor a 0.");
         }
@@ -227,7 +241,7 @@ public class ProductoService implements IProductoService {
 
     }
 
-    private void validarStock(int stock){
+    public void validarStock(int stock){
         if (stock < 0) {
             throw new IllegalArgumentException("El stock del producto debe ser mayor a 0.");
         }
@@ -243,7 +257,7 @@ public class ProductoService implements IProductoService {
         }
     }
 
-    private void validarUmbralBajoStock(int umbralBajoStock){
+    public void validarUmbralBajoStock(int umbralBajoStock){
         if (umbralBajoStock < 0) {
             throw new IllegalArgumentException("El umbral bajo de stock del producto debe ser mayor a 0.");
         }
@@ -260,13 +274,13 @@ public class ProductoService implements IProductoService {
         
     }
 
-    private void validarStockYUmbralBajoStock(int stock, int umbralBajoStock){
+    public void validarStockYUmbralBajoStock(int stock, int umbralBajoStock){
         if (stock < umbralBajoStock) {
             throw new IllegalArgumentException("El stock del producto debe ser mayor o igual al umbral bajo de stock.");
         }
     }
 
-    private void validarMarca(long marcaId, Producto producto){
+    public void validarMarca(long marcaId, Producto producto){
         if (marcaId <= 0) {
             throw new IllegalArgumentException("La marca del producto no puede estar vacía.");
         }
@@ -280,7 +294,7 @@ public class ProductoService implements IProductoService {
         
     }
 
-    private void ValidarSubCategoria(long subCategoriaId, Producto producto){
+    public void validarSubCategoria(long subCategoriaId, Producto producto){
         if (subCategoriaId <= 0) {
             throw new IllegalArgumentException("La subcategoria del producto no puede estar vacía.");
         }
@@ -292,13 +306,20 @@ public class ProductoService implements IProductoService {
         producto.setSubcategoria(subCategoria);
     }
 
-    private void normalizarDatos(Producto producto){
+    public void normalizarDatos(Producto producto){
         producto.setNombre(producto.getNombre().toLowerCase().trim());
         producto.setDescripcion(producto.getDescripcion().toLowerCase().trim());
         producto.setColor(producto.getColor().toLowerCase().trim());
         producto.setTamano(producto.getTamano().toUpperCase().trim());
 
     }
+
+    @Override
+    public Producto guardar(Producto producto){
+        return productoRepository.save(producto);
+    }
+
+    
 
 
     
