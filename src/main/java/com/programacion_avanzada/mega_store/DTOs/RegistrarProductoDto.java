@@ -14,6 +14,8 @@ public class RegistrarProductoDto {
 
     private String color;
 
+    private String urlImagen;
+
     private double precioUnitario;
 
     private int stock;

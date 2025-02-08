@@ -16,6 +16,7 @@ public class RegistrarProductoMapper {
         producto.setDescripcion(registrarProductoDto.getDescripcion());
         producto.setTamano(registrarProductoDto.getTamano());
         producto.setColor(registrarProductoDto.getColor());
+        producto.setUrlImagen(registrarProductoDto.getUrlImagen());
         producto.setPrecioUnitario(registrarProductoDto.getPrecioUnitario());
         producto.setStock(registrarProductoDto.getStock());
         producto.setUmbralBajoStock(registrarProductoDto.getUmbralBajoStock());
@@ -29,6 +30,7 @@ public class RegistrarProductoMapper {
         registrarProductoDto.setDescripcion(producto.getDescripcion());
         registrarProductoDto.setTamano(producto.getTamano());
         registrarProductoDto.setColor(producto.getColor());
+        registrarProductoDto.setUrlImagen(producto.getUrlImagen());
         registrarProductoDto.setPrecioUnitario(producto.getPrecioUnitario());
         registrarProductoDto.setStock(producto.getStock());
         registrarProductoDto.setUmbralBajoStock(producto.getUmbralBajoStock());

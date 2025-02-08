@@ -62,12 +62,31 @@ public class ProductoService implements IProductoService {
 
             // Normarlizamos los atributos del producto.
             validarNombre(dto.getNombre());
+            validarDescripcion(producto.getDescripcion());
+
+            validarTamano(producto.getTamano());
+    
+            validarColor(producto.getColor());
+    
+            valirdarPrecio(producto.getPrecioUnitario());
+    
+            validarStock(producto.getStock());
+    
+            validarUmbralBajoStock(producto.getUmbralBajoStock());
+    
+            validarStockYUmbralBajoStock(producto.getStock(), producto.getUmbralBajoStock());
+    
+            validarMarca(dto.getMarcaId(), producto);
+    
+            validarSubCategoria(dto.getSubCategoriaId(), producto);
+
             producto.setNombre(StringUtil.capitalizeFirstLetter(dto.getNombre().toLowerCase().trim()));
             producto.setDescripcion(StringUtil.capitalizeFirstLetter(dto.getDescripcion().toLowerCase().trim()));
             producto.setColor(StringUtil.capitalizeFirstLetter(dto.getColor().toLowerCase()).trim());
             producto.setTamano(StringUtil.capitalizeFirstLetter(dto.getTamano().toLowerCase().trim()));
             producto.setStock(dto.getStock());
             producto.setPrecioUnitario(dto.getPrecioUnitario());
+            normalizarDatos(producto);
 
             //Asignamos el estado como activo.
             producto.setEstaActivo(true);
@@ -116,24 +135,29 @@ public class ProductoService implements IProductoService {
      * Comparte los mismos atributos que el DTO para registrar el producto.
      */
     @Override
-    public RegistrarProductoDto editarProducto(long id, RegistrarProductoDto dto) {
-        Producto producto = productoRepository.findById(id).orElse(null);
+    public RegistrarProductoDto editarProducto(long id,RegistrarProductoDto dto) {
 
-        validarNombre(dto.getNombre());
-        validarDescripcion(dto.getDescripcion());
-        validarTamano(dto.getTamano());
-        validarColor(dto.getColor());
-        valirdarPrecio(dto.getPrecioUnitario());
-        validarStock(dto.getStock());
-        validarUmbralBajoStock(dto.getUmbralBajoStock());
+        Producto producto = productoRepository.findById(id).filter(Producto::isEstaActivo).orElse(null);
+        
+        validarNombre(producto.getNombre());
 
-        producto.setNombre(dto.getNombre());
-        producto.setDescripcion(dto.getDescripcion());
-        producto.setTamano(dto.getTamano());
-        producto.setColor(dto.getColor());
-        producto.setPrecioUnitario(dto.getPrecioUnitario());
-        producto.setStock(dto.getStock());
-        producto.setUmbralBajoStock(dto.getUmbralBajoStock());
+        validarDescripcion(producto.getDescripcion());
+
+        validarTamano(producto.getTamano());
+
+        validarColor(producto.getColor());
+
+        valirdarPrecio(producto.getPrecioUnitario());
+
+        validarStock(producto.getStock());
+
+        validarUmbralBajoStock(producto.getUmbralBajoStock());
+
+        validarStockYUmbralBajoStock(producto.getStock(), producto.getUmbralBajoStock());
+
+        validarMarca(dto.getMarcaId(), producto);
+
+        validarSubCategoria(dto.getSubCategoriaId(), producto);
 
         normalizarDatos(producto);
 
@@ -294,11 +318,11 @@ public class ProductoService implements IProductoService {
         
     }
 
-    public void validarSubCategoria(long subCategoriaId, Producto producto){
+    public void validarSubCategoria(long subCategoriaId, Producto producto) {
         if (subCategoriaId <= 0) {
             throw new IllegalArgumentException("La subcategoria del producto no puede estar vacía.");
         }
-
+    
         SubCategoria subCategoria = subCategoriaRepository.findById(subCategoriaId).orElse(null);
         if (subCategoria == null) {
             throw new IllegalArgumentException("La subcategoria del producto no existe.");
