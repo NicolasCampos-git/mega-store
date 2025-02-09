@@ -1,6 +1,5 @@
 package com.programacion_avanzada.mega_store.Service;
 
-import com.programacion_avanzada.mega_store.DTOs.ItemOrdenDto;
 import com.programacion_avanzada.mega_store.DTOs.OrdenCompraDto;
 import com.programacion_avanzada.mega_store.Mapper.OrdenCompraMapper;
 import com.programacion_avanzada.mega_store.Modelos.*;
@@ -12,7 +11,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+
 
 @Service
 public class OrdenCompraService implements IOrdenCompraService {
@@ -111,4 +110,32 @@ public class OrdenCompraService implements IOrdenCompraService {
         return ordenCompraRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Orden de compra no encontrada"));
     }
+
+    //Metodo para el listado de todas las ordenes de compra.
+    @Override
+    public List<OrdenCompra> obtenerOrdenes() {
+        List<OrdenCompra> ordenes =  ordenCompraRepository.findAll();
+        if(ordenes.isEmpty()){
+            throw new RuntimeException("No hay ordenes de compra");
+        }
+        return ordenes;
+    }
+
+    //Metodo para el listado de todas las ordenes de compra por usuario.
+    public List<OrdenCompra> obtenerOrdenesPorUsuario(Long usuarioId) {
+        validarUsuario(usuarioId);
+        Usuario usuario = usuarioRepository.findById(usuarioId)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        return ordenCompraRepository.findByUsuario(usuario);
+    }
+
+
+    private void validarUsuario(Long usuarioId) {
+        if (!usuarioRepository.existsById(usuarioId)) {
+            throw new RuntimeException("Usuario no encontrado");
+        }
+    }
+
+    
 }

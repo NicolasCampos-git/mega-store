@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.programacion_avanzada.mega_store.DTOs.ProductoDto;
 import com.programacion_avanzada.mega_store.Mapper.RegistrarProductoMapper;
-import com.programacion_avanzada.mega_store.Modelos.Categoria;
+
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;

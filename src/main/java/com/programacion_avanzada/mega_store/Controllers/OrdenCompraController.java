@@ -4,9 +4,15 @@ import com.programacion_avanzada.mega_store.DTOs.*;
 import com.programacion_avanzada.mega_store.Mapper.OrdenCompraMapper;
 import com.programacion_avanzada.mega_store.Modelos.OrdenCompra;
 import com.programacion_avanzada.mega_store.Service.IOrdenCompraService;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 @RequestMapping("/api/ordenes")
@@ -42,4 +48,16 @@ public class OrdenCompraController {
 
         return ordenCompraMapper.toDto(ordenCompra);
     }
+
+    //Metodo para obtener todas las ordenes
+    @GetMapping("/listar")
+    public ResponseEntity<List<OrdenCompra>> listarOrdenes() {
+        try{
+            List<OrdenCompra> ordenes = ordenCompraService.obtenerOrdenes();
+            return ResponseEntity.ok(ordenes);
+        }catch(Exception e){
+            return ResponseEntity.badRequest().build();
+        }
+    }
+    
 }
