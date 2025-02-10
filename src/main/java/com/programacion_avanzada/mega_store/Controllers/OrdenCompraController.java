@@ -59,5 +59,16 @@ public class OrdenCompraController {
             return ResponseEntity.badRequest().build();
         }
     }
+
+    //Metodo para obtener todas las ordenes de un usuario
+    @GetMapping("/listar/{id}")
+    public ResponseEntity<List<OrdenCompra>> listarOrdenesPorUsuario(@PathVariable Long id) {
+        try{
+            List<OrdenCompra> ordenes = ordenCompraService.obtenerOrdenesPorUsuario(id);
+            return ResponseEntity.ok(ordenes);
+        }catch(Exception e){
+            return ResponseEntity.badRequest().build();
+        }
+    }
     
 }

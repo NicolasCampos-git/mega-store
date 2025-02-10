@@ -8,7 +8,7 @@ import com.programacion_avanzada.mega_store.Modelos.SubCategoria;
 
 public interface ISubCategoriaService {
     RegistrarSubCategoriaDto registrarSubCategoria(RegistrarSubCategoriaDto dto);
-    List<SubCategoriaDTO> listar();
+    List<SubCategoria> listar();
     SubCategoria buscarPorId(long id);
     void eliminar(long id);
     void reactivar(long id);

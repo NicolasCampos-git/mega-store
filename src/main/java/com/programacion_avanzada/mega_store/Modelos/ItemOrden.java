@@ -20,7 +20,9 @@ public class ItemOrden {
     @ManyToOne
     private Producto producto;
 
+    @Column
     private Integer cantidad;
 
+    @Column
     private Double subtotal;
 }

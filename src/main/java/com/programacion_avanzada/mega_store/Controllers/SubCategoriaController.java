@@ -39,7 +39,7 @@ public class SubCategoriaController {
 
     
     @GetMapping("/listar")
-    public List<SubCategoriaDTO> listar() {
+    public List<SubCategoria> listar() {
         return subCategoriaService.listar();
     }
 

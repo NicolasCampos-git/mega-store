@@ -111,9 +111,8 @@ public class ProductoService implements IProductoService {
      * Metodo que para listar todos los productos
      */
     @Override
-    public List<ProductoDto> listar() {
-        List<Producto> productos = productoRepository.findAll();
-        return  productos.stream().map(productoMapper::toDto).toList();
+    public List<Producto> listar() {
+        return productoRepository.findAll();
     }
 
    

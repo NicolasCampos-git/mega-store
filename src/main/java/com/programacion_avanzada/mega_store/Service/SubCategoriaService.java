@@ -64,9 +64,9 @@ public class SubCategoriaService implements ISubCategoriaService {
     }
 
     @Override
-    public List<SubCategoriaDTO> listar() {
-        List<SubCategoria> subCategorias = subCategoriaRepository.findAll();
-        return subCategorias.stream().map(subCategoriaMapper::toDto).toList();
+    public List<SubCategoria> listar() {
+        
+        return subCategoriaRepository.findAll();
     }
 
     @Override

@@ -18,13 +18,35 @@ public class OrdenCompra {
     @ManyToOne
     private Usuario usuario;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<ItemOrden> items;
 
+
+    @Column
     private Double total;
 
-    private LocalDateTime fecha;
+    /*
+     * Atirubutos de la con los datos de los estados de la orden
+    */
 
     @ManyToOne
     private EstadoOrden estado;
+
+    @Column
+    private LocalDateTime fecha; //fecha de creacion
+
+    @Column
+    private LocalDateTime fechaPago;
+
+    @Column
+    private LocalDateTime fechaCancelacion;
+
+    @Column
+    private LocalDateTime fechaEnvio;
+
+    @Column
+    private LocalDateTime fechaEntrega;
+
+    
+    
 }

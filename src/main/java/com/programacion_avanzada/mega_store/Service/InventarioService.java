@@ -56,9 +56,9 @@ public class InventarioService implements IInventarioService{
 
     @Scheduled(fixedRate = 60000)
     public void revisarStock(){
-        List<ProductoDto> productos = productoService.listar();
+        List<Producto> productos = productoService.listar();
 
-        for(ProductoDto producto: productos){
+        for(Producto producto: productos){
             if(producto.getStock() < producto.getUmbralBajoStock()){
                 senderService.notificarBajoStock(producto.getId());
             }

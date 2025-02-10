@@ -2,6 +2,10 @@ package com.programacion_avanzada.mega_store.Modelos;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import io.micrometer.common.lang.NonNull;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -25,6 +29,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name = "categorias")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Categoria {
     
     @Id
@@ -39,8 +44,7 @@ public class Categoria {
     @Column(name = "descripcion")
     private String descripcion;
     
-    @OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<SubCategoria> subcategorias;
+    
 
     @NonNull
     @Column(name = "esta_activo")

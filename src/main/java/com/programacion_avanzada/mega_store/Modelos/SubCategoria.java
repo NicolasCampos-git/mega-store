@@ -4,6 +4,12 @@ package com.programacion_avanzada.mega_store.Modelos;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.programacion_avanzada.mega_store.DTOs.CategoriaDto;
+
 import io.micrometer.common.lang.NonNull;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -27,6 +33,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name = "sub_categorias")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+
 public class SubCategoria {
     
     @Id
@@ -43,7 +51,6 @@ public class SubCategoria {
 
     @ManyToOne
     @JoinColumn(name = "categoria_id")
-    @JsonBackReference
     private Categoria categoria;
      
     @NonNull

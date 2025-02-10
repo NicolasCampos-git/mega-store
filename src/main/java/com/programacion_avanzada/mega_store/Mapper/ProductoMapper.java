@@ -19,13 +19,10 @@ public interface ProductoMapper {
 
     Producto toEntity(ProductoDto productoDto);
     
-    // Convierte RegistrarProductoDto a Producto entity
-    Producto toEntity(RegistrarProductoDto registrarProductoDto);
-
-    // Convierte Categoria entity a CategoriaDto
+    // Convierte SubCategoria entity a SubCategoriaDTO
     SubCategoriaDTO toDto(SubCategoria subCategoria);
-    
-    // Convierte CategoriaDto a Categoria entity
+        
+    // Convierte SubCategoriaDTO a SubCategoria entity
     SubCategoria toEntity(SubCategoriaDTO subCategoriaDto);
 
     // Convierte Marca entity a MarcaDto

@@ -33,7 +33,7 @@ public class ProductoController {
     }
 
     @GetMapping("/listar")
-    public List<ProductoDto> listar(){
+    public List<Producto> listar(){
         return productoService.listar();
     }
 
