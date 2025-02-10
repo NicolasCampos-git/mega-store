@@ -1,7 +1,9 @@
 package com.programacion_avanzada.mega_store.Modelos;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -25,7 +27,7 @@ import lombok.Setter;
 @NoArgsConstructor //Genera un constructor son argimentos.
 @Entity //Especifica que va a ser una entidad de la db.
 @Table(name = "direcciones_envio") //Le da el nombre a la tabla de la db
-@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class DireccionEnvio {
     
     @Id //Espefica que es el id.
