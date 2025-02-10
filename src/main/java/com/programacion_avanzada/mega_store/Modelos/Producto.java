@@ -64,7 +64,6 @@ public class Producto {
 
     @ManyToOne
     @JoinColumn(name = "marca_id", nullable = false)
-    @JsonBackReference
     private Marca marca;
 
     @ManyToOne

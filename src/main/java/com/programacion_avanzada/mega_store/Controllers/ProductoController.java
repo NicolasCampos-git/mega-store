@@ -26,7 +26,7 @@ public class ProductoController {
 
 
     @PostMapping("/registrar")
-    public RegistrarProductoDto registrarProducto(@RequestBody @Valid RegistrarProductoDto dto) {
+    public Producto registrarProducto(@RequestBody @Valid RegistrarProductoDto dto) {
         
         
         return productoService.registrarProducto(dto);
@@ -38,7 +38,7 @@ public class ProductoController {
     }
 
     @PutMapping("/actualizar/{id}")
-    public RegistrarProductoDto editarProducto(@PathVariable long id, @RequestBody RegistrarProductoDto dto) {
+    public Producto editarProducto(@PathVariable long id, @RequestBody RegistrarProductoDto dto) {
         
         
         return productoService.editarProducto(id, dto);

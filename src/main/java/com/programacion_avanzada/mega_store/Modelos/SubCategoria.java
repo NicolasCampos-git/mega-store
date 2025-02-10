@@ -34,7 +34,6 @@ import lombok.Setter;
 @Entity
 @Table(name = "sub_categorias")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-
 public class SubCategoria {
     
     @Id

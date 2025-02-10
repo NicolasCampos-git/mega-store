@@ -10,11 +10,11 @@ import com.programacion_avanzada.mega_store.Modelos.Producto;
 
 public interface IProductoService {
 
-    RegistrarProductoDto registrarProducto(RegistrarProductoDto dto);
+    Producto registrarProducto(RegistrarProductoDto dto);
 
     List<Producto> listar();
 
-    RegistrarProductoDto editarProducto(long id, RegistrarProductoDto dto);
+    Producto editarProducto(long id, RegistrarProductoDto dto);
 
     Producto buscarPorId(long id);
 

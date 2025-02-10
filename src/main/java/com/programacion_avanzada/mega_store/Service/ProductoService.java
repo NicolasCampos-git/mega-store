@@ -46,7 +46,7 @@ public class ProductoService implements IProductoService {
      * luego se encarga de normalizar los datos y asignar que se encuentra activo.
      */
     @Override
-    public RegistrarProductoDto registrarProducto(RegistrarProductoDto dto) {
+    public Producto registrarProducto(RegistrarProductoDto dto) {
         // Primero, verifica si la marca y la subcategoría existen
         if (!marcaRepository.existsById(dto.getMarcaId())) {
             throw new EntityNotFoundException("La marca no existe");
@@ -100,7 +100,7 @@ public class ProductoService implements IProductoService {
             producto.setSubcategoria(subCategoria);
 
 
-            return registrarProductoMapper.toDto(productoRepository.save(producto));
+            return productoRepository.save(producto);
         }
 
         throw new EntityExistsException("El producto ya existe"); //deberia salir una excepcion.
@@ -134,7 +134,7 @@ public class ProductoService implements IProductoService {
      * Comparte los mismos atributos que el DTO para registrar el producto.
      */
     @Override
-    public RegistrarProductoDto editarProducto(long id,RegistrarProductoDto dto) {
+    public Producto editarProducto(long id,RegistrarProductoDto dto) {
 
         Producto producto = productoRepository.findById(id).filter(Producto::isEstaActivo).orElse(null);
         
@@ -164,8 +164,7 @@ public class ProductoService implements IProductoService {
         // Guardar el producto actualizado
         Producto productoGuardado = guardar(producto);
 
-        // Mapear y retornar el DTO
-        return registrarProductoMapper.toDto(productoGuardado);
+        return productoGuardado;
     }
 
 

@@ -43,8 +43,6 @@ public class Categoria {
     @NotBlank
     @Column(name = "descripcion")
     private String descripcion;
-    
-    
 
     @NonNull
     @Column(name = "esta_activo")
