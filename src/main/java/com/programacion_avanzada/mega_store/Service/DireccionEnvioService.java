@@ -12,6 +12,7 @@ import com.programacion_avanzada.mega_store.Modelos.DireccionEnvio;
 import com.programacion_avanzada.mega_store.Modelos.Usuario;
 import com.programacion_avanzada.mega_store.Repository.DireccionEnvioRepository;
 import com.programacion_avanzada.mega_store.Repository.UsuarioRepository;
+import com.programacion_avanzada.mega_store.Service.Interfaces.IDireccionEnvioService;
 
 @Service
 public class DireccionEnvioService implements IDireccionEnvioService {
@@ -127,8 +128,8 @@ public class DireccionEnvioService implements IDireccionEnvioService {
         if (calle.length() < 2 || calle.length() > 64) {
             throw new IllegalArgumentException("La calle debe tener entre 2 y 30 caracteres.");
         }
-        if (!calle.matches("^[a-zA-Z]+$")) {
-            throw new IllegalArgumentException("La calle debe contener solo letras.");
+        if (!calle.matches("^[a-zA-Z\\s'\\-]+$")) {
+            throw new IllegalArgumentException("La calle debe contener solo letras, espacios, apóstrofes y guiones.");
         }
         
     }

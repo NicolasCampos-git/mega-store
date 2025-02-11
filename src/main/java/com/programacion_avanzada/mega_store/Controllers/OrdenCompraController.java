@@ -3,7 +3,7 @@ package com.programacion_avanzada.mega_store.Controllers;
 import com.programacion_avanzada.mega_store.DTOs.*;
 import com.programacion_avanzada.mega_store.Mapper.OrdenCompraMapper;
 import com.programacion_avanzada.mega_store.Modelos.OrdenCompra;
-import com.programacion_avanzada.mega_store.Service.IOrdenCompraService;
+import com.programacion_avanzada.mega_store.Service.Interfaces.IOrdenCompraService;
 
 import java.util.List;
 

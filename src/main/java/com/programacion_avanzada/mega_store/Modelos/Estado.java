@@ -7,7 +7,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class EstadoOrden {
+public class Estado{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -16,4 +16,6 @@ public class EstadoOrden {
     private String nombre;
 
     private String descripcion;
+
+    // private String ambito;
 }

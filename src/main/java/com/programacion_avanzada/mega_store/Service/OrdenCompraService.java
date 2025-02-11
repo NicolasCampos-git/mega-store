@@ -4,6 +4,8 @@ import com.programacion_avanzada.mega_store.DTOs.OrdenCompraDto;
 import com.programacion_avanzada.mega_store.Mapper.OrdenCompraMapper;
 import com.programacion_avanzada.mega_store.Modelos.*;
 import com.programacion_avanzada.mega_store.Repository.*;
+import com.programacion_avanzada.mega_store.Service.Interfaces.IOrdenCompraService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +33,7 @@ public class OrdenCompraService implements IOrdenCompraService {
     private ItemOrdenRepository itemOrdenRepository;
 
     @Autowired
-    private EstadoOrdenRepository estadoOrdenRepository;
+    private EstadoRepository estadoRepository;
 
     @Override
     public OrdenCompraDto crearOrden(Long usuarioId, Map<Long, Integer> productosYCantidades) {
@@ -40,7 +42,7 @@ public class OrdenCompraService implements IOrdenCompraService {
 
         //Se le asigna usuario y estado
         Usuario usuario = usuarioRepository.findById(usuarioId).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-        EstadoOrden estado = estadoOrdenRepository.findByNombre("PENDIENTE").orElseThrow(() -> new RuntimeException("Estado no encontrado"));
+        Estado estado = estadoRepository.findByNombre("PENDIENTE").orElseThrow(() -> new RuntimeException("Estado no encontrado"));
         ordenCompra.setUsuario(usuario);
         ordenCompra.setEstado(estado);
         ordenCompra.setFecha(LocalDateTime.now());
@@ -85,7 +87,7 @@ public class OrdenCompraService implements IOrdenCompraService {
         OrdenCompra orden = ordenCompraRepository.findById(ordenId)
                 .orElseThrow(() -> new RuntimeException("Orden no encontrada"));
 
-        EstadoOrden estado = estadoOrdenRepository.findByNombre(nuevoEstado)
+        Estado estado = estadoRepository.findByNombre(nuevoEstado)
                 .orElseThrow(() -> new RuntimeException("Estado no encontrado"));
 
         if (!esTransicionValida(orden.getEstado().getNombre(), nuevoEstado)) {

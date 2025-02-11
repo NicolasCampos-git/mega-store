@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import com.programacion_avanzada.mega_store.DTOs.ProductoDto;
 import com.programacion_avanzada.mega_store.DTOs.stockDTO;
 import com.programacion_avanzada.mega_store.Modelos.Producto;
+import com.programacion_avanzada.mega_store.Service.Interfaces.IInventarioService;
+import com.programacion_avanzada.mega_store.Service.Interfaces.IProductoService;
 
 @Service
 public class InventarioService implements IInventarioService{

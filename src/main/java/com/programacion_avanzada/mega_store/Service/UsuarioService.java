@@ -19,6 +19,8 @@ import com.programacion_avanzada.mega_store.Modelos.DireccionEnvio;
 import com.programacion_avanzada.mega_store.Modelos.Usuario;
 import com.programacion_avanzada.mega_store.Repository.DireccionEnvioRepository;
 import com.programacion_avanzada.mega_store.Repository.UsuarioRepository;
+import com.programacion_avanzada.mega_store.Service.Interfaces.ISenderService;
+import com.programacion_avanzada.mega_store.Service.Interfaces.IUsuarioService;
 
 import ch.qos.logback.core.util.StringUtil;
 

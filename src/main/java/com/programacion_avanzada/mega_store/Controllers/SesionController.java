@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.programacion_avanzada.mega_store.DTOs.InicioSesionDTO;
 import com.programacion_avanzada.mega_store.Modelos.Usuario;
-import com.programacion_avanzada.mega_store.Service.ISesionService;
+import com.programacion_avanzada.mega_store.Service.Interfaces.ISesionService;
 
 
 @RestController

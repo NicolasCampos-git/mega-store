@@ -12,6 +12,7 @@ import com.programacion_avanzada.mega_store.Mapper.CategoriaMapper;
 import com.programacion_avanzada.mega_store.Mapper.RegistrarCategoriaMapper;
 import com.programacion_avanzada.mega_store.Modelos.Categoria;
 import com.programacion_avanzada.mega_store.Repository.CategoriaRepository;
+import com.programacion_avanzada.mega_store.Service.Interfaces.ICategoriaService;
 
 import ch.qos.logback.core.util.StringUtil;
 import jakarta.persistence.EntityExistsException;

@@ -17,7 +17,7 @@ import com.programacion_avanzada.mega_store.DTOs.CategoriaDto;
 import com.programacion_avanzada.mega_store.DTOs.RegistrarCategoriaDto;
 import com.programacion_avanzada.mega_store.Mapper.CategoriaMapper;
 import com.programacion_avanzada.mega_store.Modelos.Categoria;
-import com.programacion_avanzada.mega_store.Service.ICategoriaService;
+import com.programacion_avanzada.mega_store.Service.Interfaces.ICategoriaService;
 
 import jakarta.validation.Valid;
 

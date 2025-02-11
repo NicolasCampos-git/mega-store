@@ -14,6 +14,7 @@ import com.programacion_avanzada.mega_store.Modelos.Categoria;
 import com.programacion_avanzada.mega_store.Modelos.SubCategoria;
 import com.programacion_avanzada.mega_store.Repository.CategoriaRepository;
 import com.programacion_avanzada.mega_store.Repository.SubCategoriaRepository;
+import com.programacion_avanzada.mega_store.Service.Interfaces.ISubCategoriaService;
 
 import ch.qos.logback.core.util.StringUtil;
 import jakarta.persistence.EntityExistsException;

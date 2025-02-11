@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.programacion_avanzada.mega_store.DTOs.RegistrarProductoDto;
 import com.programacion_avanzada.mega_store.Modelos.Producto;
-import com.programacion_avanzada.mega_store.Service.IProductoService;
+import com.programacion_avanzada.mega_store.Service.Interfaces.IProductoService;
 
 import jakarta.validation.Valid;
 

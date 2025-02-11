@@ -12,6 +12,7 @@ import com.programacion_avanzada.mega_store.Mapper.MarcaMapper;
 import com.programacion_avanzada.mega_store.Mapper.RegistrarMarcaMapper;
 import com.programacion_avanzada.mega_store.Modelos.Marca;
 import com.programacion_avanzada.mega_store.Repository.MarcaRepository;
+import com.programacion_avanzada.mega_store.Service.Interfaces.IMarcaService;
 
 import ch.qos.logback.core.util.StringUtil;
 import jakarta.persistence.EntityExistsException;

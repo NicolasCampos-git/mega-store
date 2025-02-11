@@ -33,7 +33,7 @@ public class OrdenCompra {
     */
 
     @ManyToOne
-    private EstadoOrden estado;
+    private Estado estado;
 
     @Column
     private LocalDateTime fecha; //fecha de creacion

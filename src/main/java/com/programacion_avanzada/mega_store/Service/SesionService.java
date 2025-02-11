@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.programacion_avanzada.mega_store.DTOs.InicioSesionDTO;
 import com.programacion_avanzada.mega_store.Modelos.Usuario;
 import com.programacion_avanzada.mega_store.Repository.UsuarioRepository;
+import com.programacion_avanzada.mega_store.Service.Interfaces.ISesionService;
 
 @Service
 public class SesionService implements ISesionService {

@@ -19,6 +19,7 @@ import com.programacion_avanzada.mega_store.Modelos.SubCategoria;
 import com.programacion_avanzada.mega_store.Repository.MarcaRepository;
 import com.programacion_avanzada.mega_store.Repository.ProductoRepository;
 import com.programacion_avanzada.mega_store.Repository.SubCategoriaRepository;
+import com.programacion_avanzada.mega_store.Service.Interfaces.IProductoService;
 
 import ch.qos.logback.core.util.StringUtil;
 

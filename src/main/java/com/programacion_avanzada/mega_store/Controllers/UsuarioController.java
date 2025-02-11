@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.programacion_avanzada.mega_store.DTOs.RegistroUsuarioDto;
 import com.programacion_avanzada.mega_store.DTOs.UsuarioDto;
-import com.programacion_avanzada.mega_store.Service.IUsuarioService;
+import com.programacion_avanzada.mega_store.Service.Interfaces.IUsuarioService;
 
 import jakarta.validation.Valid;
 

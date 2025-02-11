@@ -1,4 +1,4 @@
-package com.programacion_avanzada.mega_store.Service;
+package com.programacion_avanzada.mega_store.Service.Interfaces;
 
 import com.programacion_avanzada.mega_store.DTOs.InicioSesionDTO;
 import com.programacion_avanzada.mega_store.Modelos.Usuario;

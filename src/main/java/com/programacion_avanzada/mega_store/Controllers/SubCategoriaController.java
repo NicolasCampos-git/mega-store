@@ -18,8 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.programacion_avanzada.mega_store.DTOs.RegistrarSubCategoriaDto;
 import com.programacion_avanzada.mega_store.DTOs.SubCategoriaDTO;
 import com.programacion_avanzada.mega_store.Modelos.SubCategoria;
-import com.programacion_avanzada.mega_store.Service.ISubCategoriaService;
-
+import com.programacion_avanzada.mega_store.Service.Interfaces.ISubCategoriaService;
 
 import jakarta.validation.Valid;
 

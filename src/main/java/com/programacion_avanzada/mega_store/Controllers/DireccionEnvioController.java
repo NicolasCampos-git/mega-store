@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.programacion_avanzada.mega_store.DTOs.DireccionEnvioDto;
 import com.programacion_avanzada.mega_store.Modelos.DireccionEnvio;
-import com.programacion_avanzada.mega_store.Service.IDireccionEnvioService;
+import com.programacion_avanzada.mega_store.Service.Interfaces.IDireccionEnvioService;
 
 import jakarta.validation.Valid;
 
