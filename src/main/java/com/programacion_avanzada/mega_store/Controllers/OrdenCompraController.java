@@ -8,6 +8,9 @@ import com.programacion_avanzada.mega_store.Mapper.OrdenMappers.OrdenCompraMappe
 import com.programacion_avanzada.mega_store.Modelos.OrdenCompra;
 import com.programacion_avanzada.mega_store.Service.Interfaces.IOrdenCompraService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RestController
 @RequestMapping("/api/ordenes")
 @CrossOrigin(origins = "http://localhost:3000")
+@Tag(name = "OrdenCompra", description = "API de ordenes de compra")
 public class OrdenCompraController {
     @Autowired
     private IOrdenCompraService ordenCompraService;
@@ -27,12 +31,14 @@ public class OrdenCompraController {
     @Autowired
     private OrdenCompraMapper ordenCompraMapper;
 
+    @Operation(summary = "Crear orden de compra", description = "Permite crear una orden de compra")
     @PostMapping("/crear")
     public ResponseEntity<OrdenCompraDto> crearOrden(@RequestBody CrearOrdenDto crearOrdenDto) {
         OrdenCompraDto ordenCompraDto = ordenCompraService.crearOrden(crearOrdenDto.getUsuarioId(), crearOrdenDto.getProductosYCantidades());
         return ResponseEntity.ok(ordenCompraDto);
     }
 
+    @Operation(summary = "Cambiar estado de orden de compra", description = "Permite cambiar el estado de una orden de compra")
     @PatchMapping("/cambiar-estado")
     public ResponseEntity<OrdenCompraDto> cambiarEstado(@RequestBody CambiarEstadoDto cambiarEstadoDto) {
         OrdenCompra ordenCompra = ordenCompraService.cambiarEstado(
@@ -45,6 +51,7 @@ public class OrdenCompraController {
         return ResponseEntity.ok(ordenCompraDto);
     }
 
+    @Operation(summary = "Obtener orden de compra por ID", description = "Permite obtener una orden de compra por su ID")
     @GetMapping("/orden-compra/{id}")
     public OrdenCompraDto obtenerOrdenCompra(@PathVariable Long id) {
         OrdenCompra ordenCompra = ordenCompraService.obtenerOrdenPorId(id);
@@ -52,7 +59,7 @@ public class OrdenCompraController {
         return ordenCompraMapper.toDto(ordenCompra);
     }
 
-    //Metodo para obtener todas las ordenes
+    @Operation(summary = "Listar ordenes de compra", description = "Permite listar todas las ordenes de compra registradas en la base de datos")
     @GetMapping("/listar")
     public ResponseEntity<List<OrdenCompra>> listarOrdenes() {
         try{
@@ -63,7 +70,7 @@ public class OrdenCompraController {
         }
     }
 
-    //Metodo para obtener todas las ordenes de un usuario
+    @Operation(summary = "Listar ordenes de compra por usuario", description = "Permite listar todas las ordenes de compra de un usuario")
     @GetMapping("/listar/{id}")
     public ResponseEntity<List<OrdenCompra>> listarOrdenesPorUsuario(@PathVariable Long id) {
         try{

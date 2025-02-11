@@ -41,7 +41,7 @@ public class SubCategoriaService implements ISubCategoriaService {
      * verificando que no haya 2 con el mismo nombre y normalizando los datos.
      */
     @Override
-    public RegistrarSubCategoriaDto registrarSubCategoria(RegistrarSubCategoriaDto dto) {
+    public SubCategoria registrarSubCategoria(RegistrarSubCategoriaDto dto) {
         // Primero, verifica si la categoría existe
         verificarCategoria(dto.getCategoriaId());
 
@@ -61,7 +61,7 @@ public class SubCategoriaService implements ISubCategoriaService {
         asignarCategoria(subCategoria, dto.getCategoriaId());
         subCategoria.setEstaActivo(true);
         // Guardar la subcategoría en el repositorio
-        return registrarSubCategoriaMapper.toDto(subCategoriaRepository.save(subCategoria));
+        return subCategoriaRepository.save(subCategoria);
     }
 
     @Override

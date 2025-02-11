@@ -21,7 +21,7 @@ public class OrdenCompra {
     private Usuario usuario;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JsonManagedReference
+
     private List<ItemOrden> items;
 
 

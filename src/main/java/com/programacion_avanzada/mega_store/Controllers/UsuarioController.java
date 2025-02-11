@@ -73,7 +73,7 @@ public class UsuarioController {
         @ApiResponse(responseCode = "204", description = "Usuario eliminado correctamente."),
         @ApiResponse(responseCode = "404", description = "Usuario no encontrado.")
     })
-    @PutMapping("/eliminar/{id}")
+    @DeleteMapping("/eliminar/{id}")
     public ResponseEntity<Void> eliminarUsuario(@PathVariable("id") long id) {
         try{
             usuarioService.eliminarUsuario(id);

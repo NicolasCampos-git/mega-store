@@ -19,7 +19,6 @@ public class ItemOrden {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "orden_compra_id")
-    @JsonBackReference
     private OrdenCompra ordenCompra;
 
 
