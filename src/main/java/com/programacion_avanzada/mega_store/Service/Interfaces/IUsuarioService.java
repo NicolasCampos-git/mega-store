@@ -9,14 +9,14 @@ import java.util.List;
 public interface IUsuarioService {
 
     // Métodos previos
-    RegistroUsuarioDto registrarUsuario(RegistroUsuarioDto dto);
+    Usuario registrarUsuario(RegistroUsuarioDto dto);
 
-    UsuarioDto actualizarInformacionPersonal(long id, UsuarioDto dto);
+    Usuario actualizarInformacionPersonal(long id, UsuarioDto dto);
 
     // Nuevos métodos agregados
-    UsuarioDto buscarPorId(long id);  // Buscar usuario por ID
+    Usuario buscarPorId(long id);  // Buscar usuario por ID
 
-    List<UsuarioDto> listarUsuarios();  // Listar todos los usuarios
+    List<Usuario> listarUsuarios();  // Listar todos los usuarios
 
     void eliminarUsuario(long id);  // Eliminar (desactivar) un usuario
 

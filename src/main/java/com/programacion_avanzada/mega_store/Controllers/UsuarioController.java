@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.programacion_avanzada.mega_store.DTOs.UsuarioDtos.RegistroUsuarioDto;
 import com.programacion_avanzada.mega_store.DTOs.UsuarioDtos.UsuarioDto;
+import com.programacion_avanzada.mega_store.Modelos.Usuario;
 import com.programacion_avanzada.mega_store.Service.Interfaces.IUsuarioService;
 
 import jakarta.validation.Valid;
@@ -36,13 +38,13 @@ public class UsuarioController {
 
     
     @PostMapping("registrar_usuario")
-    public ResponseEntity<RegistroUsuarioDto> registrarUsuarioDto(@Valid  @RequestBody RegistroUsuarioDto dto){
+    public ResponseEntity<Usuario> registrarUsuarioDto(@Valid  @RequestBody RegistroUsuarioDto dto){
         
         return ResponseEntity.ok(usuarioService.registrarUsuario(dto));
     }
 
-    @PutMapping("/actualizar_datos/{id}")
-    public ResponseEntity<UsuarioDto> actualizarInformacionPersonal(@PathVariable("id") long usuarioId, @RequestBody UsuarioDto dto){
+    @PatchMapping("/actualizar_datos/{id}")
+    public ResponseEntity<Usuario> actualizarInformacionPersonal(@PathVariable("id") long usuarioId, @RequestBody UsuarioDto dto){
         
         
         return ResponseEntity.ok(usuarioService.actualizarInformacionPersonal(usuarioId,dto));
@@ -50,13 +52,13 @@ public class UsuarioController {
 
     // Método para buscar un usuario por ID
     @GetMapping("/{id}")
-    public ResponseEntity<UsuarioDto> obtenerUsuarioPorId(@PathVariable("id") long id) {
+    public ResponseEntity<Usuario> obtenerUsuarioPorId(@PathVariable("id") long id) {
         return ResponseEntity.ok(usuarioService.buscarPorId(id));
     }
 
     // Método para listar todos los usuarios
     @GetMapping("/listar")
-    public ResponseEntity<List<UsuarioDto>> listarUsuarios() {
+    public ResponseEntity<List<Usuario>> listarUsuarios() {
         return ResponseEntity.ok(usuarioService.listarUsuarios());
     }
 
