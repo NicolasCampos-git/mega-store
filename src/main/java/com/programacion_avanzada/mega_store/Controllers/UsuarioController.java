@@ -13,8 +13,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.programacion_avanzada.mega_store.DTOs.RegistroUsuarioDto;
-import com.programacion_avanzada.mega_store.DTOs.UsuarioDto;
+
+import com.programacion_avanzada.mega_store.DTOs.UsuarioDtos.RegistroUsuarioDto;
+import com.programacion_avanzada.mega_store.DTOs.UsuarioDtos.UsuarioDto;
 import com.programacion_avanzada.mega_store.Service.Interfaces.IUsuarioService;
 
 import jakarta.validation.Valid;

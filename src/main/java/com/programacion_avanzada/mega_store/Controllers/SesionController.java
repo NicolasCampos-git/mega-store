@@ -3,7 +3,7 @@ package com.programacion_avanzada.mega_store.Controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import com.programacion_avanzada.mega_store.DTOs.InicioSesionDTO;
+import com.programacion_avanzada.mega_store.DTOs.AuthDtos.InicioSesionDTO;
 import com.programacion_avanzada.mega_store.Modelos.Usuario;
 import com.programacion_avanzada.mega_store.Service.Interfaces.ISesionService;
 

@@ -6,8 +6,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.programacion_avanzada.mega_store.DTOs.DireccionEnvioDto;
-import com.programacion_avanzada.mega_store.Mapper.DireccionEnvioMapper;
+import com.programacion_avanzada.mega_store.DTOs.DireccionDtos.DireccionEnvioDto;
+import com.programacion_avanzada.mega_store.Mapper.DireccionMappers.DireccionEnvioMapper;
 import com.programacion_avanzada.mega_store.Modelos.DireccionEnvio;
 import com.programacion_avanzada.mega_store.Modelos.Usuario;
 import com.programacion_avanzada.mega_store.Repository.DireccionEnvioRepository;

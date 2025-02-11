@@ -6,10 +6,10 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.programacion_avanzada.mega_store.DTOs.RegistrarSubCategoriaDto;
-import com.programacion_avanzada.mega_store.DTOs.SubCategoriaDTO;
-import com.programacion_avanzada.mega_store.Mapper.RegistrarSubCategoriaMapper;
-import com.programacion_avanzada.mega_store.Mapper.SubCategoriaMapper;
+import com.programacion_avanzada.mega_store.DTOs.SubcategoriaDtos.RegistrarSubCategoriaDto;
+import com.programacion_avanzada.mega_store.DTOs.SubcategoriaDtos.SubCategoriaDTO;
+import com.programacion_avanzada.mega_store.Mapper.SubcategoriaMappers.RegistrarSubCategoriaMapper;
+import com.programacion_avanzada.mega_store.Mapper.SubcategoriaMappers.SubCategoriaMapper;
 import com.programacion_avanzada.mega_store.Modelos.Categoria;
 import com.programacion_avanzada.mega_store.Modelos.SubCategoria;
 import com.programacion_avanzada.mega_store.Repository.CategoriaRepository;

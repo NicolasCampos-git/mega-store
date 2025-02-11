@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.programacion_avanzada.mega_store.DTOs.CategoriaDto;
-import com.programacion_avanzada.mega_store.DTOs.RegistrarCategoriaDto;
-import com.programacion_avanzada.mega_store.Mapper.CategoriaMapper;
+import com.programacion_avanzada.mega_store.DTOs.CategoriaDtos.CategoriaDto;
+import com.programacion_avanzada.mega_store.DTOs.CategoriaDtos.RegistrarCategoriaDto;
+import com.programacion_avanzada.mega_store.Mapper.CategoriaMappers.CategoriaMapper;
 import com.programacion_avanzada.mega_store.Modelos.Categoria;
 import com.programacion_avanzada.mega_store.Service.Interfaces.ICategoriaService;
 

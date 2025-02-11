@@ -1,7 +1,7 @@
 package com.programacion_avanzada.mega_store.Service.Interfaces;
 
-import com.programacion_avanzada.mega_store.DTOs.RegistroUsuarioDto;
-import com.programacion_avanzada.mega_store.DTOs.UsuarioDto;
+import com.programacion_avanzada.mega_store.DTOs.UsuarioDtos.RegistroUsuarioDto;
+import com.programacion_avanzada.mega_store.DTOs.UsuarioDtos.UsuarioDto;
 import com.programacion_avanzada.mega_store.Modelos.Usuario;
 
 import java.util.List;

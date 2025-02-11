@@ -10,11 +10,10 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
-import com.programacion_avanzada.mega_store.DTOs.RegistroUsuarioDto;
-import com.programacion_avanzada.mega_store.DTOs.UsuarioDto;
-import com.programacion_avanzada.mega_store.Mapper.RegistroUsuarioMapper;
-import com.programacion_avanzada.mega_store.Mapper.UsuarioMapper;
+import com.programacion_avanzada.mega_store.DTOs.UsuarioDtos.RegistroUsuarioDto;
+import com.programacion_avanzada.mega_store.DTOs.UsuarioDtos.UsuarioDto;
+import com.programacion_avanzada.mega_store.Mapper.UsuarioMappers.RegistroUsuarioMapper;
+import com.programacion_avanzada.mega_store.Mapper.UsuarioMappers.UsuarioMapper;
 import com.programacion_avanzada.mega_store.Modelos.DireccionEnvio;
 import com.programacion_avanzada.mega_store.Modelos.Usuario;
 import com.programacion_avanzada.mega_store.Repository.DireccionEnvioRepository;

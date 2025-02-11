@@ -6,10 +6,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.programacion_avanzada.mega_store.DTOs.MarcaDto;
-import com.programacion_avanzada.mega_store.DTOs.RegistrarMarcaDto;
-import com.programacion_avanzada.mega_store.Mapper.MarcaMapper;
-import com.programacion_avanzada.mega_store.Mapper.RegistrarMarcaMapper;
+import com.programacion_avanzada.mega_store.DTOs.MarcaDtos.MarcaDto;
+import com.programacion_avanzada.mega_store.DTOs.MarcaDtos.RegistrarMarcaDto;
+import com.programacion_avanzada.mega_store.Mapper.MarcaMappers.MarcaMapper;
+import com.programacion_avanzada.mega_store.Mapper.MarcaMappers.RegistrarMarcaMapper;
 import com.programacion_avanzada.mega_store.Modelos.Marca;
 import com.programacion_avanzada.mega_store.Repository.MarcaRepository;
 import com.programacion_avanzada.mega_store.Service.Interfaces.IMarcaService;

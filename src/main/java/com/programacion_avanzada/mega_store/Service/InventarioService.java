@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import com.programacion_avanzada.mega_store.DTOs.ProductoDto;
-import com.programacion_avanzada.mega_store.DTOs.stockDTO;
+import com.programacion_avanzada.mega_store.DTOs.InventarioDtos.stockDTO;
+import com.programacion_avanzada.mega_store.DTOs.ProductoDtos.ProductoDto;
 import com.programacion_avanzada.mega_store.Modelos.Producto;
 import com.programacion_avanzada.mega_store.Service.Interfaces.IInventarioService;
 import com.programacion_avanzada.mega_store.Service.Interfaces.IProductoService;

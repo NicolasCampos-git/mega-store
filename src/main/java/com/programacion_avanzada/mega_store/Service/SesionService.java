@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.programacion_avanzada.mega_store.DTOs.InicioSesionDTO;
+import com.programacion_avanzada.mega_store.DTOs.AuthDtos.InicioSesionDTO;
 import com.programacion_avanzada.mega_store.Modelos.Usuario;
 import com.programacion_avanzada.mega_store.Repository.UsuarioRepository;
 import com.programacion_avanzada.mega_store.Service.Interfaces.ISesionService;

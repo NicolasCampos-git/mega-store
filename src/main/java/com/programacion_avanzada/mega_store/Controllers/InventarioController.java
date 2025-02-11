@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.programacion_avanzada.mega_store.DTOs.stockDTO;
+import com.programacion_avanzada.mega_store.DTOs.InventarioDtos.stockDTO;
 import com.programacion_avanzada.mega_store.Modelos.Producto;
 import com.programacion_avanzada.mega_store.Service.InventarioService;
 import org.springframework.web.bind.annotation.PutMapping;

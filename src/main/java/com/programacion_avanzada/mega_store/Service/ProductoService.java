@@ -2,17 +2,15 @@ package com.programacion_avanzada.mega_store.Service;
 
 import java.util.List;
 
-
-import com.programacion_avanzada.mega_store.DTOs.ProductoDto;
-import com.programacion_avanzada.mega_store.Mapper.RegistrarProductoMapper;
+import com.programacion_avanzada.mega_store.Mapper.ProductoMappers.ProductoMapper;
+import com.programacion_avanzada.mega_store.Mapper.ProductoMappers.RegistrarProductoMapper;
 
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.programacion_avanzada.mega_store.DTOs.RegistrarProductoDto;
-import com.programacion_avanzada.mega_store.Mapper.ProductoMapper;
+import com.programacion_avanzada.mega_store.DTOs.ProductoDtos.RegistrarProductoDto;
 import com.programacion_avanzada.mega_store.Modelos.Marca;
 import com.programacion_avanzada.mega_store.Modelos.Producto;
 import com.programacion_avanzada.mega_store.Modelos.SubCategoria;

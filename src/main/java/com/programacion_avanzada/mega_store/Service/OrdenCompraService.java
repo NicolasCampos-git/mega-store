@@ -1,7 +1,7 @@
 package com.programacion_avanzada.mega_store.Service;
 
-import com.programacion_avanzada.mega_store.DTOs.OrdenCompraDto;
-import com.programacion_avanzada.mega_store.Mapper.OrdenCompraMapper;
+import com.programacion_avanzada.mega_store.DTOs.OrdenDtos.OrdenCompraDto;
+import com.programacion_avanzada.mega_store.Mapper.OrdenMappers.OrdenCompraMapper;
 import com.programacion_avanzada.mega_store.Modelos.*;
 import com.programacion_avanzada.mega_store.Repository.*;
 import com.programacion_avanzada.mega_store.Service.Interfaces.IOrdenCompraService;

@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import com.programacion_avanzada.mega_store.DTOs.CategoriaDto;
+import com.programacion_avanzada.mega_store.DTOs.CategoriaDtos.CategoriaDto;
 
 import io.micrometer.common.lang.NonNull;
 import jakarta.persistence.Column;

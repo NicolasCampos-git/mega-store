@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.programacion_avanzada.mega_store.DTOs.DireccionEnvioDto;
+import com.programacion_avanzada.mega_store.DTOs.DireccionDtos.DireccionEnvioDto;
 import com.programacion_avanzada.mega_store.Modelos.DireccionEnvio;
 import com.programacion_avanzada.mega_store.Service.Interfaces.IDireccionEnvioService;
 

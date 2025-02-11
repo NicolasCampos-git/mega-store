@@ -1,6 +1,6 @@
 package com.programacion_avanzada.mega_store.Service.Interfaces;
 
-import com.programacion_avanzada.mega_store.DTOs.OrdenCompraDto;
+import com.programacion_avanzada.mega_store.DTOs.OrdenDtos.OrdenCompraDto;
 import com.programacion_avanzada.mega_store.Modelos.OrdenCompra;
 
 import java.util.List;
