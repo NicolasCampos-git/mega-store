@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.webjars.NotFoundException;
 
 import com.programacion_avanzada.mega_store.DTOs.DireccionDtos.DireccionEnvioDto;
 import com.programacion_avanzada.mega_store.Mapper.DireccionMappers.DireccionEnvioMapper;
@@ -165,6 +166,18 @@ public class DireccionEnvioService implements IDireccionEnvioService {
         if(codigoPostal.contains(" ")){
             throw new IllegalArgumentException("El código postal no puede contener espacios.");
         }
+    }
+
+    @Override
+    public List<DireccionEnvio> listarDireccionEnvioPorUsuario( long usuarioId) {
+        validarUsuario(usuarioId);
+
+        return direccionEnvioRepository.findByUsuarioId(usuarioId);
+    }
+
+    private void validarUsuario(long usuarioId) {
+        usuarioRepository.findById(usuarioId)
+        .orElseThrow(() -> new NotFoundException("Usuario no encontrado"));
     }
 
     

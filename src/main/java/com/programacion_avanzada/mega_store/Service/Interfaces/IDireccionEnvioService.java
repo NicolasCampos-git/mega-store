@@ -17,6 +17,8 @@ public interface IDireccionEnvioService {
 
     DireccionEnvio reactivarDireccionEnvio(long id);
 
+    List<DireccionEnvio> listarDireccionEnvioPorUsuario(long usuarioId);
+
     List<DireccionEnvio> listar();
 
     void eliminarDireccionEnvio(long id);

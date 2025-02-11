@@ -25,9 +25,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 
 
+
+
 @RestController
 @RequestMapping("/api/direcciones")
 public class DireccionEnvioController {
+    
     @Autowired
     IDireccionEnvioService direccionEnvioService;
 
@@ -63,6 +66,13 @@ public class DireccionEnvioController {
         return ResponseEntity.ok(direccionEnvioService.reactivarDireccionEnvio(id));
         
     }
+
+    @GetMapping("/Listas/{usuarioId}")
+    public ResponseEntity<List<DireccionEnvio>> listarDireccionEnvioPorUsuario(@PathVariable("usuarioId") Long usuarioId) {
+        return ResponseEntity.ok(direccionEnvioService.listarDireccionEnvioPorUsuario(usuarioId));
+    }
+    
+    
     
     
    
