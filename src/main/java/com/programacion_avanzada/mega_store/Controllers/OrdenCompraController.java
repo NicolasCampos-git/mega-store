@@ -9,6 +9,7 @@ import com.programacion_avanzada.mega_store.Modelos.OrdenCompra;
 import com.programacion_avanzada.mega_store.Service.Interfaces.IOrdenCompraService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.util.List;
@@ -18,6 +19,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
+
 
 
 @RestController
@@ -33,9 +38,9 @@ public class OrdenCompraController {
 
     @Operation(summary = "Crear orden de compra", description = "Permite crear una orden de compra")
     @PostMapping("/crear")
-    public ResponseEntity<OrdenCompraDto> crearOrden(@RequestBody CrearOrdenDto crearOrdenDto) {
-        OrdenCompraDto ordenCompraDto = ordenCompraService.crearOrden(crearOrdenDto.getUsuarioId(), crearOrdenDto.getProductosYCantidades());
-        return ResponseEntity.ok(ordenCompraDto);
+    public ResponseEntity<OrdenCompra> crearOrden(@RequestBody CrearOrdenDto crearOrdenDto) {
+        OrdenCompra ordenCompra = ordenCompraService.crearOrden(crearOrdenDto.getUsuarioId(), crearOrdenDto.getProductosYCantidades());
+        return ResponseEntity.ok(ordenCompra);
     }
 
     @Operation(summary = "Cambiar estado de orden de compra", description = "Permite cambiar el estado de una orden de compra")
@@ -63,8 +68,8 @@ public class OrdenCompraController {
     @GetMapping("/listar")
     public ResponseEntity<List<OrdenCompra>> listarOrdenes() {
         try{
-            List<OrdenCompra> ordenes = ordenCompraService.obtenerOrdenes();
-            return ResponseEntity.ok(ordenes);
+            
+            return ResponseEntity.ok(ordenCompraService.obtenerOrdenes());
         }catch(Exception e){
             return ResponseEntity.badRequest().build();
         }
@@ -80,5 +85,40 @@ public class OrdenCompraController {
             return ResponseEntity.badRequest().build();
         }
     }
+
+    @Operation(summary = "Eliminar orden de compra", description = "Permite eliminar una orden de compra por su ID")
+    @DeleteMapping("/eliminar/{id}")
+    public ResponseEntity<String> eliminarOrden(@PathVariable Long id) {
+        try{
+            ordenCompraService.eliminarOrden(id);
+            return ResponseEntity.ok("Orden eliminada");
+        }catch(Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @Operation(summary = "Reactivar orden de compra", description = "Permite reactivar una orden de compra por su ID")
+    @PutMapping("/reactivar/{id}")
+    public ResponseEntity<String> reactivarOrden(@PathVariable Long id) {
+        try{
+            ordenCompraService.reactivarOrden(id);
+            return ResponseEntity.ok("Orden reactivada");
+        }catch(Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @Operation(summary = "Cancelar orden de compra", description = "Permite cancelar una orden de compra por su ID")
+    @PutMapping("/cancelar/{id}")
+    public ResponseEntity<OrdenCompra> cancelarOrden(@PathVariable Long id) {
+        try{
+            
+            return ResponseEntity.ok(ordenCompraService.cancelarOrden(id));
+        }catch(Exception e){
+            return ResponseEntity.badRequest().build();
+        }
+    }
+    
+    
     
 }

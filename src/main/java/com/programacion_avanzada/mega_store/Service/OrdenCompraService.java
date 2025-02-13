@@ -36,7 +36,7 @@ public class OrdenCompraService implements IOrdenCompraService {
     private EstadoRepository estadoRepository;
 
     @Override
-    public OrdenCompraDto crearOrden(Long usuarioId, Map<Long, Integer> productosYCantidades) {
+    public OrdenCompra crearOrden(Long usuarioId, Map<Long, Integer> productosYCantidades) {
         //Se inicializa la orden
         OrdenCompra ordenCompra = new OrdenCompra();
 
@@ -79,7 +79,7 @@ public class OrdenCompraService implements IOrdenCompraService {
         }
 
         //Se mappea la orden a DTO usando el mapper
-        return ordenCompraMapper.toDto(ordenCompra);
+        return ordenCompra;
     }
 
     @Override
@@ -132,12 +132,63 @@ public class OrdenCompraService implements IOrdenCompraService {
         return ordenCompraRepository.findByUsuario(usuario);
     }
 
+    @Override
+    public void eliminarOrden(Long id) {
+        OrdenCompra orden = ordenCompraRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Orden de compra no encontrada"));
+
+        orden.setEstaActiva(false);
+        
+        ordenCompraRepository.save(orden);
+    }
+
+    @Override
+    public void reactivarOrden(Long id) {
+        OrdenCompra orden = ordenCompraRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Orden de compra no encontrada"));
+
+        orden.setEstaActiva(true);
+
+        ordenCompraRepository.save(orden);
+    }
+
+    @Override
+    public OrdenCompra cancelarOrden(Long id){
+        validarIdOrdenCompra(id);
+        OrdenCompra orden = ordenCompraRepository.findById(id).get();
+        
+        if(orden.getEstado().getNombre().equals("Entregada")){
+            throw new RuntimeException("No se puede cancelar una orden entregada");
+        }
+        orden.setEstado(estadoRepository.findByNombre("Cancelada").get());   
+        orden.setFechaCancelacion(LocalDateTime.now());
+
+        return ordenCompraRepository.save(orden);
+    }
+
+    
+
+    public void validarIdOrdenCompra(Long id) {
+        if (!ordenCompraRepository.existsById(id)) {
+            throw new RuntimeException("Orden de compra no encontrada");
+        }
+        
+    }
+
+    public boolean existeOrdenCompra(Long id) {
+        return ordenCompraRepository.existsById(id);
+    }
+
 
     private void validarUsuario(Long usuarioId) {
         if (!usuarioRepository.existsById(usuarioId)) {
             throw new RuntimeException("Usuario no encontrado");
         }
+
+        
     }
 
+   
+    
     
 }

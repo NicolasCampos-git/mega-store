@@ -7,7 +7,6 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Getter
@@ -21,7 +20,6 @@ public class OrdenCompra {
     private Usuario usuario;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-
     private List<ItemOrden> items;
 
 
@@ -49,6 +47,9 @@ public class OrdenCompra {
 
     @Column
     private LocalDateTime fechaEntrega;
+
+    @Column
+    private boolean estaActiva = true;
 
     
     

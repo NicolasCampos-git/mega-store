@@ -159,6 +159,13 @@ public class UsuarioService implements IUsuarioService {
         return usuario;
     }
 
+    public boolean validarIdUsuario(long idUsuario) {
+        if (!usuarioRepository.existsById(idUsuario)) {
+            throw new IllegalArgumentException("Usuario no encontrado con el ID: " + idUsuario);
+        }
+        return true;
+    }
+
     public void valirdarNombre(String nombre) {
         if (nombre == null || nombre.isEmpty()) {
             throw new IllegalArgumentException("El nombre no puede estar vacio.");

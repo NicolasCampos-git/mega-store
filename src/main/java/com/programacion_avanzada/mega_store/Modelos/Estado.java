@@ -17,5 +17,5 @@ public class Estado{
 
     private String descripcion;
 
-    // private String ambito;
+    private String ambito;
 }
