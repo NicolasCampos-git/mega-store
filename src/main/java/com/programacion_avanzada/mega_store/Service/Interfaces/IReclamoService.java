@@ -13,6 +13,14 @@ public interface IReclamoService {
     Reclamo actualizarReclamo(CambioEstadoReclamoDto dto);
     List<Reclamo> listarReclamoPorUsuario(long id);
 
+    Reclamo revisarReclamo(long idReclamo);
+
+    Reclamo aprobarReclamo(long idReclamo);
+
+    Reclamo rechazarReclamo(long idReclamo);
+
+    Reclamo resolverReclamo(long idReclamo);
+
     void eliminarReclamo(long id);
     void reactivarReclamo(long id);
 }

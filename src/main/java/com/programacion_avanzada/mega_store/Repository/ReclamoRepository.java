@@ -10,4 +10,5 @@ public interface ReclamoRepository extends JpaRepository<Reclamo, Long>{
     boolean existsById(long id);
 
     List<Reclamo> findByUsuarioId(Long idUsuario);
+    Reclamo findById(long id);
 }

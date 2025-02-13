@@ -65,9 +65,13 @@ public class ReclamoService implements IReclamoService{
 
     @Override
     public Reclamo buscarPorId(long id) {
-        return reclamoRepository.findById(id)
-            .orElseThrow(
-                () -> new RuntimeException("Reclamo no encontrado"));
+        Reclamo reclamo = reclamoRepository.findById(id);
+        if (reclamo == null) {
+            throw new RuntimeException("reclamo no encontrado");
+        }
+
+        return reclamo;
+
     }
 
     @Override
@@ -171,10 +175,87 @@ public class ReclamoService implements IReclamoService{
 
     
 
+    //El reclamo solo deberia poder actualizarse si no esta "En revision"
     @Override
     public Reclamo actualizarReclamo(CambioEstadoReclamoDto dto) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'actualizarReclamo'");
+    }
+
+    @Override
+    public Reclamo revisarReclamo(long idReclamo) {
+        Reclamo reclamo = reclamoRepository.findById(idReclamo);
+        if (reclamo == null) {
+            throw new RuntimeException("Reclamo no encontrado");
+        }
+        if (!reclamo.getEstado().getNombre().equals("Registrado")) {
+            throw new RuntimeException("Cambio de estado no valido");
+        }
+
+        Estado estadoEnRevision = estadoRepository.findByNombre("En Revision")
+            .orElseThrow(() -> new RuntimeException("Estado no encontrado"));
+
+        reclamo.setEstado(estadoEnRevision);
+        reclamo.setFechaEnRevicion(LocalDateTime.now());
+
+        return reclamoRepository.save(reclamo);
+    }
+
+    @Override
+    public Reclamo aprobarReclamo(long idReclamo) {
+        Reclamo reclamo = reclamoRepository.findById(idReclamo);
+        if (reclamo == null) {
+            throw new RuntimeException("Reclamo no encontrado");
+        }
+        if (!reclamo.getEstado().getNombre().equals("En Revision")) {
+            throw new RuntimeException("Cambio de estado no valido");
+        }
+
+        Estado estadoAprobado = estadoRepository.findByNombre("Aprobado")
+            .orElseThrow(() -> new RuntimeException("Estado no encontrado"));
+
+        reclamo.setEstado(estadoAprobado);
+        reclamo.setFechaAprobado(LocalDateTime.now());
+
+        return reclamoRepository.save(reclamo);
+    }
+
+    @Override
+    public Reclamo rechazarReclamo(long idReclamo) {
+        Reclamo reclamo = buscarPorId(idReclamo);
+        if (reclamo == null) {
+            throw new RuntimeException("Reclamo no encontrado");
+        }
+        if (!reclamo.getEstado().getNombre().equals("En Revision")) {
+            throw new RuntimeException("Cambio de estado no valido");
+        }
+
+        Estado estadoRechazado = estadoRepository.findByNombre("Rechazado")
+            .orElseThrow(() -> new RuntimeException("Estado no encontrado"));
+
+        reclamo.setEstado(estadoRechazado);
+        reclamo.setFechaRechazado(LocalDateTime.now());
+
+        return reclamoRepository.save(reclamo);
+    }
+
+    @Override
+    public Reclamo resolverReclamo(long idReclamo) {
+        Reclamo reclamo = buscarPorId(idReclamo);
+        if (reclamo == null) {
+            throw new RuntimeException("Reclamo no encontrado");
+        }
+        if (!reclamo.getEstado().getNombre().equals("Aprobado")) {
+            throw new RuntimeException("Cambio de estado no valido");
+        }
+
+        Estado estadoResuelto = estadoRepository.findByNombre("Resuelto")
+            .orElseThrow(() -> new RuntimeException("Estado no encontrado"));
+
+        reclamo.setEstado(estadoResuelto);
+        reclamo.setFechaResuelto(LocalDateTime.now());
+
+        return reclamoRepository.save(reclamo);
     }
 
     

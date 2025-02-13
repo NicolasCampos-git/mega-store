@@ -64,4 +64,28 @@ public class ReclamoController {
         return reclamoService.listarReclamoPorUsuario(idUsuario);
     }
 
+    @Operation(summary = "Revisar un reclamo", description = "Este metodo permite revisar un reclamo por su ID")
+    @PutMapping("/revisar/{id}")
+    public Reclamo revisarReclamo(@PathVariable long id) {
+        return reclamoService.revisarReclamo(id);
+    }
+
+    @Operation(summary = "Aprobar un reclamo", description = "Este metodo permite aprobar un reclamo por su ID")
+    @PutMapping("/aprobar/{id}")
+    public Reclamo aprobarReclamo(@PathVariable long id) {
+        return reclamoService.aprobarReclamo(id);
+    }
+
+    @Operation(summary = "Rechazar un reclamo", description = "Este metodo permite rechazar un reclamo por su ID")
+    @PutMapping("/rechazar/{id}")
+    public Reclamo rechazarReclamo(@PathVariable long id) {
+        return reclamoService.rechazarReclamo(id);
+    }
+
+    @Operation(summary = "Resolver un reclamo", description = "Este metodo permite resolver un reclamo por su ID")
+    @PutMapping("/resolver/{id}")
+    public Reclamo resolverReclamo(@PathVariable long id) {
+        return reclamoService.resolverReclamo(id);
+    }
+
 }
