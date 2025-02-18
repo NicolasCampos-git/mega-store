@@ -97,13 +97,13 @@ public class SubCategoriaService implements ISubCategoriaService {
     }
 
     @Override
-    public SubCategoriaDTO actualizar(long id, RegistrarSubCategoriaDto dto) {
+    public SubCategoria actualizar(long id, RegistrarSubCategoriaDto dto) {
         SubCategoria subcategoria = subCategoriaRepository.findById(id).orElse(null);
         
         // Aquí actualizamos los campos de la subcategoría
         valirdarNombre(dto.getNombre());
         valirdarDescripcion(dto.getDescripcion());
-        verificarUnicidad(dto.getNombre());
+        verificarUnicidadAlActualizar(dto.getNombre(), id);
         
 
         // Asignamos la categoría si es necesario
@@ -117,8 +117,8 @@ public class SubCategoriaService implements ISubCategoriaService {
 
         normalizarDatos(subcategoria);
 
-        subCategoriaRepository.save(subcategoria);
-        return subCategoriaMapper.toDto(subcategoria);
+        
+        return subCategoriaRepository.save(subcategoria);
     }
 
     public void valirdarNombre(String nombre) {
@@ -160,6 +160,15 @@ public class SubCategoriaService implements ISubCategoriaService {
             throw new EntityExistsException("La subcategoria ya existe");
         }
     }
+
+    public void verificarUnicidadAlActualizar(String nombre, long idSubcategoria) {
+        SubCategoria subcategoria = subCategoriaRepository.findByNombre(nombre);
+        if (subcategoria != null && subcategoria.getId() != idSubcategoria) {
+            verificarUnicidad(nombre);
+        }
+    }
+
+
 
     public void normalizarDatos(SubCategoria subCategoria) {
         subCategoria.setNombre(StringUtil.capitalizeFirstLetter(subCategoria.getNombre().toLowerCase().trim()));

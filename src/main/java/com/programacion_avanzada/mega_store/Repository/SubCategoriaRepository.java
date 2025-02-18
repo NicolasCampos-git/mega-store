@@ -7,5 +7,7 @@ import com.programacion_avanzada.mega_store.Modelos.SubCategoria;
 public interface SubCategoriaRepository extends JpaRepository<SubCategoria, Long>{
     
     //Metodo para corroborar que no existen 2 metodos iguales.
-    boolean existsByNombre(String nombre);  
+    boolean existsByNombre(String nombre);
+    
+    SubCategoria findByNombre(String nombre);
 }

@@ -69,6 +69,9 @@ public class Reclamo {
     @Column
     private LocalDateTime fechaRechazado;
 
+    @Column
+    private LocalDateTime fechaActualizacion;
+
     @NonNull
     @Column(name = "esta_activo")
     private boolean estaActivo;

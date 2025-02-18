@@ -74,5 +74,6 @@ public class CategoriaController {
     @PutMapping("/reactivar/{id}")
     public void reactivar(@PathVariable("id") long id){
         categoriaService.reactivar(id);
+        
     }
 }

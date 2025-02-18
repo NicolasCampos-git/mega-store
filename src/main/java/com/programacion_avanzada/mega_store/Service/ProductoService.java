@@ -135,7 +135,7 @@ public class ProductoService implements IProductoService {
     @Override
     public Producto editarProducto(long id,RegistrarProductoDto dto) {
 
-        Producto producto = productoRepository.findById(id).filter(Producto::isEstaActivo).orElse(null);
+        Producto producto = productoRepository.findById(id).orElse(null);
         
         validarNombre(producto.getNombre());
 
@@ -157,13 +157,21 @@ public class ProductoService implements IProductoService {
 
         validarSubCategoria(dto.getSubCategoriaId(), producto);
 
+        
+
+        producto.setNombre(StringUtil.capitalizeFirstLetter(dto.getNombre().toLowerCase().trim()));
+        producto.setDescripcion(StringUtil.capitalizeFirstLetter(dto.getDescripcion().toLowerCase().trim()));
+        producto.setColor(dto.getColor().toLowerCase().trim());
+        producto.setTamano(dto.getTamano().toUpperCase().trim());
+        producto.setStock(dto.getStock());
+        producto.setPrecioUnitario(dto.getPrecioUnitario());
+        producto.setSubcategoria(subCategoriaRepository.findById(dto.getSubCategoriaId()).orElseThrow());
+        producto.setMarca(marcaRepository.findById(dto.getMarcaId()).orElseThrow());
+
         normalizarDatos(producto);
+        
 
-        productoRepository.save(producto);
-        // Guardar el producto actualizado
-        Producto productoGuardado = guardar(producto);
-
-        return productoGuardado;
+        return productoRepository.save(producto);
     }
 
 
@@ -335,10 +343,14 @@ public class ProductoService implements IProductoService {
 
     }
 
+
     @Override
-    public Producto guardar(Producto producto){
-        return productoRepository.save(producto);
+    public Producto guardar(Producto producto) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'guardar'");
     }
+
+   
 
     
 

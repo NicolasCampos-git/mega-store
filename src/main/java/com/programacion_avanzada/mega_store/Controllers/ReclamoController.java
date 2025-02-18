@@ -12,12 +12,15 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.programacion_avanzada.mega_store.DTOs.ReclamoDtos.ActualizarReclamoDto;
 import com.programacion_avanzada.mega_store.DTOs.ReclamoDtos.RegistrarReclamoDto;
 import com.programacion_avanzada.mega_store.Modelos.Reclamo;
 import com.programacion_avanzada.mega_store.Service.ReclamoService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("api/reclamos")
@@ -86,6 +89,12 @@ public class ReclamoController {
     @PutMapping("/resolver/{id}")
     public Reclamo resolverReclamo(@PathVariable long id) {
         return reclamoService.resolverReclamo(id);
+    }
+
+    @Operation(summary = "Actualizar un reclamo", description = "Este metodo permite actualizar un reclamo por su ID")
+    @PutMapping("/actualizar/{id}")
+    public Reclamo actualizarReclamo(@PathVariable long id, @RequestBody @Valid ActualizarReclamoDto dto) {
+        return reclamoService.actualizarReclamo(id, dto);
     }
 
 }

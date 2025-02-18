@@ -6,9 +6,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.programacion_avanzada.mega_store.DTOs.ReclamoDtos.CambioEstadoReclamoDto;
+import com.programacion_avanzada.mega_store.DTOs.ReclamoDtos.ActualizarReclamoDto;
 import com.programacion_avanzada.mega_store.DTOs.ReclamoDtos.RegistrarReclamoDto;
 import com.programacion_avanzada.mega_store.Modelos.Estado;
+import com.programacion_avanzada.mega_store.Modelos.OrdenCompra;
 import com.programacion_avanzada.mega_store.Modelos.Reclamo;
 import com.programacion_avanzada.mega_store.Repository.EstadoRepository;
 import com.programacion_avanzada.mega_store.Repository.ReclamoRepository;
@@ -44,7 +45,7 @@ public class ReclamoService implements IReclamoService{
         Reclamo reclamo = new Reclamo();
         validarMorivo(dto.getMotivo());
         validarDescripcion(dto.getDescripcion());
-        
+        validarOrdenPerteneceUsuario(dto.getIdOrdenCompra(), dto.getIdUsuario());
 
         reclamo.setMotivo(dto.getMotivo().toLowerCase());
         reclamo.setDescripcion(dto.getDescripcion().toLowerCase());
@@ -117,69 +118,50 @@ public class ReclamoService implements IReclamoService{
         return reclamoRepository.findByUsuarioId(idUsuario);
     }
 
-    
 
-    private void validarTipoReclamo(long idTipoReclamo) {
-        if(!tipoReclamoRepositoty.existsById(idTipoReclamo)) {
-            throw new RuntimeException("Tipo de reclamo no encontrado");
-        }
-        if (idTipoReclamo < 1) {
-            throw new RuntimeException("El tipo de reclamo no puede ser menor a 1");
-            
-        }
-    }
-
-    private void validarUsuario(long idUsuario) {
-        if(!usuarioService.validarIdUsuario(idUsuario)) {
-            throw new RuntimeException("Usuario no encontrado");
-        }
-        if (idUsuario < 1) {
-            throw new RuntimeException("El id del usuario no puede ser menor a 1");
-            
-        }
-    }
-
-    private void validarOrdeCompra(long idOrdenCompra){
-        if(!ordenCompraService.existeOrdenCompra(idOrdenCompra)) {
-            throw new RuntimeException("Orden de compra no encontrada");
-        }
-        if (idOrdenCompra < 1) {
-            throw new RuntimeException("El id de la orden de compra no puede ser menor a 1");
-            
-        }
-    }
-
-    private void validarMorivo(String motivo) {
-        if(motivo == null || motivo.isEmpty()) {
-            throw new RuntimeException("Motivo no puede estar vacio");
-        }
-        if(motivo.length() < 2 && motivo.length() > 50) {
-            throw new RuntimeException("El motivo debe tener entre 2 y 50 caracteres");
-        }
-        if(!motivo.matches("[a-zA-Z ]+")) {
-            throw new RuntimeException("El motivo solo debe tener letras y espacios");
-        }
-        
-    }
-
-    private void validarDescripcion(String descripcion) {
-        if(descripcion == null || descripcion.isEmpty()) {
-            throw new RuntimeException("Descripcion no puede estar vacia");
-        }
-        if(descripcion.length() < 2 && descripcion.length() > 255) {
-            throw new RuntimeException("La descripcion debe tener entre 2 y 255 caracteres");
-        }
-    }
-
-    
-
-    
-
-    //El reclamo solo deberia poder actualizarse si no esta "En revision"
     @Override
-    public Reclamo actualizarReclamo(CambioEstadoReclamoDto dto) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'actualizarReclamo'");
+    public Reclamo actualizarReclamo(long idReclamo, ActualizarReclamoDto dto) {
+        Reclamo reclamo = buscarPorId(idReclamo);
+        if (reclamo == null) {
+            throw new RuntimeException("Reclamo no encontrado");
+        }
+
+        // Verificar que el estado actual no sea "En Revision" o más adelante
+        if (reclamo.getEstado().getNombre().equals("En Revision") ||
+            reclamo.getEstado().getNombre().equals("Aprobado") ||
+            reclamo.getEstado().getNombre().equals("Rechazado") ||
+            reclamo.getEstado().getNombre().equals("Resuelto")) {
+            throw new RuntimeException("El reclamo no puede actualizarse mientras está en revisión o en un estado posterior");
+        }
+
+        // Verificar que la orden de compra pertenece al usuario
+        validarOrdenPerteneceUsuario(reclamo.getOrdenCompra().getId(), reclamo.getUsuario().getId());
+
+        // Actualizar los datos del reclamo
+        if (dto.getMotivo() != null) {
+            validarMorivo(dto.getMotivo());
+            reclamo.setMotivo(dto.getMotivo().toLowerCase());
+        }
+        if (dto.getDescripcion() != null) {
+            validarDescripcion(dto.getDescripcion());
+            reclamo.setDescripcion(dto.getDescripcion().toLowerCase());
+        }
+        if (dto.getIdTipoReclamo() != 0) {
+            validarTipoReclamo(dto.getIdTipoReclamo());
+            reclamo.setTipoReclamo(tipoReclamoRepositoty.findById(dto.getIdTipoReclamo()));
+        }
+        if (dto.getIdUsuario() != 0) {
+            validarUsuario(dto.getIdUsuario());
+            reclamo.setUsuario(usuarioService.buscarPorId(dto.getIdUsuario()));
+        }
+        if (dto.getIdOrdenCompra() != 0) {
+            validarOrdeCompra(dto.getIdOrdenCompra());
+            reclamo.setOrdenCompra(ordenCompraService.obtenerOrdenPorId(dto.getIdOrdenCompra()));
+        }
+
+        reclamo.setFechaActualizacion(LocalDateTime.now());
+
+        return reclamoRepository.save(reclamo);
     }
 
     @Override
@@ -258,6 +240,67 @@ public class ReclamoService implements IReclamoService{
         return reclamoRepository.save(reclamo);
     }
 
+    private void validarTipoReclamo(long idTipoReclamo) {
+        if(!tipoReclamoRepositoty.existsById(idTipoReclamo)) {
+            throw new RuntimeException("Tipo de reclamo no encontrado");
+        }
+        if (idTipoReclamo < 1) {
+            throw new RuntimeException("El tipo de reclamo no puede ser menor a 1");
+            
+        }
+    }
+
+    private void validarUsuario(long idUsuario) {
+        if(!usuarioService.validarIdUsuario(idUsuario)) {
+            throw new RuntimeException("Usuario no encontrado");
+        }
+        if (idUsuario < 1) {
+            throw new RuntimeException("El id del usuario no puede ser menor a 1");
+            
+        }
+        
+    }
+
+    private void validarOrdeCompra(long idOrdenCompra){
+        if(!ordenCompraService.existeOrdenCompra(idOrdenCompra)) {
+            throw new RuntimeException("Orden de compra no encontrada");
+        }
+        if (idOrdenCompra < 1) {
+            throw new RuntimeException("El id de la orden de compra no puede ser menor a 1");
+            
+        }
+    }
+
+    private void validarMorivo(String motivo) {
+        if(motivo == null || motivo.isEmpty()) {
+            throw new RuntimeException("Motivo no puede estar vacio");
+        }
+        if(motivo.length() < 2 && motivo.length() > 50) {
+            throw new RuntimeException("El motivo debe tener entre 2 y 50 caracteres");
+        }
+        if(!motivo.matches("[a-zA-Z ]+")) {
+            throw new RuntimeException("El motivo solo debe tener letras y espacios");
+        }
+        
+    }
+
+    private void validarDescripcion(String descripcion) {
+        if(descripcion == null || descripcion.isEmpty()) {
+            throw new RuntimeException("Descripcion no puede estar vacia");
+        }
+        if(descripcion.length() < 2 && descripcion.length() > 255) {
+            throw new RuntimeException("La descripcion debe tener entre 2 y 255 caracteres");
+        }
+    }
+
+    
+    private void validarOrdenPerteneceUsuario(long idOrdenCompra,long idUsuario){
+        OrdenCompra orden = ordenCompraService.obtenerOrdenPorId(idOrdenCompra);
+        if(orden.getUsuario().getId() != idUsuario){
+            throw new RuntimeException("La orden de compra no pertenece al usuario");
+        }
+
+    }
     
 
     

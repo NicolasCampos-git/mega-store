@@ -57,7 +57,7 @@ public class SubCategoriaController {
 
     @Operation(summary = "Actualizar una subcategoria por id")
     @PutMapping("/actualizar/{id}")
-    public SubCategoriaDTO actualizar(@PathVariable long id, @RequestBody @Valid RegistrarSubCategoriaDto dto) {
+    public SubCategoria actualizar(@PathVariable long id, @RequestBody @Valid RegistrarSubCategoriaDto dto) {
         return subCategoriaService.actualizar(id, dto);
     }
     
