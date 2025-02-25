@@ -1,7 +1,10 @@
 package com.programacion_avanzada.mega_store.Service;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -300,6 +303,30 @@ public class ReclamoService implements IReclamoService{
             throw new RuntimeException("La orden de compra no pertenece al usuario");
         }
 
+    }
+
+    //METODO PARA OBTENER ESTADISTICAS DE RECLAMOS
+    public Map<String, Object> obtenerEstadisticas(LocalDateTime fechaInicio, LocalDateTime fechaFin) {
+        if (fechaInicio.isAfter(fechaFin)) {
+            throw new IllegalArgumentException("La fecha de inicio no puede ser mayor que la fecha de fin");
+        }
+
+        List<Object[]> resultados = reclamoRepository.obtenerEstadisticasPorFechas(fechaInicio, fechaFin);
+        long total = resultados.stream().mapToLong(r -> (long) r[1]).sum();
+
+        List<Map<String, Object>> datos = resultados.stream().map(r -> {
+            Map<String, Object> item = new HashMap<>();
+            item.put("tipo", r[0]);
+            item.put("cantidad", r[1]);
+            item.put("porcentaje", (double) (long) r[1] * 100 / total);
+            return item;
+        }).collect(Collectors.toList());
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("total", total);
+        response.put("detalles", datos);
+
+        return response;
     }
     
 

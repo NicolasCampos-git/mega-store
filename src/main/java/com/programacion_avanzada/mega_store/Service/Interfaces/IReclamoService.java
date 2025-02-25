@@ -1,6 +1,8 @@
 package com.programacion_avanzada.mega_store.Service.Interfaces;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 import com.programacion_avanzada.mega_store.DTOs.ReclamoDtos.ActualizarReclamoDto;
 import com.programacion_avanzada.mega_store.DTOs.ReclamoDtos.RegistrarReclamoDto;
@@ -23,4 +25,6 @@ public interface IReclamoService {
 
     void eliminarReclamo(long id);
     void reactivarReclamo(long id);
+
+    Map<String, Object> obtenerEstadisticas(LocalDateTime fechaInicio, LocalDateTime fechaFin);
 }
