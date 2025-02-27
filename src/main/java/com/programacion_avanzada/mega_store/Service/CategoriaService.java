@@ -6,12 +6,13 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.programacion_avanzada.mega_store.DTOs.CategoriaDto;
-import com.programacion_avanzada.mega_store.DTOs.RegistrarCategoriaDto;
-import com.programacion_avanzada.mega_store.Mapper.CategoriaMapper;
-import com.programacion_avanzada.mega_store.Mapper.RegistrarCategoriaMapper;
+import com.programacion_avanzada.mega_store.DTOs.CategoriaDtos.CategoriaDto;
+import com.programacion_avanzada.mega_store.DTOs.CategoriaDtos.RegistrarCategoriaDto;
+import com.programacion_avanzada.mega_store.Mapper.CategoriaMappers.CategoriaMapper;
+import com.programacion_avanzada.mega_store.Mapper.CategoriaMappers.RegistrarCategoriaMapper;
 import com.programacion_avanzada.mega_store.Modelos.Categoria;
 import com.programacion_avanzada.mega_store.Repository.CategoriaRepository;
+import com.programacion_avanzada.mega_store.Service.Interfaces.ICategoriaService;
 
 import ch.qos.logback.core.util.StringUtil;
 import jakarta.persistence.EntityExistsException;

@@ -6,14 +6,15 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.programacion_avanzada.mega_store.DTOs.RegistrarSubCategoriaDto;
-import com.programacion_avanzada.mega_store.DTOs.SubCategoriaDTO;
-import com.programacion_avanzada.mega_store.Mapper.RegistrarSubCategoriaMapper;
-import com.programacion_avanzada.mega_store.Mapper.SubCategoriaMapper;
+import com.programacion_avanzada.mega_store.DTOs.SubcategoriaDtos.RegistrarSubCategoriaDto;
+import com.programacion_avanzada.mega_store.DTOs.SubcategoriaDtos.SubCategoriaDTO;
+import com.programacion_avanzada.mega_store.Mapper.SubcategoriaMappers.RegistrarSubCategoriaMapper;
+import com.programacion_avanzada.mega_store.Mapper.SubcategoriaMappers.SubCategoriaMapper;
 import com.programacion_avanzada.mega_store.Modelos.Categoria;
 import com.programacion_avanzada.mega_store.Modelos.SubCategoria;
 import com.programacion_avanzada.mega_store.Repository.CategoriaRepository;
 import com.programacion_avanzada.mega_store.Repository.SubCategoriaRepository;
+import com.programacion_avanzada.mega_store.Service.Interfaces.ISubCategoriaService;
 
 import ch.qos.logback.core.util.StringUtil;
 import jakarta.persistence.EntityExistsException;
@@ -40,7 +41,7 @@ public class SubCategoriaService implements ISubCategoriaService {
      * verificando que no haya 2 con el mismo nombre y normalizando los datos.
      */
     @Override
-    public RegistrarSubCategoriaDto registrarSubCategoria(RegistrarSubCategoriaDto dto) {
+    public SubCategoria registrarSubCategoria(RegistrarSubCategoriaDto dto) {
         // Primero, verifica si la categoría existe
         verificarCategoria(dto.getCategoriaId());
 
@@ -60,13 +61,13 @@ public class SubCategoriaService implements ISubCategoriaService {
         asignarCategoria(subCategoria, dto.getCategoriaId());
         subCategoria.setEstaActivo(true);
         // Guardar la subcategoría en el repositorio
-        return registrarSubCategoriaMapper.toDto(subCategoriaRepository.save(subCategoria));
+        return subCategoriaRepository.save(subCategoria);
     }
 
     @Override
-    public List<SubCategoriaDTO> listar() {
-        List<SubCategoria> subCategorias = subCategoriaRepository.findAll();
-        return subCategorias.stream().map(subCategoriaMapper::toDto).toList();
+    public List<SubCategoria> listar() {
+        
+        return subCategoriaRepository.findAll();
     }
 
     @Override
@@ -96,13 +97,13 @@ public class SubCategoriaService implements ISubCategoriaService {
     }
 
     @Override
-    public SubCategoriaDTO actualizar(long id, RegistrarSubCategoriaDto dto) {
+    public SubCategoria actualizar(long id, RegistrarSubCategoriaDto dto) {
         SubCategoria subcategoria = subCategoriaRepository.findById(id).orElse(null);
         
         // Aquí actualizamos los campos de la subcategoría
         valirdarNombre(dto.getNombre());
         valirdarDescripcion(dto.getDescripcion());
-        verificarUnicidad(dto.getNombre());
+        verificarUnicidadAlActualizar(dto.getNombre(), id);
         
 
         // Asignamos la categoría si es necesario
@@ -116,8 +117,8 @@ public class SubCategoriaService implements ISubCategoriaService {
 
         normalizarDatos(subcategoria);
 
-        subCategoriaRepository.save(subcategoria);
-        return subCategoriaMapper.toDto(subcategoria);
+        
+        return subCategoriaRepository.save(subcategoria);
     }
 
     public void valirdarNombre(String nombre) {
@@ -159,6 +160,15 @@ public class SubCategoriaService implements ISubCategoriaService {
             throw new EntityExistsException("La subcategoria ya existe");
         }
     }
+
+    public void verificarUnicidadAlActualizar(String nombre, long idSubcategoria) {
+        SubCategoria subcategoria = subCategoriaRepository.findByNombre(nombre);
+        if (subcategoria != null && subcategoria.getId() != idSubcategoria) {
+            verificarUnicidad(nombre);
+        }
+    }
+
+
 
     public void normalizarDatos(SubCategoria subCategoria) {
         subCategoria.setNombre(StringUtil.capitalizeFirstLetter(subCategoria.getNombre().toLowerCase().trim()));

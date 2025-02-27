@@ -5,9 +5,11 @@ import java.util.regex.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.programacion_avanzada.mega_store.DTOs.InicioSesionDTO;
+import com.programacion_avanzada.mega_store.DTOs.AuthDtos.InicioSesionDTO;
+import com.programacion_avanzada.mega_store.DTOs.AuthDtos.RecuperarContrasenaDto;
 import com.programacion_avanzada.mega_store.Modelos.Usuario;
 import com.programacion_avanzada.mega_store.Repository.UsuarioRepository;
+import com.programacion_avanzada.mega_store.Service.Interfaces.ISesionService;
 
 @Service
 public class SesionService implements ISesionService {
@@ -29,11 +31,11 @@ public class SesionService implements ISesionService {
     }
 
     @Override
-    public Usuario recuperarContrasena(InicioSesionDTO inicioSesion) {
-        Usuario usuario = usuarioRepository.findByEmail(inicioSesion.getEmail());
-        validarEmail(inicioSesion.getEmail());
+    public Usuario recuperarContrasena(RecuperarContrasenaDto recuperarContrasenaDto) {
+        Usuario usuario = usuarioRepository.findByEmail(recuperarContrasenaDto.getEmail());
+        validarEmail(recuperarContrasenaDto.getEmail());
         if(usuario == null){
-            throw new IllegalArgumentException("El email no esta registrado.");
+            throw new IllegalArgumentException("Credencial invalidad.");
         }
         
         usuario.setContrasena("1234");

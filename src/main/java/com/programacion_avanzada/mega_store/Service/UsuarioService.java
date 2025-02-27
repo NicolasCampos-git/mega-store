@@ -10,15 +10,16 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
-import com.programacion_avanzada.mega_store.DTOs.RegistroUsuarioDto;
-import com.programacion_avanzada.mega_store.DTOs.UsuarioDto;
-import com.programacion_avanzada.mega_store.Mapper.RegistroUsuarioMapper;
-import com.programacion_avanzada.mega_store.Mapper.UsuarioMapper;
+import com.programacion_avanzada.mega_store.DTOs.UsuarioDtos.RegistroUsuarioDto;
+import com.programacion_avanzada.mega_store.DTOs.UsuarioDtos.UsuarioDto;
+import com.programacion_avanzada.mega_store.Mapper.UsuarioMappers.RegistroUsuarioMapper;
+import com.programacion_avanzada.mega_store.Mapper.UsuarioMappers.UsuarioMapper;
 import com.programacion_avanzada.mega_store.Modelos.DireccionEnvio;
 import com.programacion_avanzada.mega_store.Modelos.Usuario;
 import com.programacion_avanzada.mega_store.Repository.DireccionEnvioRepository;
 import com.programacion_avanzada.mega_store.Repository.UsuarioRepository;
+import com.programacion_avanzada.mega_store.Service.Interfaces.ISenderService;
+import com.programacion_avanzada.mega_store.Service.Interfaces.IUsuarioService;
 
 import ch.qos.logback.core.util.StringUtil;
 
@@ -41,7 +42,7 @@ public class UsuarioService implements IUsuarioService {
      * ademas, normaliza los datos.
      */
     @Override
-    public RegistroUsuarioDto registrarUsuario(RegistroUsuarioDto dto) {
+    public Usuario registrarUsuario(RegistroUsuarioDto dto) {
 
         valirdarContrasena(dto.getContrasena(), dto.getContrasenaRepetida());
         Usuario usuario = RegistroUsuarioMapper.toEntity(dto);
@@ -58,19 +59,21 @@ public class UsuarioService implements IUsuarioService {
         //Nrmalizacion de datos
         normalizarDatos(usuario);
 
+        usuario.setEstaActivo(true);
+
         //Por temas de practicidad agrega por defecto el rol "Cliente".
         usuario.setRol("cliente");
         senderService.enviarCorreo(usuario.getEmail());
 
             
-        return RegistroUsuarioMapper.toDto(usuarioRepository.save(usuario));
+        return usuarioRepository.save(usuario);
     }
 
     /*
      * Metodo encargado de actualizar los datos del cliente.
      */
     @Override
-    public UsuarioDto actualizarInformacionPersonal(long id, UsuarioDto dto) {
+    public Usuario actualizarInformacionPersonal(long id, UsuarioDto dto) {
         Usuario usuario = usuarioRepository.findById(id).orElse(null);
         if (usuario == null) {
             throw new IllegalArgumentException("Usuario no encontrado con el ID: " + id);
@@ -91,23 +94,21 @@ public class UsuarioService implements IUsuarioService {
 
     
         
-        Usuario usuarioActualizado = usuarioRepository.save(usuario);
-        return UsuarioMapper.toDto(usuarioActualizado);
+        
+        return usuarioRepository.save(usuario);
     }
 
     @Override 
-    public UsuarioDto buscarPorId(long id) {
+    public Usuario buscarPorId(long id) {
         Usuario usuario = usuarioRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado con el ID: " + id));
-        return UsuarioMapper.toDto(usuario);
+        return usuario;
     }
 
     // Metodo para listar todos los usuarios
     @Override
-    public List<UsuarioDto> listarUsuarios() {
-        return usuarioRepository.findAll().stream()
-                .map(UsuarioMapper::toDto)
-                .collect(Collectors.toList());
+    public List<Usuario> listarUsuarios() {
+        return usuarioRepository.findAll();
     }
 
     // Metodo para "eliminar" un usuario (desactivar)
@@ -156,6 +157,13 @@ public class UsuarioService implements IUsuarioService {
             throw new IllegalArgumentException("Usuario no encontrado con el ID: " + idUsuario);
         }        
         return usuario;
+    }
+
+    public boolean validarIdUsuario(long idUsuario) {
+        if (!usuarioRepository.existsById(idUsuario)) {
+            throw new IllegalArgumentException("Usuario no encontrado con el ID: " + idUsuario);
+        }
+        return true;
     }
 
     public void valirdarNombre(String nombre) {

@@ -6,9 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import com.programacion_avanzada.mega_store.DTOs.ProductoDto;
-import com.programacion_avanzada.mega_store.DTOs.stockDTO;
+import com.programacion_avanzada.mega_store.DTOs.InventarioDtos.stockDTO;
+import com.programacion_avanzada.mega_store.DTOs.ProductoDtos.ProductoDto;
 import com.programacion_avanzada.mega_store.Modelos.Producto;
+import com.programacion_avanzada.mega_store.Service.Interfaces.IInventarioService;
+import com.programacion_avanzada.mega_store.Service.Interfaces.IProductoService;
 
 @Service
 public class InventarioService implements IInventarioService{
@@ -56,9 +58,9 @@ public class InventarioService implements IInventarioService{
 
     @Scheduled(fixedRate = 60000)
     public void revisarStock(){
-        List<ProductoDto> productos = productoService.listar();
+        List<Producto> productos = productoService.listar();
 
-        for(ProductoDto producto: productos){
+        for(Producto producto: productos){
             if(producto.getStock() < producto.getUmbralBajoStock()){
                 senderService.notificarBajoStock(producto.getId());
             }

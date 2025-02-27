@@ -5,13 +5,15 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.webjars.NotFoundException;
 
-import com.programacion_avanzada.mega_store.DTOs.DireccionEnvioDto;
-import com.programacion_avanzada.mega_store.Mapper.DireccionEnvioMapper;
+import com.programacion_avanzada.mega_store.DTOs.DireccionDtos.DireccionEnvioDto;
+import com.programacion_avanzada.mega_store.Mapper.DireccionMappers.DireccionEnvioMapper;
 import com.programacion_avanzada.mega_store.Modelos.DireccionEnvio;
 import com.programacion_avanzada.mega_store.Modelos.Usuario;
 import com.programacion_avanzada.mega_store.Repository.DireccionEnvioRepository;
 import com.programacion_avanzada.mega_store.Repository.UsuarioRepository;
+import com.programacion_avanzada.mega_store.Service.Interfaces.IDireccionEnvioService;
 
 @Service
 public class DireccionEnvioService implements IDireccionEnvioService {
@@ -127,8 +129,8 @@ public class DireccionEnvioService implements IDireccionEnvioService {
         if (calle.length() < 2 || calle.length() > 64) {
             throw new IllegalArgumentException("La calle debe tener entre 2 y 30 caracteres.");
         }
-        if (!calle.matches("^[a-zA-Z]+$")) {
-            throw new IllegalArgumentException("La calle debe contener solo letras.");
+        if (!calle.matches("^[a-zA-Z\\s'\\-]+$")) {
+            throw new IllegalArgumentException("La calle debe contener solo letras, espacios, apóstrofes y guiones.");
         }
         
     }
@@ -164,6 +166,18 @@ public class DireccionEnvioService implements IDireccionEnvioService {
         if(codigoPostal.contains(" ")){
             throw new IllegalArgumentException("El código postal no puede contener espacios.");
         }
+    }
+
+    @Override
+    public List<DireccionEnvio> listarDireccionEnvioPorUsuario( long usuarioId) {
+        validarUsuario(usuarioId);
+
+        return direccionEnvioRepository.findByUsuarioId(usuarioId);
+    }
+
+    private void validarUsuario(long usuarioId) {
+        usuarioRepository.findById(usuarioId)
+        .orElseThrow(() -> new NotFoundException("Usuario no encontrado"));
     }
 
     

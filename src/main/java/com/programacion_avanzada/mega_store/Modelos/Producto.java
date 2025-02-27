@@ -46,6 +46,10 @@ public class Producto {
     @Column(name = "color")
     private String color;
 
+    @NotBlank
+    @Column(name = "url_imagen", length = 1000)
+    private String urlImagen;
+
     @NotNull
     @Column(name = "precio_unitario")
     private double precioUnitario;
@@ -60,7 +64,6 @@ public class Producto {
 
     @ManyToOne
     @JoinColumn(name = "marca_id", nullable = false)
-    @JsonBackReference
     private Marca marca;
 
     @ManyToOne

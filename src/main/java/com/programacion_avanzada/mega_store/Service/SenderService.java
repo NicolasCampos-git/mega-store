@@ -8,6 +8,8 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import com.programacion_avanzada.mega_store.Modelos.Producto;
+import com.programacion_avanzada.mega_store.Service.Interfaces.IProductoService;
+import com.programacion_avanzada.mega_store.Service.Interfaces.ISenderService;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;

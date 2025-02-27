@@ -2,23 +2,22 @@ package com.programacion_avanzada.mega_store.Service;
 
 import java.util.List;
 
+import com.programacion_avanzada.mega_store.Mapper.ProductoMappers.ProductoMapper;
+import com.programacion_avanzada.mega_store.Mapper.ProductoMappers.RegistrarProductoMapper;
 
-import com.programacion_avanzada.mega_store.DTOs.ProductoDto;
-import com.programacion_avanzada.mega_store.Mapper.RegistrarProductoMapper;
-import com.programacion_avanzada.mega_store.Modelos.Categoria;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.programacion_avanzada.mega_store.DTOs.RegistrarProductoDto;
-import com.programacion_avanzada.mega_store.Mapper.ProductoMapper;
+import com.programacion_avanzada.mega_store.DTOs.ProductoDtos.RegistrarProductoDto;
 import com.programacion_avanzada.mega_store.Modelos.Marca;
 import com.programacion_avanzada.mega_store.Modelos.Producto;
 import com.programacion_avanzada.mega_store.Modelos.SubCategoria;
 import com.programacion_avanzada.mega_store.Repository.MarcaRepository;
 import com.programacion_avanzada.mega_store.Repository.ProductoRepository;
 import com.programacion_avanzada.mega_store.Repository.SubCategoriaRepository;
+import com.programacion_avanzada.mega_store.Service.Interfaces.IProductoService;
 
 import ch.qos.logback.core.util.StringUtil;
 
@@ -46,7 +45,7 @@ public class ProductoService implements IProductoService {
      * luego se encarga de normalizar los datos y asignar que se encuentra activo.
      */
     @Override
-    public RegistrarProductoDto registrarProducto(RegistrarProductoDto dto) {
+    public Producto registrarProducto(RegistrarProductoDto dto) {
         // Primero, verifica si la marca y la subcategoría existen
         if (!marcaRepository.existsById(dto.getMarcaId())) {
             throw new EntityNotFoundException("La marca no existe");
@@ -62,12 +61,31 @@ public class ProductoService implements IProductoService {
 
             // Normarlizamos los atributos del producto.
             validarNombre(dto.getNombre());
+            validarDescripcion(producto.getDescripcion());
+
+            validarTamano(producto.getTamano());
+    
+            validarColor(producto.getColor());
+    
+            valirdarPrecio(producto.getPrecioUnitario());
+    
+            validarStock(producto.getStock());
+    
+            validarUmbralBajoStock(producto.getUmbralBajoStock());
+    
+            validarStockYUmbralBajoStock(producto.getStock(), producto.getUmbralBajoStock());
+    
+            validarMarca(dto.getMarcaId(), producto);
+    
+            validarSubCategoria(dto.getSubCategoriaId(), producto);
+
             producto.setNombre(StringUtil.capitalizeFirstLetter(dto.getNombre().toLowerCase().trim()));
             producto.setDescripcion(StringUtil.capitalizeFirstLetter(dto.getDescripcion().toLowerCase().trim()));
             producto.setColor(StringUtil.capitalizeFirstLetter(dto.getColor().toLowerCase()).trim());
             producto.setTamano(StringUtil.capitalizeFirstLetter(dto.getTamano().toLowerCase().trim()));
             producto.setStock(dto.getStock());
             producto.setPrecioUnitario(dto.getPrecioUnitario());
+            normalizarDatos(producto);
 
             //Asignamos el estado como activo.
             producto.setEstaActivo(true);
@@ -81,7 +99,7 @@ public class ProductoService implements IProductoService {
             producto.setSubcategoria(subCategoria);
 
 
-            return registrarProductoMapper.toDto(productoRepository.save(producto));
+            return productoRepository.save(producto);
         }
 
         throw new EntityExistsException("El producto ya existe"); //deberia salir una excepcion.
@@ -92,9 +110,8 @@ public class ProductoService implements IProductoService {
      * Metodo que para listar todos los productos
      */
     @Override
-    public List<ProductoDto> listar() {
-        List<Producto> productos = productoRepository.findAll();
-        return  productos.stream().map(productoMapper::toDto).toList();
+    public List<Producto> listar() {
+        return productoRepository.findAll();
     }
 
    
@@ -116,33 +133,45 @@ public class ProductoService implements IProductoService {
      * Comparte los mismos atributos que el DTO para registrar el producto.
      */
     @Override
-    public RegistrarProductoDto editarProducto(long id, RegistrarProductoDto dto) {
+    public Producto editarProducto(long id,RegistrarProductoDto dto) {
+
         Producto producto = productoRepository.findById(id).orElse(null);
+        
+        validarNombre(producto.getNombre());
 
-        validarNombre(dto.getNombre());
-        validarDescripcion(dto.getDescripcion());
-        validarTamano(dto.getTamano());
-        validarColor(dto.getColor());
-        valirdarPrecio(dto.getPrecioUnitario());
-        validarStock(dto.getStock());
-        validarUmbralBajoStock(dto.getUmbralBajoStock());
+        validarDescripcion(producto.getDescripcion());
 
-        producto.setNombre(dto.getNombre());
-        producto.setDescripcion(dto.getDescripcion());
-        producto.setTamano(dto.getTamano());
-        producto.setColor(dto.getColor());
-        producto.setPrecioUnitario(dto.getPrecioUnitario());
+        validarTamano(producto.getTamano());
+
+        validarColor(producto.getColor());
+
+        valirdarPrecio(producto.getPrecioUnitario());
+
+        validarStock(producto.getStock());
+
+        validarUmbralBajoStock(producto.getUmbralBajoStock());
+
+        validarStockYUmbralBajoStock(producto.getStock(), producto.getUmbralBajoStock());
+
+        validarMarca(dto.getMarcaId(), producto);
+
+        validarSubCategoria(dto.getSubCategoriaId(), producto);
+
+        
+
+        producto.setNombre(StringUtil.capitalizeFirstLetter(dto.getNombre().toLowerCase().trim()));
+        producto.setDescripcion(StringUtil.capitalizeFirstLetter(dto.getDescripcion().toLowerCase().trim()));
+        producto.setColor(dto.getColor().toLowerCase().trim());
+        producto.setTamano(dto.getTamano().toUpperCase().trim());
         producto.setStock(dto.getStock());
-        producto.setUmbralBajoStock(dto.getUmbralBajoStock());
+        producto.setPrecioUnitario(dto.getPrecioUnitario());
+        producto.setSubcategoria(subCategoriaRepository.findById(dto.getSubCategoriaId()).orElseThrow());
+        producto.setMarca(marcaRepository.findById(dto.getMarcaId()).orElseThrow());
 
         normalizarDatos(producto);
+        
 
-        productoRepository.save(producto);
-        // Guardar el producto actualizado
-        Producto productoGuardado = guardar(producto);
-
-        // Mapear y retornar el DTO
-        return registrarProductoMapper.toDto(productoGuardado);
+        return productoRepository.save(producto);
     }
 
 
@@ -294,11 +323,11 @@ public class ProductoService implements IProductoService {
         
     }
 
-    public void validarSubCategoria(long subCategoriaId, Producto producto){
+    public void validarSubCategoria(long subCategoriaId, Producto producto) {
         if (subCategoriaId <= 0) {
             throw new IllegalArgumentException("La subcategoria del producto no puede estar vacía.");
         }
-
+    
         SubCategoria subCategoria = subCategoriaRepository.findById(subCategoriaId).orElse(null);
         if (subCategoria == null) {
             throw new IllegalArgumentException("La subcategoria del producto no existe.");
@@ -314,10 +343,14 @@ public class ProductoService implements IProductoService {
 
     }
 
+
     @Override
-    public Producto guardar(Producto producto){
-        return productoRepository.save(producto);
+    public Producto guardar(Producto producto) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'guardar'");
     }
+
+   
 
     
 

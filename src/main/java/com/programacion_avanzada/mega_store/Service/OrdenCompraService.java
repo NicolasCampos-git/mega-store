@@ -1,10 +1,11 @@
 package com.programacion_avanzada.mega_store.Service;
 
-import com.programacion_avanzada.mega_store.DTOs.ItemOrdenDto;
-import com.programacion_avanzada.mega_store.DTOs.OrdenCompraDto;
-import com.programacion_avanzada.mega_store.Mapper.OrdenCompraMapper;
+import com.programacion_avanzada.mega_store.DTOs.OrdenDtos.OrdenCompraDto;
+import com.programacion_avanzada.mega_store.Mapper.OrdenMappers.OrdenCompraMapper;
 import com.programacion_avanzada.mega_store.Modelos.*;
 import com.programacion_avanzada.mega_store.Repository.*;
+import com.programacion_avanzada.mega_store.Service.Interfaces.IOrdenCompraService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +13,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+
 
 @Service
 public class OrdenCompraService implements IOrdenCompraService {
@@ -32,16 +33,16 @@ public class OrdenCompraService implements IOrdenCompraService {
     private ItemOrdenRepository itemOrdenRepository;
 
     @Autowired
-    private EstadoOrdenRepository estadoOrdenRepository;
+    private EstadoRepository estadoRepository;
 
     @Override
-    public OrdenCompraDto crearOrden(Long usuarioId, Map<Long, Integer> productosYCantidades) {
+    public OrdenCompra crearOrden(Long usuarioId, Map<Long, Integer> productosYCantidades) {
         //Se inicializa la orden
         OrdenCompra ordenCompra = new OrdenCompra();
 
         //Se le asigna usuario y estado
         Usuario usuario = usuarioRepository.findById(usuarioId).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-        EstadoOrden estado = estadoOrdenRepository.findByNombre("PENDIENTE").orElseThrow(() -> new RuntimeException("Estado no encontrado"));
+        Estado estado = estadoRepository.findByNombre("PENDIENTE").orElseThrow(() -> new RuntimeException("Estado no encontrado"));
         ordenCompra.setUsuario(usuario);
         ordenCompra.setEstado(estado);
         ordenCompra.setFecha(LocalDateTime.now());
@@ -78,7 +79,7 @@ public class OrdenCompraService implements IOrdenCompraService {
         }
 
         //Se mappea la orden a DTO usando el mapper
-        return ordenCompraMapper.toDto(ordenCompra);
+        return ordenCompra;
     }
 
     @Override
@@ -86,7 +87,7 @@ public class OrdenCompraService implements IOrdenCompraService {
         OrdenCompra orden = ordenCompraRepository.findById(ordenId)
                 .orElseThrow(() -> new RuntimeException("Orden no encontrada"));
 
-        EstadoOrden estado = estadoOrdenRepository.findByNombre(nuevoEstado)
+        Estado estado = estadoRepository.findByNombre(nuevoEstado)
                 .orElseThrow(() -> new RuntimeException("Estado no encontrado"));
 
         if (!esTransicionValida(orden.getEstado().getNombre(), nuevoEstado)) {
@@ -111,4 +112,85 @@ public class OrdenCompraService implements IOrdenCompraService {
         return ordenCompraRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Orden de compra no encontrada"));
     }
+
+    //Metodo para el listado de todas las ordenes de compra.
+    @Override
+    public List<OrdenCompra> obtenerOrdenes() {
+        List<OrdenCompra> ordenes =  ordenCompraRepository.findAll();
+        if(ordenes.isEmpty()){
+            throw new RuntimeException("No hay ordenes de compra");
+        }
+        return ordenes;
+    }
+
+    //Metodo para el listado de todas las ordenes de compra por usuario.
+    public List<OrdenCompra> obtenerOrdenesPorUsuario(Long usuarioId) {
+        validarUsuario(usuarioId);
+        Usuario usuario = usuarioRepository.findById(usuarioId)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        return ordenCompraRepository.findByUsuario(usuario);
+    }
+
+    @Override
+    public void eliminarOrden(Long id) {
+        OrdenCompra orden = ordenCompraRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Orden de compra no encontrada"));
+
+        orden.setEstaActiva(false);
+        
+        ordenCompraRepository.save(orden);
+    }
+
+    @Override
+    public void reactivarOrden(Long id) {
+        OrdenCompra orden = ordenCompraRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Orden de compra no encontrada"));
+
+        orden.setEstaActiva(true);
+
+        ordenCompraRepository.save(orden);
+    }
+
+    @Override
+    public OrdenCompra cancelarOrden(Long id){
+        validarIdOrdenCompra(id);
+        OrdenCompra orden = ordenCompraRepository.findById(id).get();
+        
+        if(orden.getEstado().getNombre().equals("Entregada")){
+            throw new RuntimeException("No se puede cancelar una orden entregada");
+        }
+        orden.setEstado(estadoRepository.findByNombre("Cancelada").get());   
+        orden.setFechaCancelacion(LocalDateTime.now());
+
+        return ordenCompraRepository.save(orden);
+    }
+
+    
+
+    public void validarIdOrdenCompra(Long id) {
+        if (!ordenCompraRepository.existsById(id)) {
+            throw new RuntimeException("Orden de compra no encontrada");
+        }
+        
+    }
+
+    public boolean existeOrdenCompra(Long id) {
+        return ordenCompraRepository.existsById(id);
+    }
+
+
+    private void validarUsuario(Long usuarioId) {
+        if (!usuarioRepository.existsById(usuarioId)) {
+            throw new RuntimeException("Usuario no encontrado");
+        }
+
+        
+    }
+
+    
+
+   
+    
+    
 }
