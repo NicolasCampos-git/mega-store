@@ -116,10 +116,10 @@ public class MarcaService implements IMarcaService{
     }
 
     public void validarNombre(String nombre){
-        if (nombre == null || nombre.isEmpty()) {
-            throw new IllegalArgumentException("El nombre de la marca no puede estar vacío.");
+        // if (nombre == null || nombre.isEmpty()) {
+        //     throw new IllegalArgumentException("El nombre de la marca no puede estar vacío.");
             
-        }
+        // }
         if (nombre.length() < 2 || nombre.length() > 64) {
             throw new IllegalArgumentException("El nombre de la marca debe tener entre 2 y 64 caracteres.");
         }
