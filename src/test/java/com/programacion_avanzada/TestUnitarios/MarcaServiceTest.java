@@ -202,7 +202,7 @@ public class MarcaServiceTest {
         marca.setDescripcion("Marca de vehiculos deportivos italiana");
 
         when(registrarMarcaMapper.toEntity(any(RegistrarMarcaDto.class))).thenReturn(marca);
-
+`
         // Act & Assert
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             marcaService.registrarMarca(dto);

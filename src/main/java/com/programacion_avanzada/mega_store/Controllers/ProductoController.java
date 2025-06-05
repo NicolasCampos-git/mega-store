@@ -3,7 +3,6 @@ package com.programacion_avanzada.mega_store.Controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import com.programacion_avanzada.mega_store.DTOs.ProductoDtos.ProductoDto;
 import com.programacion_avanzada.mega_store.DTOs.ProductoDtos.RegistrarProductoDto;
 import com.programacion_avanzada.mega_store.Modelos.Producto;
 import com.programacion_avanzada.mega_store.Service.Interfaces.IProductoService;

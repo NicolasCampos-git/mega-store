@@ -15,7 +15,6 @@ import com.programacion_avanzada.mega_store.Repository.MarcaRepository;
 import com.programacion_avanzada.mega_store.Service.Interfaces.IMarcaService;
 
 import ch.qos.logback.core.util.StringUtil;
-import jakarta.persistence.EntityExistsException;
 
 @Service
 public class MarcaService implements IMarcaService{
@@ -123,6 +122,12 @@ public class MarcaService implements IMarcaService{
         }
         if (nombre.matches(".*\\d.*")) {
             throw new IllegalArgumentException("El nombre no debe contener números.");
+
+        }
+
+        // Validación para prevenir ataques XSS
+        if (nombre.matches(".*[<>\"'&].*")) {
+            throw new IllegalArgumentException("La descripción contiene caracteres no permitidos.");
         }
       
     }
@@ -137,6 +142,7 @@ public class MarcaService implements IMarcaService{
         if (descripcion.matches(".*\\d.*")) {
             throw new IllegalArgumentException("La descripción no debe contener números");
         }
+        
     }
 
     public Marca normalizarDatos(Marca marca){
