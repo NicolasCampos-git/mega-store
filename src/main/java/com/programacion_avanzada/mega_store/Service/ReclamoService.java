@@ -1,6 +1,9 @@
 package com.programacion_avanzada.mega_store.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,19 +40,31 @@ public class ReclamoService implements IReclamoService{
     @Autowired
     private TipoReclamoRepositoty tipoReclamoRepositoty;
 
-
-
     @Override
     public Reclamo registrarReclamo(RegistrarReclamoDto dto) {
-        validarTipoReclamo(dto.getIdTipoReclamo());
-        validarUsuario(dto.getIdUsuario());
-        validarOrdeCompra(dto.getIdOrdenCompra());
-
-        Reclamo reclamo = new Reclamo();
+        // Primero validamos los campos básicos y obligatorios
         validarMorivo(dto.getMotivo());
         validarDescripcion(dto.getDescripcion());
+
+        // Luego validamos los IDs y las relaciones
+        if (dto.getIdTipoReclamo() <= 0) {
+            throw new RuntimeException("El tipo de reclamo no puede ser menor o igual a 0");
+        }
+        validarTipoReclamo(dto.getIdTipoReclamo());
+        
+        if (dto.getIdUsuario() <= 0) {
+            throw new RuntimeException("El id del usuario no puede ser menor o igual a 0");
+        }
+        validarUsuario(dto.getIdUsuario());
+        
+        if (dto.getIdOrdenCompra() <= 0) {
+            throw new RuntimeException("El id de la orden no puede ser menor o igual a 0");
+        }
+        validarOrdeCompra(dto.getIdOrdenCompra());
         validarOrdenPerteneceUsuario(dto.getIdOrdenCompra(), dto.getIdUsuario());
 
+        // Creación del reclamo
+        Reclamo reclamo = new Reclamo();
         reclamo.setMotivo(dto.getMotivo().toLowerCase());
         reclamo.setDescripcion(dto.getDescripcion().toLowerCase());
         reclamo.setTipoReclamo(tipoReclamoRepositoty.findById(dto.getIdTipoReclamo()));
@@ -57,12 +72,12 @@ public class ReclamoService implements IReclamoService{
         reclamo.setOrdenCompra(ordenCompraService.obtenerOrdenPorId(dto.getIdOrdenCompra()));
 
         Estado estado = estadoRepository.findByNombre("Registrado")
-        .orElseThrow(() -> new RuntimeException("Estado no encontrado"));
+            .orElseThrow(() -> new RuntimeException("Estado no encontrado"));
 
         validarEstado(estado);
         reclamo.setEstado(estado);
-
         reclamo.setFechaCreacion(LocalDateTime.now());
+        reclamo.setEstaActivo(true);
 
         return reclamoRepository.save(reclamo);
     }
@@ -278,20 +293,19 @@ public class ReclamoService implements IReclamoService{
         if(motivo == null || motivo.isEmpty()) {
             throw new RuntimeException("Motivo no puede estar vacio");
         }
-        if(motivo.length() < 2 && motivo.length() > 50) {
+        if(motivo.length() < 2 || motivo.length() > 50) {
             throw new RuntimeException("El motivo debe tener entre 2 y 50 caracteres");
         }
-        if(!motivo.matches("[a-zA-Z ]+")) {
+        if(!motivo.matches("^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$")) {
             throw new RuntimeException("El motivo solo debe tener letras y espacios");
         }
-        
     }
 
     private void validarDescripcion(String descripcion) {
         if(descripcion == null || descripcion.isEmpty()) {
             throw new RuntimeException("Descripcion no puede estar vacia");
         }
-        if(descripcion.length() < 2 && descripcion.length() > 255) {
+        if(descripcion.length() < 2 || descripcion.length() > 255) {
             throw new RuntimeException("La descripcion debe tener entre 2 y 255 caracteres");
         }
     }
