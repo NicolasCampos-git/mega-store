@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: mega-store
+    env: java
+    buildCommand: "./mvnw clean install"
+    startCommand: "java -jar target/mega-store-0.0.1-SNAPSHOT.jar"
+    plan: free
+    envVars:
+      - key: JAVA_VERSION
+        value: 22
