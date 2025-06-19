@@ -1,10 +1,9 @@
 services:
   - type: web
     name: mega-store
-    env: java
-    buildCommand: "./mvnw clean install"
-    startCommand: "java -jar target/mega-store-0.0.1-SNAPSHOT.jar"
-    plan: free
+    runtime: java  # Esto fuerza a Render a usar Java
+    buildCommand: ./mvnw clean install -DskipTests
+    startCommand: java -jar target/*.jar  # O usa el nombre exacto de tu .jar
     envVars:
       - key: JAVA_VERSION
-        value: 22
+        value: "22"
