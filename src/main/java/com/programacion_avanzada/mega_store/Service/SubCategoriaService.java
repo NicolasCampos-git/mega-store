@@ -79,7 +79,7 @@ public class SubCategoriaService implements ISubCategoriaService {
     public void eliminar(long id) {
         SubCategoria subCategoria = subCategoriaRepository.findById(id).orElse(null);
         if (subCategoria == null || subCategoria.isEstaActivo() == false) {
-            throw new EntityNotFoundException("La subcategoria no existe o ya esta inactiva.");
+            throw new IllegalArgumentException("La subcategoria no existe o ya esta inactiva.");
             
         }
         subCategoria.setEstaActivo(false);
@@ -90,7 +90,7 @@ public class SubCategoriaService implements ISubCategoriaService {
     public void reactivar(long id){
         SubCategoria subCategoria = subCategoriaRepository.findById(id).orElse(null);
         if(subCategoria == null || subCategoria.isEstaActivo() == true){
-            throw new EntityNotFoundException("La subcategoria no existe o ya esta activa.");
+            throw new IllegalArgumentException("La subcategoria no existe o ya esta activa.");
         }
         subCategoria.setEstaActivo(true);
         subCategoriaRepository.save(subCategoria);
@@ -151,13 +151,13 @@ public class SubCategoriaService implements ISubCategoriaService {
 
     public void verificarCategoria(Long categoriaId) {
         if (!categoriaRepository.existsById(categoriaId)) {
-            throw new EntityNotFoundException("La categoría no existe");
+            throw new IllegalArgumentException("La categoría no existe");
         }
     }
 
     public void verificarUnicidad(String nombre) {
         if (subCategoriaRepository.existsByNombre(nombre)) {
-            throw new EntityExistsException("La subcategoria ya existe");
+            throw new IllegalArgumentException("La subcategoria ya existe");
         }
     }
 
@@ -177,7 +177,7 @@ public class SubCategoriaService implements ISubCategoriaService {
 
     public void asignarCategoria(SubCategoria subCategoria, Long categoriaId) {
         Categoria categoria = categoriaRepository.findById(categoriaId)
-                .orElseThrow(() -> new EntityNotFoundException("La categoría no existe")); // Lanza excepción si no se encuentra la categoría
+                .orElseThrow(() -> new IllegalArgumentException("La categoría no existe")); // Lanza excepción si no se encuentra la categoría
         subCategoria.setCategoria(categoria);
     }
 }

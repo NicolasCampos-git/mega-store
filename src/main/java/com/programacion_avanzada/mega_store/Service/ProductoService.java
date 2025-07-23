@@ -48,10 +48,10 @@ public class ProductoService implements IProductoService {
     public Producto registrarProducto(RegistrarProductoDto dto) {
         // Primero, verifica si la marca y la subcategoría existen
         if (!marcaRepository.existsById(dto.getMarcaId())) {
-            throw new EntityNotFoundException("La marca no existe");
+            throw new IllegalArgumentException("La marca no existe");
         }
         if (!subCategoriaRepository.existsById(dto.getSubCategoriaId())) {
-            throw new EntityNotFoundException("La subcategoría no existe");
+            throw new IllegalArgumentException("La subcategoría no existe");
         }
 
 
@@ -102,7 +102,7 @@ public class ProductoService implements IProductoService {
             return productoRepository.save(producto);
         }
 
-        throw new EntityExistsException("El producto ya existe"); //deberia salir una excepcion.
+        throw new IllegalArgumentException("El producto ya existe"); //deberia salir una excepcion.
     }
 
 
@@ -179,7 +179,7 @@ public class ProductoService implements IProductoService {
     public Producto buscarPorId(long id){
         Producto producto = productoRepository.findById(id).orElse(null);
         if (producto == null) {
-            throw new EntityNotFoundException("El producto no existe.");
+            throw new IllegalArgumentException("El producto no existe.");
         }
         return producto;
     }

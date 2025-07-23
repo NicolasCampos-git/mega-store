@@ -15,7 +15,6 @@ import com.programacion_avanzada.mega_store.Repository.MarcaRepository;
 import com.programacion_avanzada.mega_store.Service.Interfaces.IMarcaService;
 
 import ch.qos.logback.core.util.StringUtil;
-import jakarta.persistence.EntityExistsException;
 
 @Service
 public class MarcaService implements IMarcaService{
@@ -36,20 +35,16 @@ public class MarcaService implements IMarcaService{
      */
     @Override
     public RegistrarMarcaDto registrarMarca(RegistrarMarcaDto dto) {
-
         Marca marca = registrarMarcaMapper.toEntity(dto);
-
         
-        if(marcaRepository.existsByNombre(marca.getNombre().trim()) == true){
-
-            throw new EntityExistsException("La marca ya existe");
+        if(marcaRepository.existsByNombre(marca.getNombre().trim())){
+            throw new IllegalArgumentException("El nombre de la marca ya está registrado");
         }
         validarNombre(marca.getNombre());
         validarDescripcion(marca.getDescripcion());
 
         normalizarDatos(marca);
         marca.setEstaActivo(true);
-            
         
         return registrarMarcaMapper.toDto(marcaRepository.save(marca));
     }
@@ -117,31 +112,38 @@ public class MarcaService implements IMarcaService{
 
     public void validarNombre(String nombre){
         if (nombre == null || nombre.isEmpty()) {
-            throw new IllegalArgumentException("El nombre de la marca no puede estar vacío.");
-            
+            throw new IllegalArgumentException("El nombre de la marca no puede estar vacío.");
         }
         if (nombre.length() < 2 || nombre.length() > 64) {
             throw new IllegalArgumentException("El nombre de la marca debe tener entre 2 y 64 caracteres.");
         }
         if (nombre.contains(" ")) {
             throw new IllegalArgumentException("El nombre de la marca no debe contener espacios.");
-            
         }
         if (nombre.matches(".*\\d.*")) {
             throw new IllegalArgumentException("El nombre no debe contener números.");
+
         }
+        if (!nombre.matches("^[a-zA-Z]+$")) {
+            throw new IllegalArgumentException("El nombre de la marca no debe contener caracteres especiales.");
+        }
+
+        // Validación para prevenir ataques XSS
+        if (nombre.matches(".*[<>\"'&].*")) {
+            throw new IllegalArgumentException("El nombre contiene caracteres no permitidos.");
+        }
+      
     }
 
     public void validarDescripcion(String descripcion){
         if (descripcion == null || descripcion.isEmpty()) {
-            throw new IllegalArgumentException("La descripcion de la marca no puede estar vacía.");
-            
+            throw new IllegalArgumentException("La descripción no puede estar vacía");
         }
         if (descripcion.length() < 2 || descripcion.length() > 64) {
-            throw new IllegalArgumentException("La descripcion de la marca debe tener entre 2 y 64 caracteres.");
+            throw new IllegalArgumentException("La descripción debe tener entre 2 y 64 caracteres");
         }
         if (descripcion.matches(".*\\d.*")) {
-            throw new IllegalArgumentException("La descripcion no debe contener números.");
+            throw new IllegalArgumentException("La descripción no debe contener números");
         }
         
     }
