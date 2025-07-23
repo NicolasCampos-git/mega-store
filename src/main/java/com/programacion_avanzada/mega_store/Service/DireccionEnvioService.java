@@ -99,11 +99,11 @@ public class DireccionEnvioService implements IDireccionEnvioService {
         if (provincia == null || provincia.isEmpty()) {
             throw new IllegalArgumentException("La provincia no puede estar vacía.");
         }
-        if (provincia.length() < 2 || provincia.length() > 64) {
+        if (provincia.length() < 2 || provincia.length() > 30) {
             throw new IllegalArgumentException("La provincia debe tener entre 2 y 30 caracteres.");
         }
         if (!provincia.matches("^[a-zA-Z\\s]+$")) {
-            throw new IllegalArgumentException("La la provincia debe contener solo letras y espacios.");
+            throw new IllegalArgumentException("La provincia debe contener solo letras y espacios.");
         }
         
     }
@@ -113,7 +113,7 @@ public class DireccionEnvioService implements IDireccionEnvioService {
             throw new IllegalArgumentException("La ciudad no puede estar vacía.");
             
         }
-        if (ciudad.length() < 2 || ciudad.length() > 64) {
+        if (ciudad.length() < 2 || ciudad.length() > 30) {
             throw new IllegalArgumentException("La ciudad debe tener entre 2 y 30 caracteres.");
         }
         if (!ciudad.matches("^[a-zA-Z\\s]+$")) {
@@ -126,7 +126,7 @@ public class DireccionEnvioService implements IDireccionEnvioService {
         if (calle == null || calle.isEmpty()) {
             throw new IllegalArgumentException("La calle no puede estar vacía.");
         }
-        if (calle.length() < 2 || calle.length() > 64) {
+        if (calle.length() < 2 || calle.length() > 30) {
             throw new IllegalArgumentException("La calle debe tener entre 2 y 30 caracteres.");
         }
         if (!calle.matches("^[a-zA-Z\\s'\\-]+$")) {

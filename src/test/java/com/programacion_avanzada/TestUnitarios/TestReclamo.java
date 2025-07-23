@@ -26,6 +26,8 @@ import com.programacion_avanzada.mega_store.Service.OrdenCompraService;
 import com.programacion_avanzada.mega_store.Service.ReclamoService;
 import com.programacion_avanzada.mega_store.Service.UsuarioService;
 
+import java.util.Optional;
+
 @ExtendWith(MockitoExtension.class)
 public class TestReclamo {
 
@@ -98,15 +100,18 @@ public class TestReclamo {
 
     @Test
     void testBugValidacionMotivo() {
-        when(reclamoRepository.findById(1L)).thenReturn(null);
+        // Lenient para evitar warning si no se usa el stub
+        lenient().when(reclamoRepository.findById(anyLong())).thenReturn(null);
+
         reclamoDto.setMotivo("Motivo123");
-        
+
         Exception exception = assertThrows(RuntimeException.class, () -> {
             reclamoService.registrarReclamo(reclamoDto);
         });
-        
+
         assertEquals("El motivo solo debe tener letras y espacios", exception.getMessage());
     }
+
 
     @Test
     void testBugActualizacionEstadoIncorrecto() {

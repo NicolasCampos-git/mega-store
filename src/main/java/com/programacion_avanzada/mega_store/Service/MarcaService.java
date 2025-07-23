@@ -124,10 +124,13 @@ public class MarcaService implements IMarcaService{
             throw new IllegalArgumentException("El nombre no debe contener números.");
 
         }
+        if (!nombre.matches("^[a-zA-Z]+$")) {
+            throw new IllegalArgumentException("El nombre de la marca no debe contener caracteres especiales.");
+        }
 
         // Validación para prevenir ataques XSS
         if (nombre.matches(".*[<>\"'&].*")) {
-            throw new IllegalArgumentException("La descripción contiene caracteres no permitidos.");
+            throw new IllegalArgumentException("El nombre contiene caracteres no permitidos.");
         }
       
     }

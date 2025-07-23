@@ -5,6 +5,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
 
+import com.programacion_avanzada.mega_store.DTOs.CategoriaDtos.RegistrarCategoriaDto;
+import com.programacion_avanzada.mega_store.Modelos.Categoria;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -255,6 +257,7 @@ public class MarcaServiceTest {
         assertEquals("El nombre de la marca no puede estar vacío.", exception.getMessage());
     }
 
+
     @Test
     void registrarMarca_ConNombreDuplicado_DebeLanzarExcepcion() {
         // Arrange
@@ -323,5 +326,62 @@ public class MarcaServiceTest {
         assertEquals("toyota", resultado.getNombre());
         assertEquals("ok", resultado.getDescripcion());
         assertEquals(2, resultado.getDescripcion().length(), "La descripción debe tener exactamente 2 caracteres");
+    }
+
+    @Test
+    void registrarMarca_ConDescripcionLongitudMenor_DebeLanzarExcepcion() {
+        RegistrarMarcaDto dto = new RegistrarMarcaDto();
+        dto.setNombre("electronica");
+        dto.setDescripcion("a");
+
+        Marca marca = new Marca();
+        marca.setNombre("electronica");
+        marca.setDescripcion("a");
+
+        when(registrarMarcaMapper.toEntity(any(RegistrarMarcaDto.class))).thenReturn(marca);
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            marcaService.registrarMarca(dto);
+        });
+
+        assertEquals("La descripción debe tener entre 2 y 64 caracteres", exception.getMessage());
+    }
+
+    @Test
+    void registrarMarca_ConDescripcionLongitudMayor_DebeLanzarExcepcion() {
+        RegistrarMarcaDto dto = new RegistrarMarcaDto();
+        dto.setNombre("electronica");
+        dto.setDescripcion("Esta es una descripción de ejemplo pensada para superar los 64 caracteres y así poder probar límites de validación o almacenamiento en bases de datos, archivos u otros sistemas.");
+
+        Marca marca = new Marca();
+        marca.setNombre("electronica");
+        marca.setDescripcion("Esta es una descripción de ejemplo pensada para superar los 64 caracteres y así poder probar límites de validación o almacenamiento en bases de datos, archivos u otros sistemas.");
+
+        when(registrarMarcaMapper.toEntity(any(RegistrarMarcaDto.class))).thenReturn(marca);
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            marcaService.registrarMarca(dto);
+        });
+
+        assertEquals("La descripción debe tener entre 2 y 64 caracteres", exception.getMessage());
+    }
+
+    @Test
+    void registrarMarca_ConDescripcionConNumeros_DebeLanzarExcepcion() {
+        RegistrarMarcaDto dto = new RegistrarMarcaDto();
+        dto.setNombre("electronica");
+        dto.setDescripcion("123");
+
+        Marca marca = new Marca();
+        marca.setNombre("electronica");
+        marca.setDescripcion("123");
+
+        when(registrarMarcaMapper.toEntity(any(RegistrarMarcaDto.class))).thenReturn(marca);
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            marcaService.registrarMarca(dto);
+        });
+
+        assertEquals("La descripción no debe contener números", exception.getMessage());
     }
 }
