@@ -191,7 +191,7 @@ public class ProductoService implements IProductoService {
         Producto producto = productoRepository.findById(id).orElse(null);
         if(producto != null && producto.isEstaActivo() == false){
             producto.setEstaActivo(true);
-            guardar(producto);
+            productoRepository.save(producto);
         }
     }
 
